@@ -1,0 +1,29 @@
+body {
+  background-color: #121212;
+  color: #fff;
+  
+}
+
+
+.sidebar  {
+  height: 100vh;
+  background-color: #1f1f1f;
+  
+}
+
+.card {
+  background-color: #292929;
+  border: none;
+}
+
+.card-title, .card-text {
+  color: #fff;
+}
+
+.nav-link {
+  color: #bbb;
+}
+
+.nav-link:hover {
+  color: #fff;
+}

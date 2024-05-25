@@ -2,7 +2,8 @@ import { Col, Container, Row } from "react-bootstrap";
 import "./components/MainNavbar";
 import MainNavbar from "./components/MainNavbar";
 import Sidebar from "./components/Sidebar";
-import Overview from "./components/Overview";
+import OverviewMain from "./components/Overview/OverviewMain";
+import CampaignsMain from "./components/Campaigns/CampaignsMain";
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
             <Sidebar />
           </Col>
           <Col xs={10} className="p-0">
-            <Overview />
+            <CampaignsMain />
           </Col>
         </Row>
       </Container>

@@ -1,9 +1,11 @@
 import React from "react";
-import EarningsCard from "./EarningsCard";
-import SpendingCard from "./SpendingCard";
+import EarningsCard from "../Overview/EarningsCard";
+import SpendingCard from "../Overview/SpendingCard";
 import { Row, Col } from "react-bootstrap";
-import Transactions from "./Transactions";
-import LatestTask from "./LatestTask";
+import Transactions from "../Overview/Transactions";
+import LatestTask from "../Overview/LatestTask";
+import MyCampaigns from "../Overview/MyCampaigns";
+import Calendar from "../Overview/Calendar";
 
 const Overview = () => {
   return (
@@ -20,6 +22,10 @@ const Overview = () => {
         <Col md={8}>
           <Transactions />
           <LatestTask />
+        </Col>
+        <Col md={4}>
+          <MyCampaigns />
+          <Calendar />
         </Col>
       </Row>
     </div>

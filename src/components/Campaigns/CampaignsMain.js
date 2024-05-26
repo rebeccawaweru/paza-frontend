@@ -4,6 +4,7 @@ import CampaignsNav from "./CampaignsNav";
 import MyCampaigns from "./MyCampaigns";
 import ActiveCampaign from "./ActiveCampaign";
 import NewCampaignButton from "./NewCampaignButton";
+import RecommendedCampaigns from "./RecommendedCampaigns";
 
 const CampaignsMain = () => {
   return (
@@ -14,12 +15,8 @@ const CampaignsMain = () => {
         </Col>
       </Row>
       <Row>
-        <Col md={8}>
-          <MyCampaigns />
-          <ActiveCampaign />
-        </Col>
-        <Col md={4} className="d-flex align-items-start justify-content-end">
-          <NewCampaignButton />
+        <Col>
+          <RecommendedCampaigns />
         </Col>
       </Row>
     </Container>

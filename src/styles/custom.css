@@ -27,3 +27,19 @@ body {
 .nav-link:hover {
   color: #fff;
 }
+
+.badge-success {
+  background-color: #28a745;
+}
+
+/* .badge-secondary {
+  background-color: #6c757d;
+}
+
+.button-group .btn {
+  margin-right: 0.5rem;
+}
+
+.button-group .btn:last-child {
+  margin-right: 0;
+} */

@@ -22,6 +22,7 @@ body {
 
 .nav-link {
   color: #bbb;
+  margin-right: 20px;
 }
 
 .nav-link:hover {
@@ -43,3 +44,52 @@ body {
 .button-group .btn:last-child {
   margin-right: 0;
 } */
+
+.navbar {
+  background-color: #121212;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  color: #ff9800;
+}
+
+.navbar-brand:hover {
+  color: #ff9800;
+}
+
+.navbar-toggler-icon {
+  color: #fff;
+}
+
+.navbar-toggler {
+  border-color: #ff9800;
+}
+
+.bi {
+  font-size: 1.25rem;
+  color: #fff;
+}
+
+.bi:hover {
+  color: #ff9800;
+}
+
+.nav-dropdown .dropdown-toggle {
+  display: flex;
+  align-items: center;
+}
+
+.drop-menu {
+  background-color: #1f1f1f;
+}
+
+.dropdown-item {
+  color: #fff;
+}
+
+.dropdown-item:hover {
+  background-color: #ff9800;
+  color: #fff;
+}
+

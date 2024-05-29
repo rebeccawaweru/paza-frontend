@@ -16,7 +16,7 @@ const CampaignsMain = () => {
       </Row>
       <Row>
         <Col>
-          <RecommendedCampaigns />
+          <ActiveCampaign />
         </Col>
       </Row>
     </Container>

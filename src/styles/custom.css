@@ -93,3 +93,48 @@ body {
   color: #fff;
 }
 
+ .badge-status{
+  margin-right: 10px;
+}
+
+.campaign-card {
+  background-color: #1f1f1f;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+}
+
+.campaign-card .card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.stat-container {
+  background-color: #333;
+  border-radius: 8px;
+  width: 100%;
+  padding: 10px 15px;
+  margin: 5px;
+  text-align: center;
+  
+}
+
+.stat-value {
+  font-size: 1.2rem;
+  color: #ff9800;
+}
+
+.stat-label{
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.three-dots {
+  cursor: pointer;
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+.three-dots::after {
+  display:none
+}

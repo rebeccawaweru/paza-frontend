@@ -7,8 +7,9 @@ const ActiveCampaign = () => {
     <div>
       <Card className="mb-4">
         <CampaignCard
-          status="open"
           title="Safaricom Jazz Campaign For Worlds Aid Day"
+          status="open"
+          postedTime="Posted a month ago"
           creators={23}
           amountSpent="Ksh. 34,000"
           deliverables={23}

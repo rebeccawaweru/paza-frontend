@@ -138,3 +138,35 @@ body {
 .three-dots::after {
   display:none
 }
+
+.campaign-nav{
+  width: 100%;
+
+}
+
+.campaign-nav-item  {
+  margin-left: auto;
+}
+
+.my-campaigns-container {
+  background-color: #1a1a1a;
+  padding: 20px;
+  border-radius: 5px;
+  color: white;
+}
+.title {
+  margin-bottom: 20px;
+}
+
+.nav-tabs .nav-link.active {
+  border-color: #ff5722;
+}
+
+.nav-tabs .nav-link {
+  border: none;
+  color: white;
+}
+
+.nav-tabs {
+  border-bottom: 1px solid #444;
+}

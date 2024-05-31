@@ -47,6 +47,7 @@ body {
 
 .navbar {
   background-color: #121212;
+  border-bottom: 1px solid #121212;
 }
 
 .navbar-brand {
@@ -150,23 +151,24 @@ body {
 
 .my-campaigns-container {
   background-color: #1a1a1a;
-  padding: 20px;
   border-radius: 5px;
   color: white;
+  margin-left: 0;
 }
 .title {
   margin-bottom: 20px;
 }
 
-.nav-tabs .nav-link.active {
+.nav-tabs  {
   border-color: #ff5722;
 }
 
 .nav-tabs .nav-link {
   border: none;
   color: white;
+
 }
 
 .nav-tabs {
-  border-bottom: 1px solid #444;
+  border-bottom: none;
 }

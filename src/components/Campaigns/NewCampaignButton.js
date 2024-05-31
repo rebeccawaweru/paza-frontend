@@ -4,7 +4,7 @@ import { Button } from "react-bootstrap";
 
 const NewCampaignButton = () => {
   return (
-    <Button variant="primary" size="lg" className="mb-4">
+    <Button variant="secondary" size="md" className="mb-4">
       + New Campaign
     </Button>
   );

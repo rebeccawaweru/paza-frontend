@@ -1,12 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Button } from "react-bootstrap";
+import CampaignCreationModal from "./CampaignCreationModal";
 
 const NewCampaignButton = () => {
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShow = () => setShowModal(true);
+  const handleClose = () => setShowModal(false);
+
   return (
-    <Button variant="secondary" size="md" className="mb-4">
-      + New Campaign
-    </Button>
+    <div>
+      <Button
+        variant="secondary"
+        size="md"
+        className="mb-4"
+        onClick={handleShow}
+      >
+        + New Campaign
+      </Button>
+      <CampaignCreationModal show={showModal} handleClose={handleClose} />
+    </div>
   );
 };
 

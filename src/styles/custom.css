@@ -172,3 +172,32 @@ body {
 .nav-tabs {
   border-bottom: none;
 }
+
+.steps {
+  display:flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.step {
+  width: 25%;
+  text-align: center;
+  padding: 10px;
+  background-color: #444;
+  color: white;
+  border-radius: 50%;
+  margin: 0 5px;
+}
+
+.step.active {
+  background-color: #ff5722;
+}
+
+.file-upload {
+  border: 2px dashed #aaa;
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+  margin-top: 10px;
+  position: relative;
+}

@@ -12,3 +12,6 @@ body {
 .grey {
     background-color: #221E1C;
 }
+.date-input::-webkit-calendar-picker-indicator {
+    color: white;
+}

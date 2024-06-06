@@ -1,0 +1,1 @@
+export {pazadark,google,facebook,twitter} from './images'

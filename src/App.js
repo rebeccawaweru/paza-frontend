@@ -1,8 +1,11 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import NavigationRoutes from "./routes/Routes";
+
 const router = createBrowserRouter([
   { path: '*', Component: NavigationRoutes}
-])
+]);
+
+
 function App() {
   return (
   <RouterProvider router={router}/>

@@ -3,6 +3,8 @@ import { facebook, google} from "../../../assets"
 import { AuthWrapper } from "../../../layouts";
 import { useState } from "react";
 import {useNavigate} from 'react-router-dom'
+import client from "../../../api/client";
+import { toast, ToastContainer } from "react-toastify";
 export default function Login(){
     const navigate = useNavigate()
     const [visible,setVisible] = useState(false);
@@ -15,9 +17,15 @@ export default function Login(){
     }
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(values)
+        navigate('/accountype')
+        client.post('/auth/login', values).then((response) => {
+            console.log(response.data.token)
+        }).catch((err) => {
+            toast.error(err.response.data.message)
+        })
     }
     return <AuthWrapper navbtn={<BasicButton custom="px-8 text-sm" title="Sign up" handleClick={() => navigate('/signup')}/>}>
+    <ToastContainer theme="dark"/>
     <div className="flex flex-col text-center items-center justify-center space-y-2 mt-8">
     <p className="font-bold text-xl">How are you planning to use Paza?</p>
     <p className="text-sm text-zinc-600 font-bold">How are you planning to use Paza? We’ll fit the experience to your needs.</p> 

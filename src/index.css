@@ -15,3 +15,6 @@ body {
 .date-input::-webkit-calendar-picker-indicator {
     color: white;
 }
+input {
+    color-scheme: dark;
+  }

@@ -1,7 +1,9 @@
 import AuthWrapper from "../../../layouts/AuthWrapper";
 import { IconButton } from "../../../components";
 import AccountBtn from "./components/AccountBtn";
+import { useNavigate } from "react-router-dom";
 export default function AccountType(){
+    const navigate = useNavigate()
     return <AuthWrapper>
     <div className="flex flex-col text-center items-center justify-center space-y-6 px-4 2xl:px-0 xl:px-0 lg:px-0 md:px-0 ">
     <div className="space-y-2">
@@ -13,7 +15,7 @@ export default function AccountType(){
        <AccountBtn title="I'm Brand" caption="Companies & Groups" border="border-zinc-600"/>
        <AccountBtn title="I'm a Creator" caption="Individuals & Collectives" border="border-orange-500"/>
     </div>
-    <IconButton custom="orange font-bold hover:bg-white" title="Lets go" icon={<i className="bi bi-arrow-right-short mx-2"></i>}/>
+    <IconButton handleClick={()=>navigate('/creator')} custom="orange font-bold hover:bg-white" title="Lets go" icon={<i className="bi bi-arrow-right-short mx-2"></i>}/>
     <IconButton custom="border border-orange-500 text-white hover:bg-white hover:text-black" title="Proceed if neither" icon={<i className="bi bi-arrow-right-short mx-3"></i>}/> 
     </div>
     </AuthWrapper>

@@ -19,9 +19,10 @@ export default function Login(){
         e.preventDefault();
         navigate('/accountype')
         client.post('/auth/login', values).then((response) => {
-            console.log(response.data.token)
+            // localStorage.setItem('token', response.data.token)
+         
         }).catch((err) => {
-            toast.error(err.response.data.message)
+            toast.error(err.response.data.message || err.response)
         })
     }
     return <AuthWrapper navbtn={<BasicButton custom="px-8 text-sm" title="Sign up" handleClick={() => navigate('/signup')}/>}>

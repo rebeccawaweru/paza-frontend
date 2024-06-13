@@ -11,7 +11,7 @@ export default function AccountType(){
     <p className="text-sm text-zinc-600 font-bold">How are you planning to use Paza? We’ll fit the experience to your needs.</p> 
     <p className="text-sm text-zinc-600 font-bold"> Don’t worry, you’ll be able to change this later on</p>
     </div>
-    <div className="w-full 2xl:w-1/2 xl:w-1/3 lg:w-1/3 md:w-1/2 sm:w-2/3 flex space-x-2 ">
+    <div className="w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2 md:w-2/3 sm:w-2/3 flex space-x-2 ">
        <AccountBtn title="I'm Brand" caption="Companies & Groups" border="border-zinc-600"/>
        <AccountBtn title="I'm a Creator" caption="Individuals & Collectives" border="border-orange-500"/>
     </div>

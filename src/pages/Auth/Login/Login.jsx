@@ -20,7 +20,6 @@ export default function Login(){
         navigate('/accountype')
         client.post('/auth/login', values).then((response) => {
             // localStorage.setItem('token', response.data.token)
-         
         }).catch((err) => {
             toast.error(err.response.data.message || err.response)
         })

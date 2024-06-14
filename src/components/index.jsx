@@ -1,2 +1,2 @@
-export {BasicButton, IconButton} from './Buttons'
-export {BasicInput} from './Inputs'
+export {BasicButton, IconButton, OptionBtn} from './Buttons'
+export {BasicInput,CheckBox} from './Inputs'

@@ -1,9 +1,9 @@
 import AuthWrapper from "../../../../layouts/AuthWrapper";
 import { IconButton } from "../../../../components";
-import { Step1, Step2, Step3 } from "./components";
+import { Step1, Step2, Step3, Step4 } from "./components";
 import { reducer, initialState } from "../../../../utils/helpers";
 import { useReducer } from "react";
-export default function Creator(){
+export default function Brand(){
     const options = ['Art','Design','Fashion & Wearables', 'Film','Music','Photography','Other']
     const [state, dispatch] = useReducer(reducer,initialState)
     return <AuthWrapper>
@@ -17,8 +17,9 @@ export default function Creator(){
     {state.step === 1 && <Step1/>}
     {state.step === 2 && <Step2/>}
     {state.step === 3 && <Step3/>}
+    {state.step === 4 && <Step4/>}
     </div>
-    <IconButton handleClick={()=>dispatch({type:"Next"})} custom="orange font-bold text-black hover:bg-white" title="Next"/>
+    <IconButton handleClick={()=>dispatch({type:"Next"})} custom="orange font-semibold text-black hover:bg-white" title="Next" icon={<i className="bi bi-arrow-right-short mx-2"></i>}/>
     </div>
     </AuthWrapper>
 }

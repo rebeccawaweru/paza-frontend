@@ -63,7 +63,6 @@ export default function Signup(){
         name="gender"
         onChange={handleChange}
     >
-    
     <FormControlLabel className="border border-orange-500 rounded-full px-2 w-24 h-8" value="Male"
     control={<Radio sx={radiocls} size="extrasmall" />}
     label={<span style={{ fontSize: 'small' }}>Male</span>}

@@ -15,10 +15,7 @@ export default function Step2(){
     <CheckBox label="5-10 Years" value="5-10 Years"/>
     <CheckBox label="10+ Years" value="10+ Years"/>
     </div>
-    <div>
-    <p className="font-bold">Payments</p>
-    <p className="text-zinc-600 font-bold">This won't restrict proposals but helps match experts and high tier creators to your budget</p>
-    </div>
+
     <p className="text-zinc-400 self-start text-sm">What Social Media Do You Mostly Use?</p>
     <BasicInput custom="w-full mt-2" start="bi bi-search text-white"/>
     <div className="flex flex-wrap">
@@ -34,6 +31,15 @@ export default function Step2(){
     <CheckBox label="10K-50K Followers"/>
     <CheckBox label="100K-500K Followers"/>
     <CheckBox label="1M+ Followers" />
+    </div>
+    <p className="text-zinc-400 self-start text-sm">Social Media Links</p>
+    <div className="grid grid-cols-1 2xl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-2 gap-2">
+    <BasicInput custom="w-full mt-2" start="bi bi-instagram text-white"/>
+    <BasicInput custom="w-full mt-2" start="bi bi-tiktok text-white"/>
+    <BasicInput custom="w-full mt-2" start="bi bi-twitter text-white"/>
+    <BasicInput custom="w-full mt-2" start="bi bi-youtube text-white"/>
+    <BasicInput custom="w-full mt-2" start="bi bi-linkedin text-white"/>
+    <BasicInput custom="w-full mt-2" start="bi bi-facebook text-white"/>
     </div>
     <p className="text-zinc-400 self-start text-sm">Tags Associated With Your Work</p>
     <BasicInput custom="w-full mt-2" start="bi bi-search text-white"/>

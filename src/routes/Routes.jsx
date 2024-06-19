@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { Signup, Login, AccountType, Creator, Brand} from "../pages";
+import { Signup, Login, ForgotPassword, ResetPassword, AccountType, Creator, Brand} from "../pages";
 export default function NavigationRoutes(){
     return <Routes>
         <Route path="/" element={<Login/>}/>
@@ -7,5 +7,7 @@ export default function NavigationRoutes(){
         <Route path="/accountype" element={<AccountType/>}/>
         <Route path="/creator" element={<Creator/>}/>
         <Route path="/brand" element={<Brand/>}/>
+        <Route path="/forgotpassword" element={<ForgotPassword/>}/>
+        <Route path="/resetpassword" element={<ResetPassword/>}/>
     </Routes>
 }

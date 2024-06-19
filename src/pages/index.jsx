@@ -1,1 +1,1 @@
-export {Login, Signup, AccountType, Creator, Brand} from './Auth'
+export {Login, Signup, ResetPassword, ForgotPassword , AccountType, Creator, Brand} from './Auth'

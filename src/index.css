@@ -9,6 +9,9 @@ body {
 .orange {
     background-color: #FB5607;
 }
+.orange-text {
+    color: #FB5607
+}
 .grey {
     background-color: #221E1C;
 }

@@ -1,1 +1,1 @@
-export {pazadark,google,facebook,twitter} from './images'
+export {pazadark,google,facebook,twitter,profile} from './images'

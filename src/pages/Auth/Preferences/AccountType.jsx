@@ -16,7 +16,7 @@ export default function AccountType(){
        <AccountBtn onClick={()=>navigate('/creator')}  title="I'm a Creator" caption="Individuals & Collectives" border="border-orange-500"/>
     </div>
     <IconButton handleClick={()=>navigate('/creator')} custom="orange font-bold hover:bg-white" title="Lets go" icon={<i className="bi bi-arrow-right-short mx-2"></i>}/>
-    <IconButton custom="border border-orange-500 text-white hover:bg-white hover:text-black" title="Skip" icon={<i className="bi bi-arrow-right-short mx-3"></i>}/> 
+    <IconButton handleClick={()=>navigate('/overview')} custom="border border-orange-500 text-white hover:bg-white hover:text-black" title="Skip" icon={<i className="bi bi-arrow-right-short mx-3"></i>}/> 
     </div>
     </AuthWrapper>
 }

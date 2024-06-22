@@ -14,6 +14,7 @@ export default function Signup(){
       }
     const navigate = useNavigate()
     const [visible,setVisible] = useState(false);
+    const [confirmpassword,setConfirmPassword] = useState('')
     const [values,setValues] = useState({
         firstname:"",
         lastname:"",
@@ -22,26 +23,27 @@ export default function Signup(){
         gender:"Female",
         phone:"",
         city:"",
-        password:"",
-        confirmpassword:""
+        password:""
     });
     const handleChange = (e) => {
        setValues((prev) => ({...prev, [e.target.name]:e.target.value}))
     }
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(values)
-        client.post('/auth/signup', values).then((response) => {           
-            if (response.data.insertedId){
-                toast.success('Signup successful')
-                setTimeout(()=>{
-                    navigate('/')
-                }, 2000)
-               
-            }
-        }).catch((err) => {
-            toast.error(err.response.data.message)
-        });
+        if (confirmpassword !== values.password) {
+            toast.error('Passwords do not match!')
+        } else {
+            client.post('/auth/signup', values).then((response) => {           
+                if (response.data.insertedId){
+                    toast.success('Signup successful')
+                    setTimeout(()=>{
+                        navigate('/')
+                    }, 2000)  
+                }
+            }).catch((err) => {
+                toast.error(err.response.data.message)
+            });
+        }
     }
     return <AuthWrapper navbtn={<BasicButton custom="px-8 text-sm" title="Log in" handleClick={() => navigate('/')}/>}>
     <div className="flex flex-col text-center items-center justify-center space-y-2 mt-24 pb-8">
@@ -80,7 +82,7 @@ export default function Signup(){
     <BasicInput custom="w-full" type="text" name="city" onChange={handleChange} required placeholder="City" start="bi bi-geo-alt-fill text-white"/>
     </div>
     <BasicInput custom="w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2 md:w-2/3 sm:w-2/3" name="password" onChange={handleChange}  show={()=>setVisible(!visible)} type={visible ? "text" : "password"} required placeholder="Password" start="bi bi-search text-white" end={`${visible ? 'bi bi-eye' :'bi bi-eye-slash' }  text-white`}/>
-    <BasicInput custom="w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2 md:w-2/3 sm:w-2/3" name="confirmpassword" onChange={handleChange}  show={()=>setVisible(!visible)} type={visible ? "text" : "password"} required placeholder="Confirm Password" start="bi bi-search text-white" end={`${visible ? 'bi bi-eye' :'bi bi-eye-slash' }  text-white`}/>
+    <BasicInput custom="w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2 md:w-2/3 sm:w-2/3" name="confirmpassword" value={confirmpassword} onChange={(e)=>setConfirmPassword(e.target.value)}  show={()=>setVisible(!visible)} type={visible ? "text" : "password"} required placeholder="Confirm Password" start="bi bi-search text-white" end={`${visible ? 'bi bi-eye' :'bi bi-eye-slash' }  text-white`}/>
     <BasicButton title="Sign up" custom="w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2 md:w-2/3 sm:w-2/3 text-lg"/>
     </form>
     </div>

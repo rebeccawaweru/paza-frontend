@@ -18,9 +18,9 @@ export default function Login(){
     }
     const handleSubmit = (e) => {
         e.preventDefault();
-        navigate('/accountype')
         client.post('/auth/login', values).then((response) => {
-            // localStorage.setItem('token', response.data.token)
+            localStorage.setItem('token', response.data.token)
+            navigate('/accountype')
         }).catch((err) => {
             toast.error(err.response.data.message || err.response)
         })

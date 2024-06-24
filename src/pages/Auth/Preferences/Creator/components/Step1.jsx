@@ -1,26 +1,46 @@
 import { BasicInput, OptionBtn} from "../../../../../components"
+import { useContext, useState } from "react"
+import { creator } from "../../../../../utils/helpers"
+import { UserFormContext } from "../Creator"
 export default function Step1(){
-    const options = ['Art','Design','Fashion & Wearables', 'Film','Music','Photography','Other']
+    const {values, handleChange,sub,setSub,category,setCategory} = useContext(UserFormContext)
+    const filtered = creator.find(item => item.name === category)
+    const handleClick = (opt) =>{
+        if (sub.length > 0) {
+            setSub([])
+        }
+        setCategory(opt.name)
+    }
     return  <form className="space-y-4">
     <p className="text-zinc-400 self-start text-sm">Creator Name</p>
-    <BasicInput name="name"  required custom="w-full mt-2"/>
-    <p className="text-zinc-400 self-start text-sm">About</p>
-    <BasicInput name="about" custom="w-full mt-2"/>
-    <p className="text-zinc-400 self-start text-sm">Area of Expertise/Niche/Category</p>
-    <BasicInput phcolor="grey" phweight={100}  placeholder="Search For Category E.g Visual Arts, Music" custom="w-full mt-2" start="bi bi-search text-white"/>
+    <BasicInput name="creatorname" value={values.creatorname} onChange={handleChange} required custom="w-full mt-2"/>
+    <p className="text-zinc-400 self-start text-sm" >About</p>
+    <BasicInput name="about" value={values.about} onChange={handleChange} custom="w-full mt-2" phcolor="grey" phweight={100} placeholder="Brief description of yourself" multiline rows={4} required/>
+    <p className="text-zinc-400 self-start text-sm">Area of Expertise/Niche/Category/Skills</p>
+    <div className="grey w-full text-zinc-300 flex space-x-4 p-3"> 
+    <i className="bi bi-search"></i>
+    <p className="text-sm text-zinc-400">{category ? category : 'Select Category E.g Visual Arts, Music'}</p>
+    </div>
     <p className="text-xs text-zinc-500">Search for main category</p>
     <div className="flex flex-wrap">
-    {options.map((opt) => {
-        return <OptionBtn opt={opt}/>
+    {creator.map((opt) => {
+        return <OptionBtn custom={`${category === opt.name ? 'bg-orange-600' : 'grey'}`} handleClick={()=>handleClick(opt)} opt={opt.name}/>
     })}
     </div>
-    <p className="text-zinc-400 self-start text-sm" >Other Skills</p>
-    <BasicInput phcolor="grey" phweight={100}  placeholder="Search For Sub Category E.g Singing, DJ" custom="w-full mt-2" start="bi bi-search text-white"/>
-    <p className="text-xs text-zinc-500">Select Upto 10 Skills</p>
-    <div className="flex flex-wrap">
-    {options.map((opt) => {
-         return <OptionBtn opt={opt}/>
-    })}
+    <p className="text-zinc-400 self-start text-sm">Skill Sub-Category</p>
+    <div className="grey w-full text-zinc-300 flex flex-wrap p-2"> 
+    {sub.length > 0 ? sub.map((item)=> {
+        return <OptionBtn custom='bg-orange-600' opt={item} handleClick={()=>setSub((prev)=> prev.filter(i => i !== item))}/>
+    }) : <div className="flex space-x-4 px-2">
+     <i className="bi bi-search"></i>
+     <p className="text-sm text-zinc-400">Select Sub Category</p>
+    </div>}
     </div>
+    <p className="text-xs text-zinc-500">You can select multiple skills</p>
+    {filtered && filtered.category.length > 0 && <div className="flex flex-wrap">
+    {filtered.category.filter(item => !sub.includes(item)).map((opt) => {
+         return <OptionBtn custom={`${sub.includes(opt) ? 'bg-orange-600': 'grey'}`} handleClick={()=>setSub((prev)=>[...prev,opt])} opt={opt}/>
+    })}
+    </div>}
     </form>
 }

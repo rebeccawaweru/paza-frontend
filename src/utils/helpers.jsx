@@ -13,3 +13,50 @@ export const reducer = (state=initialState,action) => {
             return state
     }
 }
+
+export const creator = [
+    {
+        name:"Visual Arts",
+        category:['Painters', 'Digital Artists', 'Illustrators','Graffiti Artists','3D Artists', 'Designers','Photographers']
+    },
+    {
+        name:"Media Art",
+        category:['Filmmakers','Animators', 'Gamers','streamers','Podcasters', 'Vloggers']
+    },
+    {
+        name:'Music',
+        category:['Singers', 'Songwriters', 'Instrumentalists', 'Composers', 'DJs']
+    },
+    {
+        name:'Performing Arts',
+        category:['Actors', 'Comedians', 'Dancers', 'Other Live Performers']
+    },
+    {
+        name:'Fashion and Beauty',
+        category:['Fashion Designers', 'Stylists', 'Hair and Makeup Artists', 'Beauty Influencers']
+    },
+    {
+        name:'Writers, Editors, and Bloggers',
+        category:['Writers','Editors','Bloggers']
+    },
+    {
+        name:'Health and Wellness',
+        category:['Health','Fitness','Wellness']
+    },
+    {
+        name:'Personality',
+        category:['Social Media Influencers','Brand Ambassadors','Content Creator']
+    },
+    {
+        name:'Merchandise and Crafts',
+        category:['Merchandise','Handicrafts','Artisanal Products']
+    },
+    {
+        name:'Niche Professionals',
+        category:['Chefs', 'Developers', 'Analyst', 'Researcher', 'Consultant']
+    },
+    {
+        name:'Lifestyle and Hobbies',
+        category:['Food Bloggers','Travel Bloggers']
+    }
+]

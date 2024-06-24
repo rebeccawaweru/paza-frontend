@@ -2,11 +2,21 @@ import AuthWrapper from "../../../../layouts/AuthWrapper";
 import { IconButton } from "../../../../components";
 import { Step1, Step2, Step3 } from "./components";
 import { reducer, initialState } from "../../../../utils/helpers";
-import { useReducer } from "react";
+import { createContext, useReducer, useState } from "react";
+export const UserFormContext = createContext(null)
 export default function Creator(){
-    const options = ['Art','Design','Fashion & Wearables', 'Film','Music','Photography','Other']
     const [state, dispatch] = useReducer(reducer,initialState)
-    return <AuthWrapper>
+    const [values,setValues] = useState({
+        creatorname:"",
+        about:""
+    })
+    const handleChange = (e) => {
+       setValues(prev => ({...prev, [e.target.name]:e.target.value}))
+    }
+    const [sub,setSub] = useState([])
+    const [category,setCategory] = useState('')
+   return <AuthWrapper>
+    <UserFormContext.Provider value={{values,handleChange,sub,setSub,category,setCategory}}>
     <div className="flex flex-col mt-24 pb-8 items-center justify-center space-y-6 px-4 2xl:px-0 xl:px-0 lg:px-0 md:px-0 ">
     <div className="space-y-2 text-center">
     <p className="text-xl">Please Fill Up These Details</p>
@@ -18,7 +28,14 @@ export default function Creator(){
     {state.step === 2 && <Step2/>}
     {state.step === 3 && <Step3/>}
     </div>
-    <IconButton handleClick={()=>dispatch({type:"Next"})} custom="orange font-bold text-black hover:bg-white" title="Next"/>
+    {state.step > 1 ? <div className="w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2 md:w-2/3 sm:w-2/3 flex justify-between">
+        <IconButton handleClick={()=>dispatch({type:"Prev"})} custom="grey font-bold text-zinc-400 hover:bg-white hover:text-black" title="Previous"/>
+        <IconButton handleClick={()=>dispatch({type:"Next"})} custom="orange font-bold text-black hover:bg-white" title="Next"/>
     </div>
+    : <IconButton handleClick={()=>dispatch({type:"Next"})} custom="orange font-bold text-black hover:bg-white" title="Next"/>
+    }
+
+    </div>
+    </UserFormContext.Provider>
     </AuthWrapper>
 }

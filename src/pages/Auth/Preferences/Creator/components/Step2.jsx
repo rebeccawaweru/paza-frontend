@@ -23,6 +23,8 @@ export default function Step2(){
          return <OptionBtn opt={opt}/>
     })}
     </div>
+    <p className="text-zinc-400 self-start text-sm">Social Media Page</p>
+    <BasicInput custom="w-full mt-2" phcolor="grey" phweight={100} placeholder="enter link to your main social media page" required/>
     <p className="text-zinc-400 self-start text-sm">Choose From The Above Social Media Platform The Number Of Followers You Have</p>
     <div className="grid grid-cols-1 2xl:grid-cols-3 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2">
     <CheckBox label="0-10K Followers"/>
@@ -32,7 +34,7 @@ export default function Step2(){
     <CheckBox label="100K-500K Followers"/>
     <CheckBox label="1M+ Followers" />
     </div>
-    <p className="text-zinc-400 self-start text-sm">Social Media Links</p>
+    <p className="text-zinc-400 self-start text-sm">Other Links</p>
     <div className="grid grid-cols-1 2xl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-2 gap-2">
     <BasicInput custom="w-full mt-2" start="bi bi-instagram text-white"/>
     <BasicInput custom="w-full mt-2" start="bi bi-tiktok text-white"/>

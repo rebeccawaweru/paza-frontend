@@ -8,15 +8,28 @@ export default function Creator(){
     const [state, dispatch] = useReducer(reducer,initialState)
     const [values,setValues] = useState({
         creatorname:"",
-        about:""
+        about:"",
+        experience:"",
+        main:"",
+        followers:"",
+        instagram:"",
+        tiktok:"",
+        twitter:"",
+        youtube:"",
+        linkedin:"",
+        facebook:"",
+        milestones:""
     })
     const handleChange = (e) => {
        setValues(prev => ({...prev, [e.target.name]:e.target.value}))
     }
+  
     const [sub,setSub] = useState([])
     const [category,setCategory] = useState('')
+    const [social,setSocial] = useState('')
+    console.log(values)
    return <AuthWrapper>
-    <UserFormContext.Provider value={{values,handleChange,sub,setSub,category,setCategory}}>
+    <UserFormContext.Provider value={{values,handleChange,sub,setSub,category,setCategory,social,setSocial}}>
     <div className="flex flex-col mt-24 pb-8 items-center justify-center space-y-6 px-4 2xl:px-0 xl:px-0 lg:px-0 md:px-0 ">
     <div className="space-y-2 text-center">
     <p className="text-xl">Please Fill Up These Details</p>

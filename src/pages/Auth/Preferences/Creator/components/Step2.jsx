@@ -27,7 +27,7 @@ export default function Step2(){
     })}
     </div>
     <p className="text-zinc-400 self-start text-sm">Social Media Page</p>
-    <BasicInput name="main" onChange={handleChange} custom="w-full mt-2" phcolor="grey" phweight={100} placeholder="enter link to your main social media page" required/>
+    <BasicInput name="main" value={values.main} onChange={handleChange} custom="w-full mt-2" phcolor="grey" phweight={100} placeholder="enter link to your main social media page" required/>
     <p className="text-zinc-400 self-start text-sm">Choose From The Above Social Media Platform The Number Of Followers You Have</p>
     <div className="grid grid-cols-1 2xl:grid-cols-3 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2">
     <CheckBox label="0-10K Followers" checked={values.followers === "0-10K Followers"} value="0-10K Followers" name="followers" onChange={handleChange}/>
@@ -39,16 +39,16 @@ export default function Step2(){
     </div>
     <p className="text-zinc-400 self-start text-sm">Other Links</p>
     <div className="grid grid-cols-1 2xl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-2 gap-2">
-    <BasicInput name="instagram" onChange={handleChange} custom="w-full mt-2" start="bi bi-instagram text-white"/>
-    <BasicInput name="tiktok" onChange={handleChange} custom="w-full mt-2" start="bi bi-tiktok text-white"/>
-    <BasicInput name="twitter" onChange={handleChange} custom="w-full mt-2" start="bi bi-twitter text-white"/>
-    <BasicInput name="youtube" onChange={handleChange} custom="w-full mt-2" start="bi bi-youtube text-white"/>
-    <BasicInput name="linkedin" onChange={handleChange} custom="w-full mt-2" start="bi bi-linkedin text-white"/>
-    <BasicInput name="facebook" onChange={handleChange} custom="w-full mt-2" start="bi bi-facebook text-white"/>
+    <BasicInput value={values.instagram} name="instagram" onChange={handleChange} custom="w-full mt-2" start="bi bi-instagram text-white"/>
+    <BasicInput  value={values.tiktok} name="tiktok" onChange={handleChange} custom="w-full mt-2" start="bi bi-tiktok text-white"/>
+    <BasicInput  value={values.twitter} name="twitter" onChange={handleChange} custom="w-full mt-2" start="bi bi-twitter text-white"/>
+    <BasicInput  value={values.youtube} name="youtube" onChange={handleChange} custom="w-full mt-2" start="bi bi-youtube text-white"/>
+    <BasicInput  value={values.linkedin} name="linkedin" onChange={handleChange} custom="w-full mt-2" start="bi bi-linkedin text-white"/>
+    <BasicInput  value={values.facebook} name="facebook" onChange={handleChange} custom="w-full mt-2" start="bi bi-facebook text-white"/>
     </div>
     {/* <p className="text-zinc-400 self-start text-sm">Tags Associated With Your Work</p>
     <BasicInput custom="w-full mt-2" start="bi bi-search text-white"/> */}
     <p className="text-zinc-400 self-start text-sm">Career Milestones</p>
-    <BasicInput name="milestones" onChange={handleChange} phcolor="grey" phweight={100} placeholder="Mention any significant milestones you have achieved or are striving to reach" custom="w-full mt-2" multiline rows={4}/>
+    <BasicInput value={values.milestones} name="milestones" onChange={handleChange} phcolor="grey" phweight={100} placeholder="Mention any significant milestones you have achieved or are striving to reach" custom="w-full mt-2" multiline rows={4}/>
     </form>
 }

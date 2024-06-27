@@ -33,9 +33,10 @@ export default function Signup(){
         if (confirmpassword !== values.password) {
             toast.error('Passwords do not match!')
         } else {
-            client.post('/auth/signup', values).then((response) => {           
-                if (response.data.insertedId){
-                    toast.success('Signup successful')
+            client.post('/auth/signup', values).then((response) => {   
+                console.log(response.data)        
+                if (response.data === 'User created successfully'){
+                    toast.success('Signup successful. Check email to verify account')
                     setTimeout(()=>{
                         navigate('/')
                     }, 2000)  

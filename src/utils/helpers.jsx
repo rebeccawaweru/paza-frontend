@@ -1,3 +1,5 @@
+import client from "../api/client"
+import { toast } from "react-toastify"
 export const initialState = {
     step:1
 }
@@ -95,4 +97,21 @@ export const Validity = (e) => {
     const formElement = e.target;
     const isValid = formElement.checkValidity();
     return isValid
-  }
+}
+
+export const handleUpdate = (state2,navigate) => {
+    const user = JSON.parse(localStorage.getItem('user')) || ''
+    const token = localStorage.getItem('token')
+    client.put(`/users/${user._id}`, { account: state2 }, 
+        { headers: { Authorization: `${token}` } }
+    ).then((response)=>{
+      if(response.data.acknowledged) {
+        toast.success('Account details updated')
+        setTimeout(()=>{
+            navigate('/overview')
+        },3000)
+      }
+   }).catch((err)=>{
+      toast.error(err.message)
+   })
+}

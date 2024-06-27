@@ -1,9 +1,10 @@
 import { useContext, useState } from "react"
 import { BasicInput, OptionBtn,IconButton } from "../../../../../components"
-import client from "../../../../../api/client"
 import { AuthContext } from "../../../../../layouts/AuthWrapper"
-import { Validity } from "../../../../../utils/helpers"
+import { Validity, handleUpdate } from "../../../../../utils/helpers"
+import { useNavigate } from "react-router-dom"
 export default function Step4({dispatch}){
+    const navigate = useNavigate()
     const [profile,setProfile] = useState(false)
     const {state2,handleChange,handleAdd,handleRemove,handleAvatar} = useContext(AuthContext)
     const core = ['Innovation','Excellence','Integrity','Customer-Centric','Authenticity','Other']
@@ -13,11 +14,6 @@ export default function Step4({dispatch}){
       if (isValid) {
          setProfile(true)
       }
-    }
-    const handleUpdate = async()=> {
-     console.log(state2)
-     // const user = localStorage.getItem('user') || ''
-     // await client.put('/user/:id', {user, account:state2})
     }
    return !profile ? <form onSubmit={handleSubmit} className="space-y-4">
     <p className="text-zinc-400 self-start text-sm">Company Mission</p>
@@ -66,10 +62,9 @@ export default function Step4({dispatch}){
      </i></label>
      </div>
     </div>
- 
     <div className="w-full flex justify-between">
     <IconButton handleClick={()=>setProfile(false)} custom="grey font-bold text-zinc-400 hover:bg-white hover:text-black" title="Previous"/>
-    <IconButton handleClick={handleUpdate} custom="w-full orange font-semibold text-black hover:bg-white" title="Save"/>
+    <IconButton handleClick={()=>handleUpdate(state2,navigate)} custom="w-full orange font-semibold text-black hover:bg-white" title="Save"/>
     </div>
     </div>
 }

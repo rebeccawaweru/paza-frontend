@@ -3,6 +3,7 @@ import { IconButton } from "../../../../components";
 import { Step1, Step2, Step3, Step4 } from "./components";
 import { reducer, initialState } from "../../../../utils/helpers";
 import { useReducer } from "react";
+import { ToastContainer } from "react-toastify";
 export default function Brand(){
     const [state, dispatch] = useReducer(reducer,initialState);
     const initialValues = {
@@ -26,10 +27,12 @@ export default function Brand(){
         mission:'',
         coreValues:[],
         subCoreValues:[], 
+        code:`B${Math.random()}`,
         avatar:''
     }
   
     return <AuthWrapper initialValues={initialValues}>
+          <ToastContainer theme="dark"/>
     <div className="flex flex-col mt-24 pb-8 items-center justify-center space-y-6 px-4 2xl:px-0 xl:px-0 lg:px-0 md:px-0 ">
     <div className="space-y-2 text-center">
     <p className="text-xl">Please Fill Up These Details</p>
@@ -43,7 +46,7 @@ export default function Brand(){
     {state.step === 4 && <Step4 dispatch={dispatch}/>}
     </div>
     {state.step === 1 &&
-    <IconButton type="submit" handleClick={()=>dispatch({type:"Next"})} custom="orange font-semibold text-black hover:bg-white" title="Next" icon={<i className="bi bi-arrow-right-short mx-2"></i>}/>
+    <IconButton handleClick={()=>dispatch({type:"Next"})} custom="orange font-semibold text-black hover:bg-white" title="Next" icon={<i className="bi bi-arrow-right-short mx-2"></i>}/>
    }
     </div>
     </AuthWrapper>

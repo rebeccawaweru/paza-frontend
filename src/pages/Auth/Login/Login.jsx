@@ -1,5 +1,4 @@
 import { BasicButton, BasicInput } from "../../../components"
-import { facebook, google} from "../../../assets"
 import { AuthWrapper } from "../../../layouts";
 import { useState } from "react";
 import {useNavigate,Link} from 'react-router-dom'
@@ -20,7 +19,14 @@ export default function Login(){
         e.preventDefault();
         client.post('/auth/login', values).then((response) => {
             localStorage.setItem('token', response.data.token)
-            navigate('/accountype')
+            localStorage.setItem('user', JSON.stringify(response.data.user))
+            const account = response.data.user.account || null
+            if (account === null || Object.keys(account).length === 0) {
+                navigate('/accountype')
+            } else {
+                navigate('/overview')
+            }
+         
         }).catch((err) => {
             toast.error(err.response.data.message || err.response)
         })

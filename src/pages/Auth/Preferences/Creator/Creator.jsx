@@ -61,7 +61,6 @@ export default function Creator(){
         </div>
     : <IconButton handleClick={()=>dispatch({type:"Next"})} custom="orange font-bold text-black hover:bg-white" title="Next"/>
     }
-
     </div>
     </UserFormContext.Provider>
     </AuthWrapper>

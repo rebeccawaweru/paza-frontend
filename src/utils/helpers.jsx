@@ -60,3 +60,39 @@ export const creator = [
         category:['Food Bloggers','Travel Bloggers']
     }
 ]
+
+export const reducer2 = (state,action)=>{
+    switch(action.type){
+       case 'HANDLE_CHANGE':
+           return {
+               ...state,
+               [action.payload.name]:action.payload.value
+           }
+       case 'ADD':
+           return {
+               ...state,
+               [action.payload.arrayName]: [
+                   ...state[action.payload.arrayName],
+                   action.payload.value,
+               ],    
+           }
+       case 'REMOVE':
+           return {
+               ...state,
+               [action.payload.arrayName]:state[action.payload.arrayName].filter(item => item !== action.payload.value)
+           }
+       case 'UPLOAD':
+           return {
+               ...state,
+               avatar:URL.createObjectURL(action.payload.file)
+           }
+       default:
+           return state;
+    }
+}
+
+export const Validity = (e) => {
+    const formElement = e.target;
+    const isValid = formElement.checkValidity();
+    return isValid
+  }

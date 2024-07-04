@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { Signup, Login, ForgotPassword, ResetPassword, AccountType, Creator, Brand, OverView} from "../pages";
+import { Signup, Login, ForgotPassword, ResetPassword, AccountType, Creator, Brand, OverView, Join} from "../pages";
 import PrivateRoute from "./PrivateRoute";
 export default function NavigationRoutes(){
     return <Routes>
@@ -8,6 +8,7 @@ export default function NavigationRoutes(){
         <Route path="/accountype" element={<AccountType/>}/>
         <Route path="/creator" element={<Creator/>}/>
         <Route path="/brand" element={<Brand/>}/>
+        <Route path="/join" element={<Join/>}/>
         <Route path="/forgotpassword" element={<ForgotPassword/>}/>
         <Route path="/resetpassword" element={<ResetPassword/>}/>
         {/* Protected Routes */}

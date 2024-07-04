@@ -1,5 +1,4 @@
 import { BasicButton, BasicInput } from "../../../components"
-import { facebook, google} from "../../../assets"
 import { AuthWrapper } from "../../../layouts";
 import { useState } from "react";
 import {useNavigate,Link} from 'react-router-dom'
@@ -20,7 +19,14 @@ export default function Login(){
         e.preventDefault();
         client.post('/auth/login', values).then((response) => {
             localStorage.setItem('token', response.data.token)
-            navigate('/accountype')
+            localStorage.setItem('user', JSON.stringify(response.data.user))
+            const account = response.data.user.account || null
+            if (account === null || Object.keys(account).length === 0) {
+                navigate('/accountype')
+            } else {
+                navigate('/overview')
+            }
+         
         }).catch((err) => {
             toast.error(err.response.data.message || err.response)
         })
@@ -37,11 +43,11 @@ export default function Login(){
      <Link to="/forgotpassword" className="w-full 2xl:w-1/2 xl:w-1/3 lg:w-1/3 md:w-1/2 sm:w-2/3 text-sm text-left text-zinc-600 cursor-pointer font-bold">Forgot password?</Link>
      <BasicButton title="Log in" custom="w-full 2xl:w-1/2 xl:w-1/3 lg:w-1/3 md:w-1/2 sm:w-2/3 text-lg"/>
     </form>
-    <div className="grid grid-cols-3 gap-8 pt-4 cursor-pointer">
+    {/* <div className="grid grid-cols-3 gap-8 pt-4 cursor-pointer">
         <img src={google} alt="google" className="h-6 w-6 object-contain"/>
         <img src={facebook} alt="facebook" className="h-6 w-6 object-contain"/>
         <i className="bi bi-twitter-x text-lg"></i>
-    </div>
+    </div> */}
     </div>
     </AuthWrapper>
 }

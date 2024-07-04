@@ -1,8 +1,11 @@
 import { useLocation } from "react-router-dom"
 import { pazadark, profile } from "../../assets"
 import { Avatar } from "@mui/material"
+import { useContext } from "react";
+import { DashContext } from "../../layouts/Dashboard";
 export default function NavBar(){
     const location = useLocation();
+    const {user} = useContext(DashContext)
     const menu = [
         {id:1, title:"Profile"},
         {id:2, title:"Job Board"},
@@ -22,7 +25,7 @@ export default function NavBar(){
     <i className="bi bi-bell-fill"></i>
     <i className="bi bi-gear"></i>
     <Avatar src={profile} alt="profile" variant="rounded" sx={{border:"2px solid #FB5607",borderStyle:"double", width: 30, height: 26}}/> 
-    <p className="text-zinc-300 font-semibold">Rebecca Waweru</p>
+    <p className="text-zinc-300 font-semibold">{user.firstname} {user.lastname}</p>
     <i className="bi bi-caret-down-fill text-orange-500 text-xs"></i>
     </div>
     </nav>

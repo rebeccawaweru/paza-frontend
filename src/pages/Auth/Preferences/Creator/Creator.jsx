@@ -25,6 +25,8 @@ export default function Creator(){
         subCoreValues:[], 
         topics:[],
         collabs:[],
+        preview:'',
+        avatar:''
     }
 
    return <AuthWrapper initialValues={initialValues}>

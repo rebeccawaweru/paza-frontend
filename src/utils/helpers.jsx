@@ -118,7 +118,7 @@ export const reducer2 = (state, action) => {
     case "UPLOAD":
       return {
         ...state,
-        avatar: URL.createObjectURL(action.payload.file),
+        preview: URL.createObjectURL(action.payload.file),
       };
     case "UPLOAD_SUCCESS":
       return {
@@ -156,4 +156,12 @@ export const handleUpdate = (state2, navigate) => {
     .catch((err) => {
       toast.error(err.message);
     });
+};
+
+export function generateRandomID(letter) {
+  let randomString = letter;
+  for (let i = 0; i < 5; i++) {
+    randomString += Math.floor(Math.random() * 10);
+  }
+  return randomString;
 };

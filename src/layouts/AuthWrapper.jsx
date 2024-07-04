@@ -26,12 +26,13 @@ export default function AuthWrapper({ children, navbtn, initialValues }) {
   };
   const handleAvatar = async (e) => {
     const file = e.target.files[0];
+    dispatch({type:'UPLOAD', payload:{file}})
     const formData = new FormData();
     formData.append("avatar", file);
 
     try {
       const res = await axios.post(
-        "http://54.90.77.200:5000/uploads",
+        "http://54.160.255.104:5000/uploads",
         formData,
         {
           headers: {

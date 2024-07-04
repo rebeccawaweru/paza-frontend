@@ -80,7 +80,7 @@ export default function Step3({dispatch}){
     </form> : <div className="flex flex-col space-y-8 items-center justify-center">
     <p className="text-zinc-400 text-sm">Choose profile picture</p>
     <div className="flex relative">
-    {state2.avatar ? <img src={state2.avatar} alt="avatar" className="h-40 w-40 rounded-full"/>:
+    {state2.preview ? <img src={state2.preview} alt="avatar" className="h-40 w-40 rounded-full"/>:
         <div className="rounded-full relative grey h-32 w-32 shadow-md"></div>
     }
      <div className="absolute right-4 bottom-2">

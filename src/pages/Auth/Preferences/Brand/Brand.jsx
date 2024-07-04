@@ -1,7 +1,7 @@
 import AuthWrapper from "../../../../layouts/AuthWrapper";
 import { IconButton } from "../../../../components";
 import { Step1, Step2, Step3, Step4 } from "./components";
-import { reducer, initialState } from "../../../../utils/helpers";
+import { reducer, initialState, generateRandomID } from "../../../../utils/helpers";
 import { useReducer } from "react";
 import { ToastContainer } from "react-toastify";
 export default function Brand(){
@@ -27,7 +27,8 @@ export default function Brand(){
         mission:'',
         coreValues:[],
         subCoreValues:[], 
-        code:`B${Math.random()}`,
+        code:generateRandomID('B'),
+        preview:'',
         avatar:''
     }
   

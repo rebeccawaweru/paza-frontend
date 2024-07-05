@@ -35,7 +35,7 @@ export default function Step2({dispatch}){
     })}
     </div>
     <p className="text-zinc-400 self-start text-sm">Social Media Page</p>
-    <BasicInput name="main" value={state2.main} onChange={handleChange} custom="w-full mt-2" phcolor="grey" phweight={100} placeholder="enter link to your main social media page" required/>
+    <BasicInput name="main" value={state2.main} onChange={handleChange} custom="w-full grey mt-2" phcolor="grey" phweight={100} placeholder="enter link to your main social media page" required/>
     <p className="text-zinc-400 self-start text-sm">Choose From The Above Social Media Platform The Number Of Followers You Have</p>
     <div className="grid grid-cols-1 2xl:grid-cols-3 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2">
     <CheckBox label="0-10K Followers" checked={state2.followers === "0-10K Followers"} value="0-10K Followers" name="followers" onChange={handleChange}/>
@@ -47,17 +47,17 @@ export default function Step2({dispatch}){
     </div>
     <p className="text-zinc-400 self-start text-sm">Other Links</p>
     <div className="grid grid-cols-1 2xl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-2 gap-2">
-    <BasicInput value={state2.instagram} name="instagram" onChange={handleChange} custom="w-full mt-2" start="bi bi-instagram text-white"/>
-    <BasicInput  value={state2.tiktok} name="tiktok" onChange={handleChange} custom="w-full mt-2" start="bi bi-tiktok text-white"/>
-    <BasicInput  value={state2.twitter} name="twitter" onChange={handleChange} custom="w-full mt-2" start="bi bi-twitter text-white"/>
-    <BasicInput  value={state2.youtube} name="youtube" onChange={handleChange} custom="w-full mt-2" start="bi bi-youtube text-white"/>
-    <BasicInput  value={state2.linkedin} name="linkedin" onChange={handleChange} custom="w-full mt-2" start="bi bi-linkedin text-white"/>
-    <BasicInput  value={state2.facebook} name="facebook" onChange={handleChange} custom="w-full mt-2" start="bi bi-facebook text-white"/>
+    <BasicInput value={state2.instagram} name="instagram" onChange={handleChange} custom="w-full grey mt-2" start="bi bi-instagram text-white"/>
+    <BasicInput  value={state2.tiktok} name="tiktok" onChange={handleChange} custom="w-full grey mt-2" start="bi bi-tiktok text-white"/>
+    <BasicInput  value={state2.twitter} name="twitter" onChange={handleChange} custom="w-full grey mt-2" start="bi bi-twitter text-white"/>
+    <BasicInput  value={state2.youtube} name="youtube" onChange={handleChange} custom="w-full grey mt-2" start="bi bi-youtube text-white"/>
+    <BasicInput  value={state2.linkedin} name="linkedin" onChange={handleChange} custom="w-full grey mt-2" start="bi bi-linkedin text-white"/>
+    <BasicInput  value={state2.facebook} name="facebook" onChange={handleChange} custom="w-full grey mt-2" start="bi bi-facebook text-white"/>
     </div>
     {/* <p className="text-zinc-400 self-start text-sm">Tags Associated With Your Work</p>
-    <BasicInput custom="w-full mt-2" start="bi bi-search text-white"/> */}
+    <BasicInput custom="w-full grey mt-2" start="bi bi-search text-white"/> */}
     <p className="text-zinc-400 self-start text-sm">Career Milestones</p>
-    <BasicInput value={state2.milestones} name="milestones" onChange={handleChange} phcolor="grey" phweight={100} placeholder="Mention any significant milestones you have achieved or are striving to reach" custom="w-full mt-2" multiline rows={4}/>
+    <BasicInput value={state2.milestones} name="milestones" onChange={handleChange} phcolor="grey" phweight={100} placeholder="Mention any significant milestones you have achieved or are striving to reach" custom="w-full grey mt-2" multiline rows={4}/>
     <div className="w-full flex justify-between">
     <IconButton handleClick={()=>dispatch({type:"Prev"})} custom="grey font-bold text-zinc-400 hover:bg-white hover:text-black" title="Previous"/>
     <IconButton type="submit"  custom="w-full orange font-semibold text-black hover:bg-white" title="Next" icon={<i className="bi bi-arrow-right-short mx-2"></i>}/>

@@ -17,9 +17,9 @@ export default function Step4({dispatch}){
     }
    return !profile ? <form onSubmit={handleSubmit} className="space-y-4">
     <p className="text-zinc-400 self-start text-sm">Company Mission</p>
-    <BasicInput name="mission" onChange={handleChange} value={state2.mission} type="text" custom="w-full mt-2"/>
+    <BasicInput name="mission" onChange={handleChange} value={state2.mission} type="text" custom="w-full mt-2 grey"/>
     <p className="text-zinc-400 self-start text-sm">Company Vision</p>
-    <BasicInput name="vision" onChange={handleChange} value={state2.vision} type="text" custom="w-full mt-2"/>
+    <BasicInput name="vision" onChange={handleChange} value={state2.vision} type="text" custom="w-full mt-2 grey"/>
     <p className="text-zinc-400 self-start text-sm">What Are Your Core Values?</p>
     <div className="grey w-full text-zinc-300 flex flex-wrap p-2"> 
     {state2.coreValues.length > 0 ? state2.coreValues.map((item)=> {

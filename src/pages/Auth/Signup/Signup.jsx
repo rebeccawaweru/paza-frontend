@@ -53,11 +53,11 @@ export default function Signup(){
     <p className="text-zinc-600 font-bold"> Don’t worry, you’ll be able to change this later on</p>
     <form onSubmit={handleSubmit} className="w-full flex flex-col items-center space-y-6 pt-2 px-4 2xl:px-0 xl:px-0 lg:px-0 md:px-0">
     <ToastContainer theme="dark" />
-    <BasicInput custom="w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2 md:w-2/3 sm:w-2/3" type="text" name="firstname" onChange={handleChange} required placeholder="First Name"/>
-    <BasicInput custom="w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2 md:w-2/3 sm:w-2/3" type="text" name="lastname" onChange={handleChange} required placeholder="Last Name"/>
-    <BasicInput custom="w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2 md:w-2/3 sm:w-2/3" type="email" name="email" onChange={handleChange} required placeholder="Email"/>
+    <BasicInput custom="grey w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2 md:w-2/3 sm:w-2/3" type="text" name="firstname" onChange={handleChange} required placeholder="First Name"/>
+    <BasicInput custom="grey w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2 md:w-2/3 sm:w-2/3" type="text" name="lastname" onChange={handleChange} required placeholder="Last Name"/>
+    <BasicInput custom="grey w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2 md:w-2/3 sm:w-2/3" type="email" name="email" onChange={handleChange} required placeholder="Email"/>
     <div className="w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2 md:w-2/3 sm:w-2/3 grid grid-cols-2 ">
-    <BasicInput custom="w-full date-input" type="text"  onFocus={(e) => (e.target.type = "date")} name="birthday" onChange={handleChange} required placeholder="Birthday"/>
+    <BasicInput custom="grey w-full date-input" type="text"  onFocus={(e) => (e.target.type = "date")} name="birthday" onChange={handleChange} required placeholder="Birthday"/>
     <RadioGroup
         className="w-full mx-6 flex items-center justify-evenly"
         row
@@ -79,11 +79,11 @@ export default function Signup(){
     </RadioGroup>
     </div>
     <div className="w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2 md:w-2/3 sm:w-2/3 grid grid-cols-2 gap-2">
-    <BasicInput custom="w-full" type="text" name="phone" onChange={handleChange} required placeholder="+254" start="bi bi-telephone text-white"/>
-    <BasicInput custom="w-full" type="text" name="city" onChange={handleChange} required placeholder="City" start="bi bi-geo-alt-fill text-white"/>
+    <BasicInput custom="grey w-full" type="text" name="phone" onChange={handleChange} required placeholder="+254" start="bi bi-telephone text-white"/>
+    <BasicInput custom="grey w-full" type="text" name="city" onChange={handleChange} required placeholder="City" start="bi bi-geo-alt-fill text-white"/>
     </div>
-    <BasicInput custom="w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2 md:w-2/3 sm:w-2/3" name="password" onChange={handleChange}  show={()=>setVisible(!visible)} type={visible ? "text" : "password"} required placeholder="Password" start="bi bi-search text-white" end={`${visible ? 'bi bi-eye' :'bi bi-eye-slash' }  text-white`}/>
-    <BasicInput custom="w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2 md:w-2/3 sm:w-2/3" name="confirmpassword" value={confirmpassword} onChange={(e)=>setConfirmPassword(e.target.value)}  show={()=>setVisible(!visible)} type={visible ? "text" : "password"} required placeholder="Confirm Password" start="bi bi-search text-white" end={`${visible ? 'bi bi-eye' :'bi bi-eye-slash' }  text-white`}/>
+    <BasicInput custom="grey w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2 md:w-2/3 sm:w-2/3" name="password" onChange={handleChange}  show={()=>setVisible(!visible)} type={visible ? "text" : "password"} required placeholder="Password" start="bi bi-search text-white" end={`${visible ? 'bi bi-eye' :'bi bi-eye-slash' }  text-white`}/>
+    <BasicInput custom="grey w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2 md:w-2/3 sm:w-2/3" name="confirmpassword" value={confirmpassword} onChange={(e)=>setConfirmPassword(e.target.value)}  show={()=>setVisible(!visible)} type={visible ? "text" : "password"} required placeholder="Confirm Password" start="bi bi-search text-white" end={`${visible ? 'bi bi-eye' :'bi bi-eye-slash' }  text-white`}/>
     <BasicButton title="Sign up" custom="w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2 md:w-2/3 sm:w-2/3 text-lg"/>
     </form>
     </div>

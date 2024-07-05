@@ -15,9 +15,9 @@ export default function Step3({dispatch}){
  }
     return <form onSubmit={handleSubmit} className="space-y-4">
     <p className="text-zinc-400 self-start text-sm">About Company</p>
-    <BasicInput name="about" onChange={handleChange} value={state2.about}  placeholder="Brief Description Of The Company" multiline rows={4} phcolor="grey" phweight={100} type='text'  required custom="w-full mt-2"/>
+    <BasicInput name="about" onChange={handleChange} value={state2.about}  placeholder="Brief Description Of The Company" multiline rows={4} phcolor="grey" phweight={100} type='text'  required custom="w-full grey mt-2"/>
     <p className="text-zinc-400 self-start text-sm">Company Milestones</p>
-    <BasicInput name="milestones"  onChange={handleChange} value={state2.milestones} placeholder="Significant Milestones You Have Achieved" multiline rows={4} type='text' phcolor="grey" phweight={100} custom="w-full mt-2"/>
+    <BasicInput name="milestones"  onChange={handleChange} value={state2.milestones} placeholder="Significant Milestones You Have Achieved" multiline rows={4} type='text' phcolor="grey" phweight={100} custom="w-full grey mt-2"/>
     <p className="text-zinc-400 self-start text-sm">Topics</p>
     <div className="grey w-full text-zinc-300 flex flex-wrap p-2"> 
     {state2.topics.length > 0 ? state2.topics.map((item)=> {

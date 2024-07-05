@@ -1,7 +1,7 @@
 import {InputAdornment, TextField, Box} from "@mui/material"
 export default function BasicInput({...props}){
     return (
-        <Box className={`grey ${props.custom ? props.custom : 'w-full 2xl:w-1/2 xl:w-1/3 lg:w-1/3 md:w-1/2 sm:w-2/3'} mb-2`}>
+        <Box className={` ${props.custom ? props.custom : 'grey w-full 2xl:w-1/2 xl:w-1/3 lg:w-1/3 md:w-1/2 sm:w-2/3'} mb-2`}>
         <TextField 
         className="focus:outline-none"
         autoComplete="off"

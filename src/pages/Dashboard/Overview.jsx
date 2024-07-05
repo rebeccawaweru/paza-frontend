@@ -1,11 +1,12 @@
 import { Dashboard } from "../../layouts";
 import { SummaryCard, Transaction } from "./components";
-import { GroupAvatars } from "../../components";
-import { CircularProgress } from "@mui/material";
+import { GroupAvatars, SideBar } from "../../components";
+import { CircularProgress,Grid } from "@mui/material";
 export default function OverView(){
     const date = new Date();
     const today = date.toDateString()
-    return <Dashboard>
+    return <Dashboard sidebar={<SideBar/>}>
+           <Grid item xs={10} sm={10}>
       <div className="grid grid-cols-1 gap-4 2xl:gap-0 xl:gap-0 lg:gap-0 md:gap-0 2xl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2  py-2 text-zinc-300">
             <div className="space-y-4 px-4">
             <p className="text-xl font-bold">Overview</p>
@@ -70,5 +71,6 @@ export default function OverView(){
                 </div>
             </div>
       </div>
+      </Grid>
     </Dashboard>
 }

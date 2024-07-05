@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { Signup, Login, ForgotPassword, ResetPassword, AccountType, Creator, Brand, OverView, Join} from "../pages";
+import { Signup, Login, ForgotPassword, ResetPassword, AccountType, Creator, Brand, OverView, CreatorOverview, Join} from "../pages";
 import PrivateRoute from "./PrivateRoute";
 export default function NavigationRoutes(){
     return <Routes>
@@ -14,7 +14,7 @@ export default function NavigationRoutes(){
         {/* Protected Routes */}
         <Route element={<PrivateRoute/>}>
            <Route path="/overview" element={<OverView/>}/>
-           
+           <Route path="/creator/overview" element={<CreatorOverview/>}/>
         </Route>
     </Routes>
 }

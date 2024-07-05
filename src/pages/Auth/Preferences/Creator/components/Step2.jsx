@@ -31,7 +31,7 @@ export default function Step2({dispatch}){
     </div>
     <div className="flex flex-wrap">
     {options.map((opt) => {
-         return <OptionBtn custom={`${state2.social === opt ? 'bg-orange-600' :'grey'}`} opt={opt} handleClick={()=>handleSelect('social',opt)}/>
+         return <OptionBtn custom={`${state2.social === opt ? 'bg-orange-700' :'grey'}`} opt={opt} handleClick={()=>handleSelect('social',opt)}/>
     })}
     </div>
     <p className="text-zinc-400 self-start text-sm">Social Media Page</p>

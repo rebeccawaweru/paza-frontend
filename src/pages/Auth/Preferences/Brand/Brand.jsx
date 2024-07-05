@@ -29,7 +29,8 @@ export default function Brand(){
         subCoreValues:[], 
         code:generateRandomID('B'),
         preview:'',
-        avatar:''
+        avatar:'',
+        type:'brand'
     }
   
     return <AuthWrapper initialValues={initialValues}>

@@ -18,6 +18,7 @@ export default function Login(){
     const handleSubmit = (e) => {
         e.preventDefault();
         client.post('/auth/login', values).then((response) => {
+            console.log(response)
             localStorage.setItem('token', response.data.token)
             localStorage.setItem('user', JSON.stringify(response.data.user))
             const account = response.data.user.account || null

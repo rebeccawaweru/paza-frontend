@@ -1,8 +1,9 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer} from "react";
 import { pazadark } from "../assets";
 import { reducer2 } from "../utils/helpers";
 import axios from "axios";
 export const AuthContext = createContext();
+
 export default function AuthWrapper({ children, navbtn, initialValues }) {
   const [state2, dispatch] = useReducer(reducer2, initialValues);
   const handleChange = (e) => {
@@ -32,7 +33,7 @@ export default function AuthWrapper({ children, navbtn, initialValues }) {
 
     try {
       const res = await axios.post(
-        "http://54.160.255.104:5000/uploads",
+        "http://54.225.60.157:5000/uploads/avatar",
         formData,
         {
           headers: {

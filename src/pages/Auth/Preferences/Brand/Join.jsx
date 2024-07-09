@@ -2,13 +2,10 @@ import AuthWrapper from "../../../../layouts/AuthWrapper";
 import { ToastContainer, toast} from "react-toastify";
 import { BasicInput } from "../../../../components";
 import { useState } from "react";
-
 import { useNavigate } from "react-router-dom";
 
 export default function Join(){
     const [code,setCode] = useState('')
-    const user = localStorage.getItem("user");
-    const token = localStorage.getItem("token");
     const navigate = useNavigate()
     const handleUpdate = (e) => {  
       e.preventDefault()
@@ -24,7 +21,7 @@ export default function Join(){
     </div>
     <div className="border border-zinc-800 border-2 rounded-md p-4 flex flex-col items-center justify-center space-y-4 h-52 w-1/4">
        <p className="text-zinc-300">Enter Invitation Code</p>
-       <BasicInput name="code" value={code} onChange={(e)=>setCode(e.target.value)} custom="w-5/6 bg-transparent" required/>
+       <BasicInput name="code" value={code} onChange={(e)=>setCode(e.target.value)} custom="w-5/6 grey bg-transparent" required/>
        <p className="text-xs text-zinc-600 font-bold">Companies & Groups</p>
     </div>
     <button type="submit" className="orange text-black hover:bg-white p-4 w-1/3 font-semibold" >Request To Join <i className="bi bi-arrow-right-short"></i></button>

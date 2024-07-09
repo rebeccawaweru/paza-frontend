@@ -2,10 +2,12 @@ import AuthWrapper from "../../../../layouts/AuthWrapper";
 import { IconButton } from "../../../../components";
 import { Step1, Step2, Step3, Step4 } from "./components";
 import { reducer, initialState, generateRandomID } from "../../../../utils/helpers";
-import { useReducer } from "react";
+import { useReducer,useContext } from "react";
 import { ToastContainer } from "react-toastify";
+import { DashContext } from "../../../../context/AuthContext";
 export default function Brand(){
     const [state, dispatch] = useReducer(reducer,initialState);
+    const {account} = useContext(DashContext)
     const initialValues = {
         company:"",
         email:"",
@@ -29,10 +31,11 @@ export default function Brand(){
         subCoreValues:[], 
         code:generateRandomID('B'),
         preview:'',
-        avatar:''
+        avatar:'',
+        type:'Brand'
     }
   
-    return <AuthWrapper initialValues={initialValues}>
+    return <AuthWrapper initialValues={Object.keys(account).length > 0 ? account : initialValues}>
           <ToastContainer theme="dark"/>
     <div className="flex flex-col mt-24 pb-8 items-center justify-center space-y-6 px-4 2xl:px-0 xl:px-0 lg:px-0 md:px-0 ">
     <div className="space-y-2 text-center">

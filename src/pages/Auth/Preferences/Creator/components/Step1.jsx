@@ -17,9 +17,9 @@ export default function Step1({dispatch}){
     }
     return  <form onSubmit={handleSubmit} className="space-y-4">
     <p className="text-zinc-400 self-start text-sm">Creator Name</p>
-    <BasicInput name="creatorname" value={state2.creatorname} onChange={handleChange} required custom="w-full mt-2"/>
+    <BasicInput name="creatorname"  value={state2.creatorname} onChange={handleChange} required custom="w-full mt-2 grey"/>
     <p className="text-zinc-400 self-start text-sm" >About</p>
-    <BasicInput name="about" value={state2.about} onChange={handleChange} custom="w-full mt-2" phcolor="grey" phweight={100} placeholder="Brief description of yourself" multiline rows={4} required/>
+    <BasicInput name="about" value={state2.about} onChange={handleChange} custom="w-full mt-2 grey" phcolor="grey" phweight={100} placeholder="Brief description of yourself" multiline rows={4} required/>
     <p className="text-zinc-400 self-start text-sm">Area of Expertise/Niche/Category/Skills</p>
     <div className="grey w-full text-zinc-300 flex space-x-4 p-3"> 
     <i className="bi bi-search"></i>
@@ -33,7 +33,7 @@ export default function Step1({dispatch}){
     </div>
     <p className="text-zinc-400 self-start text-sm">Skill Sub-Category</p>
     <div className="grey w-full text-zinc-300 flex flex-wrap p-2"> 
-    {state2.subCategory.length > 0 ? state2.subCategory.map((item)=> {
+    {(state2 && state2.subCategory.length) > 0 ? state2.subCategory.map((item)=> {
         return <OptionBtn custom='bg-orange-600' opt={item} handleClick={()=>handleRemove('subCategory',item)}/>
     }) : <div className="flex space-x-4 px-2">
      <i className="bi bi-search"></i>

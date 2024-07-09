@@ -1,10 +1,12 @@
 import AuthWrapper from "../../../../layouts/AuthWrapper";
 import { Step1, Step2, Step3 } from "./components";
 import { reducer, initialState } from "../../../../utils/helpers";
-import { useReducer } from "react";
+import { useContext, useReducer} from "react";
 import { ToastContainer } from "react-toastify";
+import { DashContext } from "../../../../context/AuthContext";
 export default function Creator(){
     const [state, dispatch] = useReducer(reducer,initialState)
+    const {account} = useContext(DashContext)
     const initialValues = {
         creatorname:"",
         about:"",
@@ -26,10 +28,11 @@ export default function Creator(){
         topics:[],
         collabs:[],
         preview:'',
-        avatar:''
+        avatar:'',
+        type:'Creator'
     }
 
-   return <AuthWrapper initialValues={initialValues}>
+   return <AuthWrapper initialValues={Object.keys(account).length > 0 ? account : initialValues}>
     <ToastContainer/>
     <div className="flex flex-col mt-24 pb-8 items-center justify-center space-y-6 px-4 2xl:px-0 xl:px-0 lg:px-0 md:px-0 ">
     <div className="space-y-2 text-center">

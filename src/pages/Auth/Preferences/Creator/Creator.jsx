@@ -1,12 +1,12 @@
-import AuthWrapper, { AuthContext } from "../../../../layouts/AuthWrapper";
+import AuthWrapper from "../../../../layouts/AuthWrapper";
 import { Step1, Step2, Step3 } from "./components";
 import { reducer, initialState } from "../../../../utils/helpers";
-import { useEffect, useReducer, useState } from "react";
+import { useContext, useReducer} from "react";
 import { ToastContainer } from "react-toastify";
-import client from "../../../../api/client";
+import { DashContext } from "../../../../context/AuthContext";
 export default function Creator(){
     const [state, dispatch] = useReducer(reducer,initialState)
-    const account = JSON.parse(localStorage.getItem('account'))
+    const {account} = useContext(DashContext)
     const initialValues = {
         creatorname:"",
         about:"",

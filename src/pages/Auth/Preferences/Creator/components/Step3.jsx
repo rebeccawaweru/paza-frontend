@@ -3,8 +3,10 @@ import { OptionBtn,IconButton} from "../../../../../components"
 import { AuthContext } from "../../../../../layouts/AuthWrapper"
 import { Validity,handleUpdate } from "../../../../../utils/helpers"
 import { ToastContainer } from "react-toastify"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
+
 export default function Step3({dispatch}){
+    const location = useLocation();
     const [profile,setProfile] = useState(false)
     const navigate = useNavigate()
     const core = ['Innovation','Excellence','Integrity','Customer-Centric','Authenticity','Other']
@@ -33,6 +35,8 @@ export default function Step3({dispatch}){
          return <OptionBtn custom={`${state2.coreValues.includes(opt) ? 'bg-orange-600' :'grey'}`} handleClick={()=>handleAdd('coreValues',opt)} opt={opt}/>
     })}
     </div>
+    {location.search === '?edit' ?
+    <>
     <p className="text-zinc-400 self-start text-sm">Sub Core Values</p>
     <div className="grey w-full text-zinc-300 flex flex-wrap p-2"> 
     {state2.subCoreValues.length > 0 ? state2.subCoreValues.map((item)=> {
@@ -45,7 +49,10 @@ export default function Step3({dispatch}){
     {core.filter(item => !state2.subCoreValues.includes(item)).map((opt) => {
          return <OptionBtn custom={`${state2.subCoreValues.includes(opt) ? 'bg-orange-600' :'grey'}`} handleClick={()=>handleAdd('subCoreValues',opt)} opt={opt}/>
      })}
-    </div>
+    </div> 
+    </> : null}
+    {location.search === '?edit' ?
+    <>
     <p className="text-zinc-400 self-start text-sm">Topics</p>
     <div className="grey w-full text-zinc-300 flex flex-wrap p-2"> 
     {state2.topics.length > 0 ? state2.topics.map((item)=> {
@@ -58,7 +65,8 @@ export default function Step3({dispatch}){
     {topiccs.filter(item => !state2.topics.includes(item)).map((opt) => {
          return <OptionBtn custom={`${state2.topics.includes(opt) ? 'bg-orange-600' :'grey'}`} handleClick={()=>handleAdd('topics',opt)} opt={opt}/>
      })}
-    </div>
+    </div></> : null}
+
     <p className="text-zinc-400 self-start text-sm">Notable Collaboration</p>
     <div className="grey w-full text-zinc-300 flex flex-wrap p-2"> 
     {state2.collabs.length > 0 ? state2.collabs.map((item)=> {

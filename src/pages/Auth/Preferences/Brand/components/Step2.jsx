@@ -17,7 +17,7 @@ export default function Step2({dispatch}){
     <p className="text-zinc-400 self-start text-sm">Company Email</p>
     <BasicInput name="email" type="email" onChange={handleChange} value={state2.email}  required custom="grey w-full mt-2"/>
     <p className="text-zinc-400 self-start text-sm">Company Website</p>
-    <BasicInput name="website" onChange={handleChange} value={state2.website}  required custom="grey w-full mt-2"/>
+    <BasicInput name="website" onChange={handleChange} value={state2.website} custom="grey w-full mt-2"/>
     <div className="w-full grid grid-cols-2 gap-2">
         <div>
         <p className="text-zinc-400 self-start text-sm">Contact Info</p>

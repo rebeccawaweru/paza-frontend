@@ -1,23 +1,11 @@
-import { createContext, useReducer, useState } from "react";
+import { createContext, useReducer} from "react";
 import { pazadark } from "../assets";
 import { reducer2 } from "../utils/helpers";
 import axios from "axios";
-import client from "../api/client";
-import { useEffect } from "react";
 export const AuthContext = createContext();
 
 export default function AuthWrapper({ children, navbtn, initialValues }) {
   const [state2, dispatch] = useReducer(reducer2, initialValues);
-  const user = JSON.parse(localStorage.getItem('user'))
-  const token = localStorage.getItem("token");
-  useEffect(()=>{
-    client.get(`/users/${user._id}`, { headers: { Authorization: `${token}` } }).then((res)=>{
-      if (res.data.account.type) {
-        localStorage.setItem('account', JSON.stringify(res.data.account))
-      }
-    
-    })
- },[user])
   const handleChange = (e) => {
     const { name, value } = e.target;
     dispatch({ type: "HANDLE_CHANGE", payload: { name, value } });
@@ -45,7 +33,7 @@ export default function AuthWrapper({ children, navbtn, initialValues }) {
 
     try {
       const res = await axios.post(
-        "http://54.160.255.104:5000/uploads",
+        "http://54.225.60.157:5000/uploads/avatar",
         formData,
         {
           headers: {

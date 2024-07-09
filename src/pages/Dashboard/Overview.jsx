@@ -19,10 +19,10 @@ export default function OverView(){
                 <Transaction/>
                 <Transaction/>
                 </div>
-                <p className="orange-text underline font-bold text-center text-sm">View more</p>
+                <p className="text-orange-700 underline font-bold text-center text-sm">View more</p>
                 <div className="flex justify-between">
                 <p className="text-xl font-bold">Latest Task</p>
-                <p className="orange-text underline font-bold text-center text-sm">View all</p>
+                <p className="text-orange-700 underline font-bold text-center text-sm">View all</p>
                 </div>
                 <div className="grey p-4 space-y-2 rounded-md">
                     <p className="font-bold text-lg">Majimbo Project</p>
@@ -33,7 +33,7 @@ export default function OverView(){
                     <br></br>
                     <br></br>
                     <div>
-                    <p className="orange-text font-bold text-xs">See all</p>
+                    <p className="text-orange-700 font-bold text-xs">See all</p>
                     </div>                    
                     <div className="flex justify-between font-semibold">
                     <p>Progress</p>
@@ -41,14 +41,14 @@ export default function OverView(){
                     </div>
                
                     <div className="w-full  rounded-md bg-zinc-500">
-                        <div className="w-3/4 rounded-md orange py-1"></div>
+                        <div className="w-3/4 rounded-md bg-orange-700 py-1"></div>
                     </div>
                 </div>
             </div>
             <div className="text-zinc-300 space-y-4 px-4">
                 <div className="flex justify-between font-bold">
                 <p className="text-lg underline">My Campaigns <i className="bi bi-chevron-right text-sm mx-2"></i></p>
-                <p className="orange-text underline">view more</p>
+                <p className="text-orange-700 underline">view more</p>
                 </div>
                 <div className="grey flex justify-center items-center space-x-2 2xl:space-x-24 xl:space-x-24 lg:space-x-24 md:space-x-12 p-4 space-y-2 rounded-md">
                     <div className="relative inline-flex">

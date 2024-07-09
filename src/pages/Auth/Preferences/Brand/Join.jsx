@@ -2,13 +2,10 @@ import AuthWrapper from "../../../../layouts/AuthWrapper";
 import { ToastContainer, toast} from "react-toastify";
 import { BasicInput } from "../../../../components";
 import { useState } from "react";
-
 import { useNavigate } from "react-router-dom";
 
 export default function Join(){
     const [code,setCode] = useState('')
-    const user = localStorage.getItem("user");
-    const token = localStorage.getItem("token");
     const navigate = useNavigate()
     const handleUpdate = (e) => {  
       e.preventDefault()

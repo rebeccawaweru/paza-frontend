@@ -1,6 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import NavigationRoutes from "./routes/Routes";
-
 const router = createBrowserRouter([
   { path: '*', Component: NavigationRoutes}
 ]);
@@ -8,7 +7,8 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-  <RouterProvider router={router}/>
+    <RouterProvider router={router}/>
+ 
   );
 }
 export default App;

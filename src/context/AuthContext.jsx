@@ -14,11 +14,11 @@ export default function AuthProvider({ children }) {
         if (res.data.account.type) {
           setAccount(res.data.account);
         }
-      });
-  }, []);
-  return (
-    <DashContext.Provider value={{ account, user }}>
-      {children}
+      
+      })
+   },[])
+    return <DashContext.Provider value={{account, user}}> 
+        {children}
     </DashContext.Provider>
   );
 }

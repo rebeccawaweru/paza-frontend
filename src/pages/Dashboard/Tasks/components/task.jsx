@@ -1,10 +1,12 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import client from "../../../../api/client";
 import Swal from "sweetalert2";
-
+import { toast, ToastContainer } from "react-toastify";
 export default function TaskCard(props){
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
+  const token = localStorage.getItem('token')
   const handleDelete = () => {
    Swal.fire({
     title:"Are you sure ?",
@@ -15,8 +17,9 @@ export default function TaskCard(props){
     confirmButtonText:"Delete",
    }).then((result)=>{
       if (result.isConfirmed) {
-        //delete logic from backend
-        console.log('waiting for backend delete route....')
+        client.delete(`/tasks/${props.id}`, { headers: { Authorization: `${token}` } } ).then((response)=>{
+         Swal.fire('Success',response.data,'success')
+        })
       }
    })
 
@@ -29,12 +32,12 @@ export default function TaskCard(props){
     <ul onMouseLeave={()=>setShow(false)} className={`absolute grey py-4 px-8 bottom-0 right-0 space-y-4 cursor-pointer ${show ? 'block' : 'hidden'}`}>
       <li onClick={()=>navigate(`/newtask?edit=${props.id}`)}>Edit</li>
       <li>Reminder</li>
-      <li onClick={()=>navigate('/task/1')}>View Activity</li>
+      <li onClick={props.handleView}>View Activity</li>
       <li className="text-red-500" onClick={handleDelete}>Delete</li>
     </ul>
     </div>
     <div className="flex items-center justify-between">
-    <div className={`${props.status === 'In Progress' ? 'bg-orange-700' : props.status === 'Completed' ? 'bg-green-500' : 'bg-black'} rounded-full text-sm p-2`}>{props.status}</div>
+    <div className={`${props.status === 'In Progress' ? 'bg-orange-700' : props.status === 'Completed' ? 'bg-green-500' : 'bg-black'} rounded-full text-xs p-2`}>{props.status}</div>
     <hr className="w-full mx-2 2xl:w-36 xl:w-36 lg:w-36 md:w-24 h-2 border-none bg-green-500 rounded-md"></hr>100%
     </div>
     <div className="flex items-center space-x-4 text-xs">

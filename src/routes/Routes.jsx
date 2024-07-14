@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { Signup, Login, ForgotPassword, ResetPassword, AccountType, Creator, Brand, OverView, Profile, Join, CreateTask, Tasks} from "../pages";
+import { Signup, Login, ForgotPassword, ResetPassword, AccountType, Creator, Brand, OverView, Profile, Join, CreateTask, Tasks, TaskDetail} from "../pages";
 import PrivateRoute from "./PrivateRoute";
 export default function NavigationRoutes(){
     return <Routes>
@@ -17,6 +17,7 @@ export default function NavigationRoutes(){
            <Route path="/profile" element={<Profile/>}/>
            <Route path="/tasks" element={<Tasks/>}/>
            <Route path="/newtask" element={<CreateTask/>}/>
+           <Route path="/task/:id" element={<TaskDetail/>}/>
         </Route>
     </Routes>
 }

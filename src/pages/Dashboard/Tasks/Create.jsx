@@ -1,9 +1,14 @@
 import { Dashboard } from "../../../layouts"
 import { BasicInput, SideBar, BasicSelect, BasicButton, BasicLabel, CheckBox} from "../../../components"
 import { MenuItem, Grid } from "@mui/material"
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useState, useEffect } from "react"
+import { useNavigate, useSearchParams } from "react-router-dom"
+import client from "../../../api/client"
+import { toast, ToastContainer } from "react-toastify"
 export default function CreateTask(){
+    const [searchParams] = useSearchParams();
+    const id = searchParams.get('edit');
+    const token = localStorage.getItem('token')
     const navigate = useNavigate()
     const [choose, setChoose] = useState(false)
     const [values, setValues] = useState({
@@ -15,21 +20,42 @@ export default function CreateTask(){
         start:"",
         due:"",
         repeat:"",
-        desc:"",
+        description:"",
         attachment:""
     });
     const handleChange = (e) => {
         setValues((prev) => ({...prev, [e.target.name]:e.target.value}))
     }
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(values)
+        if (id) {
+             //update logic from backend
+             console.log('waiting for backend update route....')
+        } else {
+        try {
+            const response = await client.post('/tasks/create',
+                values,
+                { headers: { Authorization: `${token}` } }
+            );
+            if (response.data.acknowledged) {
+                toast.success('Task created!')
+                setTimeout(()=>{
+                    navigate('/tasks')
+                }, 2000)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+      }
     }
-    
+    useEffect(()=>{
+        //if updating, use id to get the task 
+    },[id])
     return <Dashboard sidebar={<SideBar/>}>
    <Grid item xs={10} sm={10}>
     <form onSubmit={handleSubmit} className="p-4 space-y-6">
-    <h2 className="font-bold text-xl">Create Task</h2>
+    <ToastContainer/>
+    <h2 className="font-bold text-xl">{id ? 'Update Task' : 'Create Task'}</h2>
     <div>
     <BasicLabel title="Task Name"/>
     <BasicInput name="task" onChange={handleChange} custom="w-full grey" required/>
@@ -64,8 +90,10 @@ export default function CreateTask(){
             <BasicLabel title="Status"/>
             <BasicSelect name="status" value={values.status} onChange={handleChange} custom="w-full grey">
                 <MenuItem value="Not Started">Not Started</MenuItem>
+                <MenuItem value="Under review">Under review</MenuItem>
                 <MenuItem value="In Progress">In Progress</MenuItem>
                 <MenuItem value="Completed">Completed</MenuItem>
+                <MenuItem value="Cancelled">Cancelled</MenuItem>
             </BasicSelect>
         </div>
     </div>
@@ -90,7 +118,7 @@ export default function CreateTask(){
     </div>
      <div>
     <BasicLabel title="Task Description"/>
-    <BasicInput name="desc" onChange={handleChange} multiline rows={4} phcolor="grey" phweight={100} type='text'  required custom="w-full grey"/>
+    <BasicInput name="description" onChange={handleChange} multiline rows={4} phcolor="grey" phweight={100} type='text'  required custom="w-full grey"/>
      </div>
     <div>
     <BasicLabel title="Attachment"/>
@@ -102,7 +130,7 @@ export default function CreateTask(){
     </div>
     <div className="flex justify-end space-x-4">
         <button onClick={()=>navigate('/tasks')} className="border border-zinc-500 text-zinc-400 py-2 px-8 rounded-sm text-sm hover:scale-90">Cancel</button>
-        <BasicButton title="+ Create Task"/>
+        <BasicButton title={id ? 'Update Task' : '+ Create Task'}/>
     </div>
     </form>
     </Grid>

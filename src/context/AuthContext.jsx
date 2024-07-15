@@ -14,7 +14,7 @@ export default function AuthProvider({children}){
         }
       
       })
-   },[data])
+   },[])
     return <DashContext.Provider value={{account, user}}> 
         {children}
     </DashContext.Provider>

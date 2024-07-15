@@ -10,7 +10,7 @@ export default function NavBar(){
         {id:1, title:"Profile", path:`${account.type === 'Creator' ? '/profile?type=Creator' : account.type === 'Brand'? '/profile?type=Brand' : '/accountype'}`},
         {id:2, title:"Job Board"},
         {id:3, title:"Showcase"},
-        {id:3, title:"Dashboard", path:"/overview"}
+        {id:4, title:"Dashboard", path:"/overview"}
     ]
     return <nav className="flex items-center justify-between text-white px-4 py-3 text-sm border-b border-zinc-800">
     <img src={pazadark} alt="pazalogo" className="w-36 object-contain" />

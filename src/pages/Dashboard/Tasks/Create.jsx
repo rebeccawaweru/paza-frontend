@@ -28,28 +28,42 @@ export default function CreateTask(){
     }
     const handleSubmit = async (e) => {
         e.preventDefault()
+       try {
         if (id) {
-             //update logic from backend
-             console.log('waiting for backend update route....')
-        } else {
-        try {
-            const response = await client.post('/tasks/create',
-                values,
+            //update logic from backend
+            const response = await client.put(`/tasks/${id}`,
+               values,
+               { headers: { Authorization: `${token}` } },
+              
+           );
+           console.log(response)
+        }  else {
+                const response = await client.post('/tasks/create',
+                    values,
+                    { headers: { Authorization: `${token}` } }
+                );
+                if (response.data.acknowledged) {
+                    toast.success('Task created!')
+                    setTimeout(()=>{
+                        navigate('/tasks')
+                    }, 2000)
+                }
+          }
+      } catch(error){
+        console.log(error)
+      }
+    }
+    async function getTask(){
+            const response = await client.get(`/tasks/${id}`,
                 { headers: { Authorization: `${token}` } }
             );
-            if (response.data.acknowledged) {
-                toast.success('Task created!')
-                setTimeout(()=>{
-                    navigate('/tasks')
-                }, 2000)
-            }
-        } catch (error) {
-            console.error(error)
-        }
-      }
+            setValues(response.data)
     }
     useEffect(()=>{
         //if updating, use id to get the task 
+        if (id) {
+            getTask()
+        }
     },[id])
     return <Dashboard sidebar={<SideBar/>}>
    <Grid item xs={10} sm={10}>
@@ -58,7 +72,7 @@ export default function CreateTask(){
     <h2 className="font-bold text-xl">{id ? 'Update Task' : 'Create Task'}</h2>
     <div>
     <BasicLabel title="Task Name"/>
-    <BasicInput name="task" onChange={handleChange} custom="w-full grey" required/>
+    <BasicInput name="task" value={values.task} onChange={handleChange} custom="w-full grey" required/>
     </div>
     <div className="grid grid-cols-1 2xl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 gap-2">
         <div>
@@ -84,7 +98,7 @@ export default function CreateTask(){
     <div className="grid grid-cols-1 2xl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 gap-2">
         <div>
             <BasicLabel title="Budget"/>
-            <BasicInput name="budget" onChange={handleChange} placeholder="Ksh."  custom="w-full grey" phcolor="grey" phweight={100} type='number' required />
+            <BasicInput name="budget" value={values.budget} onChange={handleChange} placeholder="Ksh."  custom="w-full grey" phcolor="grey" phweight={100} type='number' required />
         </div>
         <div>
             <BasicLabel title="Status"/>
@@ -100,11 +114,11 @@ export default function CreateTask(){
     <div className="grid grid-cols-1 2xl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 gap-2">
         <div>
             <BasicLabel title="Start Date"/>
-            <BasicInput name="start" onChange={handleChange} type="date"  custom="w-full grey" phcolor="grey" phweight={100}  required />
+            <BasicInput name="start" value={values.start} onChange={handleChange} type="date"  custom="w-full grey" phcolor="grey" phweight={100}  required />
         </div>
         <div>
             <BasicLabel title="Due Date"/>
-            <BasicInput name="due" onChange={handleChange} type="date" custom="w-full grey" phcolor="grey" phweight={100}  required />
+            <BasicInput name="due" value={values.due} onChange={handleChange} type="date" custom="w-full grey" phcolor="grey" phweight={100}  required />
         </div>
     </div>
     <div>
@@ -118,7 +132,7 @@ export default function CreateTask(){
     </div>
      <div>
     <BasicLabel title="Task Description"/>
-    <BasicInput name="description" onChange={handleChange} multiline rows={4} phcolor="grey" phweight={100} type='text'  required custom="w-full grey"/>
+    <BasicInput name="description" value={values.description} onChange={handleChange} multiline rows={4} phcolor="grey" phweight={100} type='text'  required custom="w-full grey"/>
      </div>
     <div>
     <BasicLabel title="Attachment"/>

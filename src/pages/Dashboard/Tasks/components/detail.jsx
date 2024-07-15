@@ -1,8 +1,8 @@
 export default function Detail(props){
-    return <div className={`${props.view ? 'w-1/2 -top-16 right-0 duration-1000  transition-width ' : 'w-0 '} -right-10 text-sm p-4 grey space-y-6 absolute  z-50`}>
-    <div className="flex relative">
+    return <div className={`${props.view ? 'w-1/2 -top-16 right-0 duration-1000 h-auto transition-width ' : 'w-0 '} -right-10 absolute text-sm p-4 grey space-y-8 z-50`}>
+    <div className="flex justify-between">
     <h2 className="font-bold text-2xl">{props.task}</h2>
-    <i className="bi bi-x-lg absolute right-12 cursor-pointer" onClick={props.close}></i>
+    <i className="bi bi-x-lg cursor-pointer" onClick={props.close}></i>
     </div>
  
     <p className="text-zinc-400">Status: <span className={`${props.status === 'In Progress' ? 'bg-orange-700' : props.status === 'Completed' ? 'bg-green-500 ' : 'bg-black'} text-white text-sm mx-2 p-2`}>{props.status}</span></p>

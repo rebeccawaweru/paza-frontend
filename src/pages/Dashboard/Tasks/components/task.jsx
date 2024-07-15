@@ -32,7 +32,7 @@ export default function TaskCard(props){
     <ul onMouseLeave={()=>setShow(false)} className={`absolute grey py-4 px-8 bottom-0 right-0 space-y-4 cursor-pointer ${show ? 'block' : 'hidden'}`}>
       <li onClick={()=>navigate(`/newtask?edit=${props.id}`)}>Edit</li>
       <li>Reminder</li>
-      <li onClick={props.handleView}>View Activity</li>
+      <li onClick={()=>navigate(`/taskdetails/${props.id}`)}>View Activity</li>
       <li className="text-red-500" onClick={handleDelete}>Delete</li>
     </ul>
     </div>

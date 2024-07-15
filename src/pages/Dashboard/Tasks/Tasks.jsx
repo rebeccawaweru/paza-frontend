@@ -15,12 +15,11 @@ export default function Tasks(){
     useEffect(()=>{
       client.get('/tasks', { headers: { Authorization: `${token}` } }).then((response)=>{
         setData(response.data)
-        console.log(response.data)
       })
     },[data])
     return <Dashboard sidebar={<SideBar/>}>
            <Grid item xs={10} sm={10}>
-            <div className="relative w-full">
+            <div className="w-full">
             <Detail view={view} close={()=>setView(false)} {...item}/>
             <div className="p-4 space-y-6">
             <div className="flex justify-between">

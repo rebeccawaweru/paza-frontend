@@ -37,8 +37,8 @@ export default function TaskCard(props){
     </ul>
     </div>
     <div className="flex items-center justify-between">
-    <div className={`${props.status === 'In Progress' ? 'bg-orange-700' : props.status === 'Completed' ? 'bg-green-500' : 'bg-black'} rounded-full text-xs p-2`}>{props.status}</div>
-    <hr className="w-full mx-2 2xl:w-36 xl:w-36 lg:w-36 md:w-24 h-2 border-none bg-green-500 rounded-md"></hr>100%
+    <div className={`${props.status === 'In Progress' ? 'bg-orange-700' : props.status === 'Completed' ? 'bg-green-800' : 'bg-black'} rounded-full text-xs p-2`}>{props.status}</div>
+    <hr className="w-full mx-2 2xl:w-36 xl:w-36 lg:w-36 md:w-24 h-2 border-none bg-green-800 rounded-md"></hr>100%
     </div>
     <div className="flex items-center space-x-4 text-xs">
     <div><i className="bi bi-calendar mr-2"></i>Start date: {props.start}</div>

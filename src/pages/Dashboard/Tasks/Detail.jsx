@@ -25,7 +25,7 @@ export default function Detail(){
     <h2 className="font-bold text-2xl">{values.task}</h2>
     <i className="bi bi-x-lg cursor-pointer" onClick={()=>navigate('/tasks')}></i>
     </div>
-    <p className="text-zinc-400">Status: <span className={`${values.status === 'In Progress' ? 'bg-orange-700' : values.status === 'Completed' ? 'bg-green-500 ' : 'bg-black'} text-white text-sm mx-2 p-2`}>{values.status}</span></p>
+    <p className="text-zinc-400">Status: <span className={`${values.status === 'In Progress' ? 'bg-orange-700' : values.status === 'Completed' ? 'bg-green-800 ' : 'bg-black'} text-white text-sm mx-2 p-2`}>{values.status}</span></p>
     <p className="text-zinc-400">Milestone: </p>
     <div className="flex space-x-8">
     <p className="text-zinc-400">Budget: Ksh. {values.budget && values.budget.toLocaleString()} </p>

@@ -51,7 +51,12 @@ export default function CreateTask() {
           const response = await client.put(`/tasks/${id}`, updatedValues, {
             headers: { Authorization: `${token}` },
           });
-          console.log(response);
+           if (response.data === 'Task updated successfully') {
+            toast.success(response.data)
+            setTimeout(()=>{
+              navigate('/tasks')
+            }, 2000)
+           }
         } else {
           toast.info("No changes made!");
         }

@@ -8,17 +8,20 @@ import {
   CheckBox,
 } from "../../../components";
 import { MenuItem, Grid } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import client from "../../../api/client";
 import { toast, ToastContainer } from "react-toastify";
+import { DashContext } from "../../../context/AuthContext";
 export default function CreateTask() {
   const [searchParams] = useSearchParams();
+  const {account} = useContext(DashContext)
   const id = searchParams.get("edit");
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const [choose, setChoose] = useState(false);
   const [initialValues, setInitialValues] = useState({
+    createdby:account.creatorname || account.company,
     task: "",
     assignee: "",
     priority: "",
@@ -29,6 +32,8 @@ export default function CreateTask() {
     repeat: "",
     description: "",
     attachment: "",
+    todos:[],
+    milestones:[]
   });
   const [values, setValues] = useState(initialValues);
   const handleChange = (e) => {

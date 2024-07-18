@@ -41,7 +41,6 @@ export default function Tasks(){
               <p className="font-semibold text-xl">In Progress <span className="rounded-full grey py-2 px-4 mx-8">{data && data.length > 0 && data.filter(item=>item.status === 'In Progress').length}</span></p>
               {data && data.length > 0 && data.filter(item => item.status === 'In Progress').map((item) => {
                  return  <TaskCard key={item._id} id={item._id} task={item.task} status={item.status} start={item.start} due={item.due} handleView={()=>{setView(true); setItem(item)}}/>
-
               })}
               </div>
               <div className="space-y-4">

@@ -1,24 +1,36 @@
 import { Dashboard } from "../../../layouts"
-import { BasicButton, BasicInput, GroupAvatars, IconButton, SideBar } from "../../../components"
-import { Grid } from "@mui/material"
+import { BasicButton, BasicInput, BasicLabel, BasicSelect, CheckBox, GroupAvatars, SideBar } from "../../../components"
+import { Grid, MenuItem } from "@mui/material"
 import { useEffect, useState } from "react";
 import client from "../../../api/client";
 import { useNavigate, useParams } from "react-router-dom";
-import { Todo } from "./components";
+import { Todo, Milestone } from "./components";
 import { toast, ToastContainer } from "react-toastify";
 export default function Detail(){
     const [tab, setTab] = useState('Comments');
     const [add, setAdd] = useState(false)
+    const [addMil, setAddMil] = useState(false)
     const [todo, setTodo] = useState({
         title:"",
         time:"",
         assignee:"",
         status:"In Progress"
-    })
+    });
     const handleChange = (e) => {
        setTodo((prev) => ({...prev, [e.target.name]:e.target.value}))
     }
- 
+    const [mile, setMile] = useState({
+        title:"",
+        description:"",
+        budget:"",
+        start:"",
+        end:"",
+        status:"In Progress"
+    });
+    const [miles, setMiles] = useState([])
+    const handleChange2 = (e) => {
+        setMile((prev) => ({...prev, [e.target.name]:e.target.value}))
+    }
     const tabs = ['Comments', 'Activity', 'To-Do Lists', 'Milestones']
     const navigate = useNavigate()
     const [values, setValues] = useState({})
@@ -30,10 +42,8 @@ export default function Detail(){
             { headers: { Authorization: `${token}` } }
         );
         setTodos(response.data.todos)
+        setMiles(response.data.milestones)
         setValues(response.data)
-    }
-    const handleEdit = (index) => {
-
     }
     const handleDelete = (index) => {
         setTodos((prev) => prev.filter(item => item !== todos[index]));
@@ -49,6 +59,11 @@ export default function Detail(){
         } catch (error) {
             console.log(error)
         }
+    }
+    const handleSave2 = (e) => {
+        e.preventDefault();
+        setMiles((prev) => [...prev, mile])
+        setAddMil(false)
     }
     useEffect(()=>{
      getTask()
@@ -95,11 +110,11 @@ export default function Detail(){
         <p className="text-zinc-300 font-semibold cursor-pointer" onClick={()=>{setTodo({title:"",time:"",assignee:"",status:"In Progress"}); setAdd(true)}}>+ Add Item</p>
         <button onClick={handleSave} className="bg-green-700 p-2 rounded-md hover:bg-white hover:text-black hover:scale-90"><i className="bi bi-floppy mr-2"></i>Save Changes</button>
         </div>}
-    {add && <form className="space-y-4">
+    {add && <form onSubmit={(e)=>{e.preventDefault(); setTodos((prev) => [...prev, todo]); setAdd(false)}}  className="space-y-4">
         <BasicInput name="title" value={todo.title} onChange={handleChange} placeholder="Title" phweight={100} required custom="w-full grey"/>
         <BasicInput name="time" value={todo.time} onChange={handleChange} type="time" required custom="w-full grey"/>
         <BasicInput name="assignee" value={todo.assignee} onChange={handleChange} type="text" placeholder="Assignee" phweight={100} required custom="w-full grey"/>
-        <BasicButton handleClick={()=>{setTodos((prev) => [...prev, todo]); setAdd(false)}} title="+ Submit"/>   
+        <BasicButton title="+ Submit"/>   
      </form> }
      {!add && todos && todos.length > 0 && todos.map((item,index)=> {
           return <Todo key={index} {...item} edit={()=>{setAdd(true); setTodo(item); handleDelete(index)}} delete={()=>handleDelete(index)} complete={() => setTodos(prevTodos =>
@@ -109,6 +124,64 @@ export default function Detail(){
           )}/>
      })}
      </div>}
+     {tab === 'Milestones' && <div>
+        <button onClick={()=>setAddMil(true)} className="text-zinc-300 font-semibold cursor-pointer mb-4 hover:text-orange-700 hover:scale-90"> + New</button>
+        {addMil ? <form onSubmit={handleSave2} className="space-y-4">
+            <div>
+            <BasicLabel title="Title"/>
+            <BasicInput name="title" value={mile.title} onChange={handleChange2}  custom="w-full grey" required/>
+            </div>
+            <div>
+            <BasicLabel title="Description"/> 
+            <BasicInput name="description" value={mile.description} onChange={handleChange2}  custom="w-full grey" multiline rows={4} required/>
+            </div>
+            <div>
+           <BasicLabel title="Budget (Ksh)"/>
+           <BasicInput name="budget" value={mile.budget} onChange={handleChange2}  custom="w-full grey" type="number" required />
+           </div>
+           <div className="grid grid-cols-2 gap-2">
+           <div>
+           <BasicLabel title="Start Date"/>
+           <BasicInput name="start" value={mile.start} onChange={handleChange2}  custom="w-full grey py-1" type="date" required />
+           </div>
+           <div>
+           <BasicLabel title="End Date"/>
+           <BasicInput name="end" value={mile.end} onChange={handleChange2}  custom="w-full grey py-1" type="date" required />
+           </div>
+           </div>
+           <BasicSelect name="status" value={mile.status} onChange={handleChange2}  custom="w-full grey">
+            <MenuItem value="In Progress">In Progress</MenuItem>
+            <MenuItem value="Completed">Completed</MenuItem>
+           </BasicSelect>
+         
+           <div className="flex justify-end items-center space-x-4 cursor-pointer my-2">
+          <button onClick={()=>setAddMil(false)} className="text-zinc-300 border border-zinc-500 py-2 px-4"> Cancel</button>
+          <button type="submit" className="bg-orange-700 py-2 px-4 text-black rounded-md font-bold hover:bg-white hover:scale-90">Save</button>
+          </div>
+        </form> : 
+        <div className="w-full grid grid-cols-2 gap-2"><div className="space-y-4">
+            {(miles && miles.length > 0) ? miles.map((item,index)=>{
+                return <Milestone key={index} title={item.title} description={item.description}/>
+            }) : <p>No milestones</p>}
+      </div>
+      <div className="h-auto flex flex-col justify-center grey text-sm space-y-8 cursor-pointer p-4">
+        <p>In progress</p>
+        <p>Start Date: </p>
+        <p>End Date: </p>
+        <p>description</p>
+        <div>
+        <p className="font-bold text-lg"><i className="bi bi-paperclip text-orange-700 rotate-20"></i>Media And Docs</p>
+        <p className="text-zinc-400">16 Attached</p>
+        </div>
+        <div className="flex space-x-8 text-zinc-400">
+            <p><i className="bi bi-cash-stack"></i> Ksh 100, 000</p>
+            <p>10 creators</p>
+        </div>
+      </div>
+      </div>
+         }
+  
+      </div>}
 
     </div>
    </Grid>

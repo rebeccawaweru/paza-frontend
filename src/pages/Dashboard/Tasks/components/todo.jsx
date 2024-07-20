@@ -17,7 +17,7 @@ export default function Todo(props){
     <i className="bi bi-trash-fill text-red-500" onClick={props.delete}></i>
     </div>
      {props.status === 'In Progress' &&
-    <button onClick={props.complete} className="p-2 border rounded-md hover:bg-white hover:text-black hover:scale-90"><i className="bi bi-check-circle-fill mr-2 text-green-700"></i>Mark as complete</button>
+    <button onClick={props.complete} className="p-2 border rounded-md hover:bg-white hover:text-black hover:scale-90 mt-2 ml-4"><i className="bi bi-check-circle-fill mr-2 text-green-700"></i>Mark as complete</button>
      }
     </div>    
     <hr className="border-zinc-700 mt-4 mx-2"></hr>  

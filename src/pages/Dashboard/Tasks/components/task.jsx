@@ -36,11 +36,11 @@ export default function TaskCard(props){
       <li className="text-red-500" onClick={handleDelete}>Delete</li>
     </ul>
     </div>
-    <div className="flex items-center justify-between">
+    <div className="flex flex-col 2xl:flex-row xl:flex-row lg:flex-row md:flex-row sm:flex-row items-center justify-between">
     <div className={`${props.status === 'In Progress' ? 'bg-orange-700' : props.status === 'Completed' ? 'bg-green-800' : 'bg-black'} rounded-full text-xs p-2`}>{props.status}</div>
-    <hr className="w-full mx-2 2xl:w-36 xl:w-36 lg:w-36 md:w-24 h-2 border-none bg-green-800 rounded-md"></hr>100%
+    <hr className="w-full mx-2  2xl:w-52 xl:w-32 lg:w-24 md:w-24 sm:w-48 h-2 border-none bg-green-800 rounded-md"></hr>100%
     </div>
-    <div className="flex items-center space-x-4 text-xs">
+    <div className="grid grid-cols-1 2xl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 gap-4  text-xs">
     <div><i className="bi bi-calendar mr-2"></i>Start date: {props.start}</div>
     <div><i className="bi bi-calendar mr-2"></i>End date: {props.due}</div>
     </div>

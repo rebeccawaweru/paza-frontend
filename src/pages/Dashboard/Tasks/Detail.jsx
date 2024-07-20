@@ -1,13 +1,14 @@
 import { Dashboard } from "../../../layouts"
 import { BasicButton, BasicInput, BasicLabel, BasicSelect, CheckBox, GroupAvatars, SideBar } from "../../../components"
 import { Grid, MenuItem, LinearProgress } from "@mui/material"
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import client from "../../../api/client";
 import { useNavigate, useParams } from "react-router-dom";
 import { Todo, Milestone } from "./components";
 import { toast, ToastContainer } from "react-toastify";
-
+import { DashContext } from "../../../context/AuthContext";
 export default function Detail(){
+    const {account, user} = useContext(DashContext)
     const [tab, setTab] = useState('Comments');
     const [add, setAdd] = useState(false)
     const [addMil, setAddMil] = useState(false)
@@ -67,7 +68,8 @@ export default function Detail(){
         e.preventDefault();
         setMiles((prev) => [...prev, mile])
         setAddMil(false)
-    }
+    };
+    const permission = values.createdby === account.creatorname || account.company || user.email;
     useEffect(()=>{
      getTask()
     },[id])
@@ -86,7 +88,7 @@ export default function Detail(){
         <p className="text-white font-bold">{Math.round(percentage)} %</p>
         </div>
     <div className="block 2xl:flex xl:flex lg:flex md:flex justify-between w-full 2xl:w-3/4 xl:w-3/4 lg:w-3/4 md:w-3/4">
-    <p>Budget: <span className="font-bold text-white">Ksh. {values.budget && Number(values.budget.toLocaleString())}</span> </p>
+    <p>Budget: <span className="font-bold text-white">Ksh. {values.budget && Number(values.budget).toLocaleString()}</span> </p>
     <p>Spent: <span className="font-bold text-red-500">Ksh. {miles && miles.length > 0 && miles.filter(item => item.status === 'Completed').reduce((acc, item) => acc + Number(item.budget), 0).toLocaleString()}</span> </p>
     </div>
     <div className="block 2xl:flex xl:flex lg:flex md:flex justify-between w-full 2xl:w-3/4 xl:w-3/4 lg:w-3/4 md:w-3/4">
@@ -112,7 +114,7 @@ export default function Detail(){
     </div>
      {tab === 'To-Do Lists' &&
      <div className="space-y-4">
-     {!add &&  <div className="flex flex-col 2xl:flex-row xl:flex-row lg:flex-row md:flex-row sm:flex-row justify-between">
+     {!add && permission &&  <div className="flex flex-col 2xl:flex-row xl:flex-row lg:flex-row md:flex-row sm:flex-row justify-between">
         <button className="text-zinc-300 font-semibold cursor-pointer" onClick={()=>{setTodo({title:"",time:"",assignee:"",status:"In Progress"}); setAdd(true)}}>+ Add Item</button>
         <button onClick={handleSave} className="bg-green-700 p-2 rounded-md text-white hover:bg-white hover:text-black hover:scale-90"><i className="bi bi-floppy mr-2"></i>Save Changes</button>
         </div>}
@@ -129,7 +131,7 @@ export default function Detail(){
         </div> 
      </form> }
      {!add && todos && todos.length > 0 && todos.map((item,index)=> {
-          return <Todo key={index} {...item} edit={()=>{setAdd(true); setTodo(item); setTodos((prev) => prev.filter(item => item !== todos[index]))}} delete={()=>handleDelete(index)} complete={() => setTodos(prevTodos =>
+          return <Todo key={index} {...item} permission={permission} edit={()=>{setAdd(true); setTodo(item); setTodos((prev) => prev.filter(item => item !== todos[index]))}} delete={()=>handleDelete(index)} complete={() => setTodos(prevTodos =>
             prevTodos.map((todo, i) => 
               i === index ? { ...todo, status: 'Completed' } : todo
             )
@@ -137,10 +139,10 @@ export default function Detail(){
      })}
      </div>}
      {tab === 'Milestones' && <div className="space-y-4">
-        {!addMil && 
+        {!addMil && permission && 
         <div className="flex flex-col 2xl:flex-row xl:flex-row lg:flex-row md:flex-row sm:flex-row justify-between">
         <button onClick={()=>{setAddMil(true); setMile({title:"",description:"", budget:"", start:"", end:"", status:"In Progress"})}} className="text-zinc-300 font-semibold cursor-pointer mb-4 hover:text-orange-700 hover:scale-90"> + Create</button>
-        {miles.length > 0 && <button onClick={handleSave} className="bg-green-700 p-2 rounded-md text-white hover:bg-white hover:text-black hover:scale-90"><i className="bi bi-floppy mr-2"></i>Save Changes</button>}
+      <button onClick={handleSave} className="bg-green-700 p-2 rounded-md text-white hover:bg-white hover:text-black hover:scale-90"><i className="bi bi-floppy mr-2"></i>Save Changes</button>
         </div>}
         {addMil ? <form onSubmit={handleSave2} className="space-y-4">
             <div>
@@ -187,10 +189,12 @@ export default function Detail(){
                 return  <div className="h-auto grey text-sm text-zinc-400 font-semibold space-y-8 cursor-pointer p-4">
                     <div className="flex justify-between">
                     <button className={`${item.status === 'Completed' ? 'bg-green-700' : 'bg-orange-700'} flex font-semibold rounded-lg p-2 text-white`}>{item.status}</button>
+                     {permission &&
                      <div className="flex space-x-2">
                      <i className="bi bi-pen-fill text-green-500" onClick={()=>{setAddMil(true); setMile(item); setMiles((prev) =>  prev.filter(item => item !== miles[index])) }} ></i>
                      <i className="bi bi-trash-fill text-red-500" onClick={()=>setMiles((prev) =>  prev.filter(item => item !== miles[index]))}></i>
-                     </div>
+                     </div>}
+
                     </div>
                 <p>Start Date: <span className="text-white font-bold mr-2">{item.start}</span>  </p>
                 <p>End Date: <span className="text-white font-bold mr-2"> {item.end}</span> </p>

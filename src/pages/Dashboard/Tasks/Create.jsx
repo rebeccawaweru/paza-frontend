@@ -15,13 +15,13 @@ import { toast, ToastContainer } from "react-toastify";
 import { DashContext } from "../../../context/AuthContext";
 export default function CreateTask() {
   const [searchParams] = useSearchParams();
-  const {account} = useContext(DashContext)
+  const {account, user} = useContext(DashContext)
   const id = searchParams.get("edit");
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const [choose, setChoose] = useState(false);
   const [initialValues, setInitialValues] = useState({
-    createdby:account.creatorname || account.company,
+    createdby:account.creatorname || account.company || user.email,
     task: "",
     assignee: "",
     priority: "",

@@ -4,20 +4,26 @@ import { Grid, MenuItem, LinearProgress } from "@mui/material"
 import { useEffect, useState, useContext } from "react";
 import client from "../../../api/client";
 import { useNavigate, useParams } from "react-router-dom";
-import { Todo, Milestone } from "./components";
+import { Todo, Milestone, GridBox, Review } from "./components";
 import { toast, ToastContainer } from "react-toastify";
 import { DashContext } from "../../../context/AuthContext";
 export default function Detail(){
     const {account, user} = useContext(DashContext)
+    const [title, setTitle] = useState('')
+    const [description, setDescription] = useState('')
     const [tab, setTab] = useState('Comments');
+    const [active, setActive] = useState('Overview')
     const [add, setAdd] = useState(false)
     const [addMil, setAddMil] = useState(false)
+    const [reviews,setReviews] = useState(false);
     const [indx,setIndx] = useState(0)
     const [todo, setTodo] = useState({
         title:"",
         time:"",
         assignee:"",
+        reviews:[],
         status:"In Progress"
+
     });
     const handleChange = (e) => {
        setTodo((prev) => ({...prev, [e.target.name]:e.target.value}))
@@ -69,7 +75,8 @@ export default function Detail(){
         setMiles((prev) => [...prev, mile])
         setAddMil(false)
     };
-    const permission = values.createdby === account.creatorname || account.company || user.email;
+    const permission = values.createdby === (account.creatorname || account.company || user.email);
+    // const permission = false;
     useEffect(()=>{
      getTask()
     },[id])
@@ -81,6 +88,122 @@ export default function Detail(){
     <h2 className="font-bold text-2xl text-white">{values.task}</h2>
     <i className="bi bi-x-lg cursor-pointer" onClick={()=>navigate('/tasks')}></i>
     </div>
+     {permission && <div className="grid grid-cols-1 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-4 gap-2">
+      <GridBox title="To-Do Lists Left" custom="border border-orange-700" caption={todos.filter(item =>item.status === 'In Progress' || item.status === 'On Review').length}/>
+      <GridBox title={todos.filter(item=>item.status === 'Completed').length} caption="Done"/>
+      <GridBox title={todos.filter(item=>item.status === 'In Progress').length} caption="In Progress"/>
+      <GridBox title={todos.filter(item=>item.status === 'On Review').length} caption="On Review"/>
+    </div>}
+    {permission && 
+    <div className="grid grid-cols-1 2xl:grid-cols-6 xl:grid-cols-6 lg:grid-cols-6 md:grid-cols-6 gap-6 border-b border-b-zinc-700">
+      <div onClick={()=>setActive('Overview')} className="cursor-pointer">
+      <p>Overview</p>
+      <hr className={`${active === 'Overview' ? 'border border-orange-700 w-16 mt-2' : 'hidden'}`}></hr>
+      </div>
+
+        {tabs.map((item, index)=> {
+            return  <div key={index} onClick={()=>setActive(item)}  className="cursor-pointer">
+            <p>{item}</p>
+            <hr className={`${active === item ? 'border border-orange-700 w-16 mt-2' : 'hidden'}`}></hr>
+            </div>
+        })}
+        
+          <div onClick={()=>setActive('Team Management')} className="cursor-pointer">
+      <p>Team Management</p>
+      <hr className={`${active === 'Team Management' ? 'border border-orange-700 w-32 mt-2' : 'hidden'}`}></hr>
+      </div>
+    </div>}
+    {active === 'To-Do Lists' && !add && permission && <>
+     <div className="flex flex-col 2xl:flex-row xl:flex-row lg:flex-row md:flex-row sm:flex-row justify-between">
+        <button className="text-zinc-300 font-semibold cursor-pointer" onClick={()=>{setTodo({title:"",time:"",assignee:"",status:"In Progress"}); setAdd(true)}}>+ Add Item</button>
+        <button onClick={handleSave} className="bg-green-700 p-2 rounded-md text-white hover:bg-white hover:text-black hover:scale-90"><i className="bi bi-floppy mr-2"></i>Save Changes</button>
+        </div>
+
+    <table style={{tableLayout:"fixed",width:"100%"}}>
+        <thead className="grid grid-cols-5 font-bold border-b border-zinc-700">
+            <td>Lists</td>
+            <td>Status</td>
+            <td>Assigned To</td>
+            <td>Action</td>
+        </thead>
+        <tbody>
+          <td className="space-y-4">
+            {todos.length > 0 ? todos.map((item, index)=>{
+                return <tr className="grid grid-cols-5 pt-2 " key={index}>
+                        <td> {item.title}</td>
+                        <td className={`${item.status === 'Completed' ? 'text-green-700' : item.status === 'In Progress' ? 'text-orange-700' : 'text-red-500' } font-bold`}> {item.status}</td>
+                        <td> {item.assignee}</td>
+                        <td className="flex space-x-2 cursor-pointer"> 
+                     <i className="bi bi-pen-fill text-green-500 " onClick={()=>{setAdd(true); setTodo(item); setTodos((prev) => prev.filter(item => item !== todos[index]))}}  ></i>
+                     <i className="bi bi-trash-fill text-red-500" onClick={()=>handleDelete(index)}></i>
+                     </td>
+                 
+                        <td>
+                          {item.status !== 'Completed' ?
+                        <button onClick={() => setTodos(prevTodos =>
+                          prevTodos.map((todo, i) => 
+                            i === index ? { ...todo, status: 'Completed' } : todo
+                          )
+                        )} className="p-2 border rounded-md hover:bg-white hover:text-black hover:scale-90"><i className="bi bi-check-circle-fill mr-2 text-green-700"></i>Mark as complete</button>
+                        : <i className="bi bi-check-circle-fill mr-2 text-green-700"></i>}
+                        </td>
+                    </tr>
+            }) : <p>No todo list</p>}
+              </td>
+        </tbody>
+    </table>
+    <p className="text-white font-bold text-lg">On Review</p>
+    <div className="space-y-2">
+      {todos.map((item, index) => {
+        return item.reviews.length > 0 && item.reviews.map((review, i) => {
+                 return <Review title={review.title} addedby={review.addedby} permission={permission} status={review.status} desc={review.description} 
+                 accept={() =>
+                  setTodos((prev) =>
+                    prev.map((todo) =>
+                      ({
+                        ...todo,
+                        reviews: todo.reviews.map((t) =>
+                          t === review ? { ...t, status: 'Accepted' } : t
+                        )
+                      })
+                    )
+                  )
+                }
+                reject={() =>
+                  setTodos((prev) =>
+                    prev.map((todo) =>
+                      ({
+                        ...todo,
+                        reviews: todo.reviews.map((t) =>
+                          t === review ? { ...t, status: 'Rejected' } : t
+                        )
+                      })
+                    )
+                  )
+                }
+                />
+         })
+      })}
+    </div>
+    </>}
+    {active === 'To-Do Lists' && add && <form onSubmit={(e)=>{e.preventDefault(); setTodos((prev) => [...prev, todo]); setAdd(false)}}  className="space-y-4">
+        <BasicInput name="title" value={todo.title} onChange={handleChange} placeholder="Title" phweight={100} required custom="w-full grey"/>
+        <BasicInput name="time" value={todo.time} onChange={handleChange} type="time" required custom="w-full grey"/>
+        <BasicInput name="assignee" value={todo.assignee} onChange={handleChange} type="text" placeholder="Assignee" phweight={100} required custom="w-full grey"/>
+        <BasicSelect name="status" value={todo.status} onChange={handleChange}  custom="w-full grey">
+            <MenuItem value="In Progress">In Progress</MenuItem>
+            <MenuItem value="On Review">On Review</MenuItem>
+            <MenuItem value="Completed">Completed</MenuItem>
+           </BasicSelect>
+        <div className="flex justify-end items-center space-x-4 cursor-pointer my-2">
+        <button onClick={()=>{setAdd(false); if(!Object.values(todo).some(value => value === "")) {
+            setTodos((prev)=> [...prev, todo])}
+          }} className="text-zinc-300 border border-zinc-500 py-2 px-4"> Cancel</button>
+        <BasicButton title="+ Submit"/>   
+        </div> 
+     </form> }
+
+    {(active === 'Overview' || tab === 'Overview') && <>
     <p>Status: <span className={`${values.status === 'In Progress' ? 'bg-orange-700' : values.status === 'Completed' ? 'bg-green-800 ' : 'grey'} text-white text-sm mx-2 p-2`}>{values.status}</span></p>
     <div className="w-full flex space-x-2 items-center">
         <p>Milestone:</p> 
@@ -107,38 +230,88 @@ export default function Detail(){
 
     <p className="text-zinc-200 font-semibold">Attachments: </p>
     <div className="border border-zinc-500 rounded-md h-24 w-full"></div>
-    <div className="grid grid-cols-2 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-4 gap-4 border-b border-zinc-500 pb-2 w-full">
+    {!permission && <div className="grid grid-cols-2 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-4 gap-4 border-b border-zinc-500 pb-2 w-full">
        {tabs.map((item,index)=>{
         return <p onClick={()=>setTab(item)} className={`${tab == item ? 'text-orange-700 font-bold' : 'text-zinc-400'} cursor-pointer`} key={index}>{item}</p>
        })}
-    </div>
-     {tab === 'To-Do Lists' &&
+    </div>}
+    </> }
+    {active === 'Team Management' && <div className="space-y-4">
+       <div className="flex item-center justify-between">
+       <p className="text-white font-semibold text-lg">Members</p>
+       <button className="py-2 px-4 border border-orange-700 hover:scale-90 text-zinc-300">+ Add Member</button>
+       </div>
+       <div className="flex item-center justify-between">
+       <p className="text-white font-semibold text-lg">Teams</p>
+       <button className="py-2 px-4 border border-orange-700 hover:scale-90 text-zinc-300">+ New Team</button>
+       </div>
+    </div>}
+    {active === 'Comments' && <p><i className="bi bi-folder2-open mx-2"></i>No comments</p>}
+    {active === 'Activity' && <p><i className="bi bi-folder2-open mx-2"></i>No activities</p>}
+    
+     {tab === 'To-Do Lists'  &&
      <div className="space-y-4">
-     {!add && permission &&  <div className="flex flex-col 2xl:flex-row xl:flex-row lg:flex-row md:flex-row sm:flex-row justify-between">
-        <button className="text-zinc-300 font-semibold cursor-pointer" onClick={()=>{setTodo({title:"",time:"",assignee:"",status:"In Progress"}); setAdd(true)}}>+ Add Item</button>
-        <button onClick={handleSave} className="bg-green-700 p-2 rounded-md text-white hover:bg-white hover:text-black hover:scale-90"><i className="bi bi-floppy mr-2"></i>Save Changes</button>
-        </div>}
-    {add && <form onSubmit={(e)=>{e.preventDefault(); setTodos((prev) => [...prev, todo]); setAdd(false)}}  className="space-y-4">
-        <BasicInput name="title" value={todo.title} onChange={handleChange} placeholder="Title" phweight={100} required custom="w-full grey"/>
-        <BasicInput name="time" value={todo.time} onChange={handleChange} type="time" required custom="w-full grey"/>
-        <BasicInput name="assignee" value={todo.assignee} onChange={handleChange} type="text" placeholder="Assignee" phweight={100} required custom="w-full grey"/>
-        
-        <div className="flex justify-end items-center space-x-4 cursor-pointer my-2">
-        <button onClick={()=>{setAdd(false); if(!Object.values(todo).some(value => value === "")) {
-            setTodos((prev)=> [...prev, todo])}
-          }} className="text-zinc-300 border border-zinc-500 py-2 px-4"> Cancel</button>
-        <BasicButton title="+ Submit"/>   
-        </div> 
-     </form> }
-     {!add && todos && todos.length > 0 && todos.map((item,index)=> {
-          return <Todo key={index} {...item} permission={permission} edit={()=>{setAdd(true); setTodo(item); setTodos((prev) => prev.filter(item => item !== todos[index]))}} delete={()=>handleDelete(index)} complete={() => setTodos(prevTodos =>
-            prevTodos.map((todo, i) => 
-              i === index ? { ...todo, status: 'Completed' } : todo
-            )
-          )}/>
+      {!add &&
+      <div className="flex justify-end">
+      <button onClick={handleSave} className="bg-green-700 p-2 rounded-md text-white hover:bg-white hover:text-black hover:scale-90"><i className="bi bi-floppy mr-2"></i>Save Changes</button>
+      </div>}
+    {add &&
+      <>
+      <div className="flex justify-between cursor-pointer">
+        {reviews ? <p onClick={()=>setReviews(false)}>+ New </p> :<p className="text-white font-semibold">{title} Review</p>}
+    
+       <button onClick={()=>setReviews(true)}><i className="bi bi-folder2-open mx-2"></i> My Reviews</button>
+       </div> 
+
+     {reviews ?   todos.map((item, index) =>{
+      return item.reviews.map((itm, i) => {
+          if (itm.addedby === (account.creatorname || account.company || user.email)){
+                return <Review title={itm.title} status={itm.status} addedby={itm.addedby} permission={permission} />
+         }
+      })
+   }) : <form onSubmit={(e)=>{e.preventDefault(); setTodos(prevTodos =>
+                          prevTodos.map((todo, i) => 
+                            todo.title === title ? { ...todo, reviews: [...(todo.reviews || []), {
+                              title:title,
+                              description:description,
+                              uploads:[],
+                              status:"Pending",
+                              addedby: account.creatorname || account.company || user.email
+                            }] } : todo
+                          ));
+                          setAdd(false)
+                         }} className="space-y-4">
+       <BasicLabel title="Description"/>
+        <BasicInput custom="w-full grey" name="description" onChange={(e)=>setDescription(e.target.value)} multiline rows={4} required/> 
+        <div>
+            <BasicLabel title="Attachment" />
+            <div className="w-full h-48 flex flex-col space-y-4 cursor-pointer justify-center items-center border-dashed border-2 border-orange-700 rounded-md">
+              <i className="bi bi-file-earmark-arrow-up orange text-black rounded-full px-3 py-2 font-bold text-2xl"></i>
+              <input
+                type="file"
+                multiple
+                id="files"
+                className="hidden"
+              />
+              <label className="text-sm text-zinc-100 mb-2" for="files">
+                Click to Upload
+              </label>
+            </div>
+          </div>
+          <div className="flex justify-end items-center space-x-4 cursor-pointer my-2">
+        <button onClick={()=>setAdd(false)} className="text-zinc-300 border border-zinc-500 py-2 px-4"> Cancel</button>
+        <BasicButton title="+ Add"
+        />   
+        </div>
+    
+     </form>}</> }
+  
+     
+     {!add && !permission && todos && todos.length > 0 && todos.map((item,index)=> {
+          return <Todo key={index} {...item} add={()=>{setTitle(item.title); setAdd(true);}}/>
      })}
      </div>}
-     {tab === 'Milestones' && <div className="space-y-4">
+     {(tab === 'Milestones' || active === 'Milestones') && <div className="space-y-4">
         {!addMil && permission && 
         <div className="flex flex-col 2xl:flex-row xl:flex-row lg:flex-row md:flex-row sm:flex-row justify-between">
         <button onClick={()=>{setAddMil(true); setMile({title:"",description:"", budget:"", start:"", end:"", status:"In Progress"})}} className="text-zinc-300 font-semibold cursor-pointer mb-4 hover:text-orange-700 hover:scale-90"> + Create</button>

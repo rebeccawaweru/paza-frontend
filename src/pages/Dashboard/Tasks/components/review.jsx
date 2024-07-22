@@ -3,7 +3,7 @@ import { useContext } from "react"
 export default function Review(props){
     const {account, user} = useContext(DashContext)
     const edit = props.addedby === (account.creatorname || account.company || user.email)
-    return  <div className="flex justify-between border border-zinc-700 p-4 relative">
+    return  <div className="flex items-center justify-between border border-zinc-700 p-4 relative">
         {props.permission && <div className="absolute right-2 top-2">
         {props.status === 'Accepted' ? <i className="bi bi-check-circle-fill  text-green-500"></i> : props.status === 'Rejected' ? <i className="bi bi-x-circle-fill  text-red-500"></i> : 'Pending...' }
         </div>}
@@ -16,7 +16,7 @@ export default function Review(props){
       <p className="text-orange-700 underline cursor-pointer">View files</p>
       </div>
     </div>
-    {edit &&  <p>{props.status}</p>}
+    {edit &&  <div className={`${props.status === 'Pending' ? 'grey' : props.status === 'Accepted' ? 'bg-green-500 ' : 'bg-red-500'} w-auto h-8 px-4 py-2 rounded-full flex items-center text-white `}>{props.status}</div>}
    
     {props.permission &&
     <div className="space-x-2 flex items-center">
@@ -24,9 +24,9 @@ export default function Review(props){
     <button disabled={props.status === 'Rejected'} onClick={props.reject} className="border border-red-500 px-4 py-2 hover:scale-90 disabled:opacity-50 disabled:bg-zinc-800 disabled:cursor-not-allowed rounded-md text-red-500 font-bold" >Reject</button>
     </div>}
     {edit &&
-    <div className="flex space-x-2">
-                     <i className="bi bi-pen-fill text-green-500" ></i>
-                     <i className="bi bi-trash-fill text-red-500"></i>
+    <div className="flex space-x-4 cursor-pointer">
+    <i className="bi bi-pen-fill text-green-500" onClick={props.edit}></i>
+    <i className="bi bi-trash-fill text-red-500"  onClick={props.delete}></i>
     </div>}
   </div>
 }

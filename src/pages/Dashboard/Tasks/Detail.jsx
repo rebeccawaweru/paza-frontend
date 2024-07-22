@@ -10,12 +10,15 @@ import { DashContext } from "../../../context/AuthContext";
 export default function Detail(){
     const {account, user} = useContext(DashContext)
     const [title, setTitle] = useState('')
+    const [obj,setObj] = useState({})
+    const [objective, setObjective] = useState('')
+    const [objectives, setObjectives] = useState([])
     const [description, setDescription] = useState('')
     const [tab, setTab] = useState('Comments');
     const [active, setActive] = useState('Overview')
     const [add, setAdd] = useState(false)
     const [addMil, setAddMil] = useState(false)
-    const [reviews,setReviews] = useState(false);
+    const [reviews,setReviews] = useState(true);
     const [indx,setIndx] = useState(0)
     const [todo, setTodo] = useState({
         title:"",
@@ -31,6 +34,7 @@ export default function Detail(){
     const [mile, setMile] = useState({
         title:"",
         description:"",
+        objectives:objectives,
         budget:"",
         start:"",
         end:"",
@@ -65,6 +69,7 @@ export default function Detail(){
               });
             if (response.data) {
                 toast.success('Changes saved!')
+                setAdd(false)
             } 
         } catch (error) {
             console.log(error)
@@ -72,7 +77,7 @@ export default function Detail(){
     }
     const handleSave2 = (e) => {
         e.preventDefault();
-        setMiles((prev) => [...prev, mile])
+        setMiles((prev) => [...prev,  {...mile, objectives:objectives}])
         setAddMil(false)
     };
     const permission = values.createdby === (account.creatorname || account.company || user.email);
@@ -232,7 +237,7 @@ export default function Detail(){
     <div className="border border-zinc-500 rounded-md h-24 w-full"></div>
     {!permission && <div className="grid grid-cols-2 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-4 gap-4 border-b border-zinc-500 pb-2 w-full">
        {tabs.map((item,index)=>{
-        return <p onClick={()=>setTab(item)} className={`${tab == item ? 'text-orange-700 font-bold' : 'text-zinc-400'} cursor-pointer`} key={index}>{item}</p>
+        return <p onClick={()=>{setTab(item);setAdd(false)}} className={`${tab == item ? 'text-orange-700 font-bold' : 'text-zinc-400'} cursor-pointer`} key={index}>{item}</p>
        })}
     </div>}
     </> }
@@ -251,27 +256,41 @@ export default function Detail(){
     
      {tab === 'To-Do Lists'  &&
      <div className="space-y-4">
-      {!add &&
+      {/* {!add &&
       <div className="flex justify-end">
       <button onClick={handleSave} className="bg-green-700 p-2 rounded-md text-white hover:bg-white hover:text-black hover:scale-90"><i className="bi bi-floppy mr-2"></i>Save Changes</button>
-      </div>}
+      </div>} */}
     {add &&
       <>
       <div className="flex justify-between cursor-pointer">
-        {reviews ? <p onClick={()=>setReviews(false)}>+ New </p> :<p className="text-white font-semibold">{title} Review</p>}
-    
-       <button onClick={()=>setReviews(true)}><i className="bi bi-folder2-open mx-2"></i> My Reviews</button>
+        <div className="flex items-center space-x-4">
+        <button className={`${reviews && 'text-orange-700 font-bold'}`} onClick={()=>setReviews(true)}><i className="bi bi-folder2-open mx-2"></i> My Reviews  </button>
+        {reviews ? <p  onClick={()=>setReviews(false)}>+ New </p> :<p className="text-orange-700 font-semibold"><span className="mx-2">&gt;</span> {title} Review</p>}
+        </div> 
+        {reviews && <button onClick={handleSave} className="bg-green-700 p-2 rounded-md text-white hover:bg-white hover:text-black hover:scale-90"><i className="bi bi-floppy mr-2"></i>Save Changes</button>}
        </div> 
 
      {reviews ?   todos.map((item, index) =>{
       return item.reviews.map((itm, i) => {
-          if (itm.addedby === (account.creatorname || account.company || user.email)){
-                return <Review title={itm.title} status={itm.status} addedby={itm.addedby} permission={permission} />
+          if (itm.addedby === (account.creatorname || account.company || user.email) && itm.title === title){
+                return <Review title={itm.title} desc={itm.description} status={itm.status} addedby={itm.addedby} permission={permission} edit={()=>{setReviews(false); setDescription(itm.description); setTodos(prev =>
+                  prev.map(item => ({
+                    ...item,
+                    reviews: item.reviews.filter(r => r !== itm)
+                  }))
+                )}} delete={() =>
+                  setTodos(prev =>
+                    prev.map(item => ({
+                      ...item,
+                      reviews: item.reviews.filter(r => r !== itm)
+                    }))
+                  )
+                } />
          }
       })
    }) : <form onSubmit={(e)=>{e.preventDefault(); setTodos(prevTodos =>
                           prevTodos.map((todo, i) => 
-                            todo.title === title ? { ...todo, reviews: [...(todo.reviews || []), {
+                           todo.title === title ? { ...todo, reviews: [...(todo.reviews || []), {
                               title:title,
                               description:description,
                               uploads:[],
@@ -279,10 +298,12 @@ export default function Detail(){
                               addedby: account.creatorname || account.company || user.email
                             }] } : todo
                           ));
-                          setAdd(false)
+                          // setAdd(false)
+                          setReviews(true)
+                          setDescription("")
                          }} className="space-y-4">
        <BasicLabel title="Description"/>
-        <BasicInput custom="w-full grey" name="description" onChange={(e)=>setDescription(e.target.value)} multiline rows={4} required/> 
+        <BasicInput custom="w-full grey" name="description" value={description} onChange={(e)=>setDescription(e.target.value)} multiline rows={4} required/> 
         <div>
             <BasicLabel title="Attachment" />
             <div className="w-full h-48 flex flex-col space-y-4 cursor-pointer justify-center items-center border-dashed border-2 border-orange-700 rounded-md">
@@ -300,7 +321,7 @@ export default function Detail(){
           </div>
           <div className="flex justify-end items-center space-x-4 cursor-pointer my-2">
         <button onClick={()=>setAdd(false)} className="text-zinc-300 border border-zinc-500 py-2 px-4"> Cancel</button>
-        <BasicButton title="+ Add"
+      <BasicButton title="+ Add"
         />   
         </div>
     
@@ -308,7 +329,7 @@ export default function Detail(){
   
      
      {!add && !permission && todos && todos.length > 0 && todos.map((item,index)=> {
-          return <Todo key={index} {...item} add={()=>{setTitle(item.title); setAdd(true);}}/>
+          return <Todo key={index} {...item} add={()=>{setTitle(item.title);setObj(item); setAdd(true);}}/>
      })}
      </div>}
      {(tab === 'Milestones' || active === 'Milestones') && <div className="space-y-4">
@@ -327,6 +348,17 @@ export default function Detail(){
             <BasicInput name="description" value={mile.description} onChange={handleChange2}  custom="w-full grey" multiline rows={4} required/>
             </div>
             <div>
+            <div className="mb-2">
+            <BasicLabel title="Objectives"/> 
+            {objectives.length > 0 && objectives.map((item,index)=>{
+              return <div key={index} className="flex justify-between mb-2 pr-8"><div className="flex space-x-2"><i className="bi bi-check"></i><p>{item}</p></div><i onClick={()=>setObjectives(prev => prev.filter((ob, i) => i !== index))} className="bi bi-trash-fill text-red-500 cursor-pointer"></i></div>
+            })}
+            <div className="flex space-x-2">
+            <BasicInput name="objective" value={objective} onChange={(e)=>setObjective(e.target.value)} custom="w-full grey"/>
+            <i onClick={()=>{setObjectives(prev => [...prev, objective]);  setObjective("")}} className="bi bi-plus-circle-fill cursor-pointer text-lg mt-1 text-white"></i>
+            </div>
+         
+            </div>
            <BasicLabel title="Budget (Ksh)"/>
            <BasicInput name="budget" value={mile.budget} onChange={handleChange2}  custom="w-full grey" type="number" required />
            </div>
@@ -336,7 +368,7 @@ export default function Detail(){
            <BasicInput name="start" value={mile.start} onChange={handleChange2}  custom="w-full grey py-1" type="date" required />
            </div>
            <div>
-           <BasicLabel title="End Date"/>
+           <BasicLabel title="Due Date"/>
            <BasicInput name="end" value={mile.end} onChange={handleChange2}  custom="w-full grey py-1" type="date" required />
            </div>
            </div>
@@ -372,6 +404,9 @@ export default function Detail(){
                 <p>Start Date: <span className="text-white font-bold mr-2">{item.start}</span>  </p>
                 <p>End Date: <span className="text-white font-bold mr-2"> {item.end}</span> </p>
                 <p className="font-bold text-zinc-300">{item.description}</p>
+                {item.objectives && item.objectives.length > 0 && item.objectives.map((item,index)=>{
+                  return <div key={index} className="flex justify-between mb-2 pr-8"><div className="flex space-x-2"><i className="bi bi-check"></i><p>{item}</p></div><i onClick={()=>setObjectives(prev => prev.filter((ob, i) => i !== index))} className="bi bi-trash-fill text-red-500 cursor-pointer"></i></div>
+               })}
                 <div>
                 <p className="font-bold text-zinc-300 text-lg"><i className="bi bi-paperclip text-orange-700 rotate-20"></i>Media And Docs</p>
                 <p className="text-zinc-400">16 Attached</p>

@@ -13,7 +13,7 @@ export default function Todo(props){
     <p className="float-right text-zinc-400">Assigned To: <span className="text-white">{props.assignee}</span> </p>
     </div>
     </div>
-    <button onClick={props.add} className="grey text-white px-4 py-2">+ Add Review</button>
+    <button onClick={props.add} className="grey text-white px-4 py-2">Review</button>
     </div>    
     <hr className="border-zinc-700 mt-4 mx-2"></hr>  
 </div>

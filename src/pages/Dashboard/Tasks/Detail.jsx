@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Todo, Milestone, GridBox, Review } from "./components";
 import { toast, ToastContainer } from "react-toastify";
 import { DashContext } from "../../../context/AuthContext";
+import { handleDownload } from "../../../utils/helpers";
 export default function Detail(){
     const {account, user} = useContext(DashContext)
     const [title, setTitle] = useState('')
@@ -232,9 +233,14 @@ export default function Detail(){
     <p className="mb-2">Description </p>
     <p className="text-zinc-300 font-bold">{values.description}</p>
     </div>
-
     <p className="text-zinc-200 font-semibold">Attachments: </p>
-    <div className="border border-zinc-500 rounded-md h-24 w-full"></div>
+    <div className="border border-zinc-800 rounded-md h-auto w-full flex justify-start flex-wrap space-x-2 p-4">
+            {values.attachments && values.attachments.length > 0 && values.attachments.map((item, index) => {
+                 return <a href={item} target="_blank" key={index} className="relative grey text-white text-sm font-semibold px-4 py-2 hover:scale-90 hover:text-white">
+                 <div className="font-semibold cursor-pointer flex items-center space-x-2"><i className={`bi ${item.slice(-3) === 'png' || 'jpg' || 'jpeg' ? 'bi-image text-green-500' : item.slice(-3) === 'pdf' ? 'bi-file-pdf-fill text-red-500' : item.slice(-3) === 'docx' ? 'bi-file-earmark-word-fill text-blue-300' : item.slice(-3) === 'xlsx' ? 'bi-file-earmark-excel-fill text-green-500' : 'bi-folder'} text-5xl h-12`}></i><div><p>{(item.split('/attachments/')[1]).slice(0, -4)}</p> <p className="text-zinc-400 text-sm capitalize">{item.slice(-3) === 'png' || 'jpg' || 'jpeg' ? 'IMG' : item.slice(-3) === 'pdf' ? 'PDF' : item.slice(-3) === 'docx' ? 'Word Doc' : item.slice(-3) === 'xlsx' ? 'Excel' : 'upload'}<i className="bi bi-dot"></i><span className="text-blue-500 text-xs cursor-pointer">Download</span></p></div> </div>
+                 </a>
+            })}
+           </div>
     {!permission && <div className="grid grid-cols-2 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-4 gap-4 border-b border-zinc-500 pb-2 w-full">
        {tabs.map((item,index)=>{
         return <p onClick={()=>{setTab(item);setAdd(false)}} className={`${tab == item ? 'text-orange-700 font-bold' : 'text-zinc-400'} cursor-pointer`} key={index}>{item}</p>
@@ -403,9 +409,11 @@ export default function Detail(){
                     </div>
                 <p>Start Date: <span className="text-white font-bold mr-2">{item.start}</span>  </p>
                 <p>End Date: <span className="text-white font-bold mr-2"> {item.end}</span> </p>
-                <p className="font-bold text-zinc-300">{item.description}</p>
+                
+                <p>Description: <br></br> <br></br><span className="font-bold text-zinc-300">{item.description}</span></p>
+                {item.objectives && item.objectives.length > 0 && <p>Objectives:</p>}
                 {item.objectives && item.objectives.length > 0 && item.objectives.map((item,index)=>{
-                  return <div key={index} className="flex justify-between mb-2 pr-8"><div className="flex space-x-2"><i className="bi bi-check"></i><p>{item}</p></div><i onClick={()=>setObjectives(prev => prev.filter((ob, i) => i !== index))} className="bi bi-trash-fill text-red-500 cursor-pointer"></i></div>
+                  return <div key={index} className="flex justify-between mb-2 pr-8 text-zinc-200"><div className="flex space-x-2"><i className="bi bi-check"></i><p>{item}</p></div></div>
                })}
                 <div>
                 <p className="font-bold text-zinc-300 text-lg"><i className="bi bi-paperclip text-orange-700 rotate-20"></i>Media And Docs</p>

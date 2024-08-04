@@ -33,7 +33,7 @@ export default function TaskCard(props){
       <li onClick={()=>navigate(`/newtask?edit=${props.id}`)}>Edit</li>
       <li>Reminder</li>
       <li onClick={()=>navigate(`/taskdetails/${props.id}`)}>View Activity</li>
-      <li className="text-red-500" onClick={handleDelete}>Delete</li>
+      {props.status === 'Completed' ? <li className="text-red-500" onClick={handleDelete}>Delete</li> : <li>End Task</li>}
     </ul>
     </div>
     <div className="flex flex-col 2xl:flex-row xl:flex-row lg:flex-row md:flex-row sm:flex-row items-center justify-between">

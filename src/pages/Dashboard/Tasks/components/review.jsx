@@ -25,7 +25,7 @@ export default function Review(props){
     </div>}
     {edit &&
     <div className="flex space-x-4 cursor-pointer">
-    <i className="bi bi-pen-fill text-green-500" onClick={props.edit}></i>
+      {props.status === 'Pending' && <i className="bi bi-pen-fill text-green-500" onClick={props.edit}></i> }
     <i className="bi bi-trash-fill text-red-500"  onClick={props.delete}></i>
     </div>}
   </div>

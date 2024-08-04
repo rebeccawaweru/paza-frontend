@@ -7,7 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Todo, Milestone, GridBox, Review } from "./components";
 import { toast, ToastContainer } from "react-toastify";
 import { DashContext } from "../../../context/AuthContext";
-import { handleDownload } from "../../../utils/helpers";
+import axios from "axios";
 export default function Detail(){
     const {account, user} = useContext(DashContext)
     const [title, setTitle] = useState('')
@@ -21,6 +21,8 @@ export default function Detail(){
     const [addMil, setAddMil] = useState(false)
     const [reviews,setReviews] = useState(true);
     const [indx,setIndx] = useState(0)
+    const [selectedFiles, setSelectedFiles] = useState([])
+
     const [todo, setTodo] = useState({
         title:"",
         time:"",
@@ -36,6 +38,7 @@ export default function Detail(){
         title:"",
         description:"",
         objectives:objectives,
+        category:"",
         budget:"",
         start:"",
         end:"",
@@ -83,6 +86,26 @@ export default function Detail(){
     };
     const permission = values.createdby === (account.creatorname || account.company || user.email);
     // const permission = false;
+    const handleUpload = async (e)=>{
+      const files = e.target.files;
+      setSelectedFiles((prev) => [...prev, ...Array.from(files)])
+   }
+   async function upload(){
+    const formData = new FormData();
+    selectedFiles.forEach((file) => {
+      formData.append("attachments", file);
+    });
+    const res = await axios.post(
+      "http://54.163.27.140:5000/uploads/attachments",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    )
+    return res.data.attachmentUrls
+  }
     useEffect(()=>{
      getTask()
     },[id])
@@ -299,7 +322,7 @@ export default function Detail(){
                            todo.title === title ? { ...todo, reviews: [...(todo.reviews || []), {
                               title:title,
                               description:description,
-                              uploads:[],
+                              uploads:upload(),
                               status:"Pending",
                               addedby: account.creatorname || account.company || user.email
                             }] } : todo
@@ -319,6 +342,7 @@ export default function Detail(){
                 multiple
                 id="files"
                 className="hidden"
+                onChange={handleUpload}
               />
               <label className="text-sm text-zinc-100 mb-2" for="files">
                 Click to Upload
@@ -366,16 +390,20 @@ export default function Detail(){
          
             </div>
            <BasicLabel title="Budget (Ksh)"/>
-           <BasicInput name="budget" value={mile.budget} onChange={handleChange2}  custom="w-full grey" type="number" required />
+           <BasicInput name="budget" value={mile.budget} onChange={handleChange2}  custom="w-full grey" type="number" />
            </div>
+           <BasicSelect name="category" value={mile.category} onChange={handleChange2}  custom="w-full grey">
+            <MenuItem value="Main Objective">Main Objective</MenuItem>
+            <MenuItem value="Sub-Objective">Sub-Objective</MenuItem>
+           </BasicSelect>
            <div className="grid grid-cols-2 gap-2">
            <div>
            <BasicLabel title="Start Date"/>
-           <BasicInput name="start" value={mile.start} onChange={handleChange2}  custom="w-full grey py-1" type="date" required />
+           <BasicInput name="start" value={mile.start} onChange={handleChange2}  custom="w-full grey py-1" type="date" />
            </div>
            <div>
            <BasicLabel title="Due Date"/>
-           <BasicInput name="end" value={mile.end} onChange={handleChange2}  custom="w-full grey py-1" type="date" required />
+           <BasicInput name="end" value={mile.end} onChange={handleChange2}  custom="w-full grey py-1" type="date" />
            </div>
            </div>
            <BasicSelect name="status" value={mile.status} onChange={handleChange2}  custom="w-full grey">
@@ -415,13 +443,10 @@ export default function Detail(){
                 {item.objectives && item.objectives.length > 0 && item.objectives.map((item,index)=>{
                   return <div key={index} className="flex justify-between mb-2 pr-8 text-zinc-200"><div className="flex space-x-2"><i className="bi bi-check"></i><p>{item}</p></div></div>
                })}
-                <div>
-                <p className="font-bold text-zinc-300 text-lg"><i className="bi bi-paperclip text-orange-700 rotate-20"></i>Media And Docs</p>
-                <p className="text-zinc-400">16 Attached</p>
-                </div>
+              
                 <div className="flex space-x-8 text-zinc-400">
                     <p><i className="bi bi-cash-stack"></i> <span className="text-white font-bold">Ksh {Number(item.budget).toLocaleString()}</span></p>
-                    <p>10 creators</p>
+                
                 </div>
               </div>
             }

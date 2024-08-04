@@ -46,8 +46,7 @@ export default function CreateTask() {
   const handleUpload = async (e)=>{
      const files = e.target.files;
      setSelectedFiles((prev) => [...prev, ...Array.from(files)])
-  
-  
+     
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -64,12 +63,14 @@ export default function CreateTask() {
             }
             return acc;
           }, {});
-  
           //Check if there are any updates
           if (Object.keys(updatedValues).length > 0 || selectedFiles.length > 0  || removed) {
-              let newarray = []
-              const uploads = await upload()
-              newarray = [...attachments, ...uploads];
+              let newarray = [...attachments]
+              if(selectedFiles.length > 0) {
+                const uploads = await upload()
+                newarray = [...uploads];
+              }
+           
             const response = await client.put(`/tasks/${id}`, {...updatedValues, attachments:newarray}, {
               headers: { Authorization: `${token}` },
             });

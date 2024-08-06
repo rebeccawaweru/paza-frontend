@@ -6,7 +6,6 @@ export default function Dashboard({children,sidebar}){
     <div className="w-full min-h-screen relative overflow-hidden">
     <NavBar/>
     <Grid container minHeight="100vh">
-    
     {sidebar}
     {children}
     </Grid>

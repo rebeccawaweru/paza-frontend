@@ -1,2 +1,6 @@
 export {default as TaskCard} from './task'
 export {default as Detail} from './detail'
+export {default as Todo} from './todo'
+export {default as Milestone} from './milestone'
+export {default as GridBox} from './grid'
+export {default as Review} from './review'

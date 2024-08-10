@@ -1,4 +1,5 @@
 import { Dashboard } from "../../../layouts";
+import axios from "axios";
 import {
   BasicInput,
   SideBar,
@@ -8,17 +9,24 @@ import {
   CheckBox,
 } from "../../../components";
 import { MenuItem, Grid } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import client from "../../../api/client";
 import { toast, ToastContainer } from "react-toastify";
+import { DashContext } from "../../../context/AuthContext";
 export default function CreateTask() {
   const [searchParams] = useSearchParams();
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [removed, setRemoved] = useState(false);
+  const [attachments, setAttachments] = useState([]);
+  const { account, user } = useContext(DashContext);
+  const owner = account.creatorname || account.company || user.email;
   const id = searchParams.get("edit");
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const [choose, setChoose] = useState(false);
   const [initialValues, setInitialValues] = useState({
+    createdby: owner,
     task: "",
     assignee: "",
     priority: "",
@@ -28,59 +36,118 @@ export default function CreateTask() {
     due: "",
     repeat: "",
     description: "",
-    attachment: "",
+    todos: [],
+    milestones: [],
   });
   const [values, setValues] = useState(initialValues);
+  const [members, setMembers] = useState([]);
   const handleChange = (e) => {
     setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+  const handleUpload = async (e) => {
+    const files = e.target.files;
+    setSelectedFiles((prev) => [...prev, ...Array.from(files)]);
+  };
+
+  useEffect(() => {
+    getMembers();
+  }, []);
+
+  //Get members for task assignment
+  const getMembers = async () => {
+    const response = await client.get("users/members", {
+      headers: { Authorization: `${token}` },
+    });
+
+    setMembers(response.data);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      if (id) {
-        //Create object with only updated values
-        const updatedValues = Object.keys(values).reduce((acc, key) => {
-          if (values[key] !== initialValues[key]) {
-            acc[key] = values[key];
-          }
-          return acc;
-        }, {});
+    if (selectedFiles.length > 0 && !id) {
+      const uploads = await upload();
+      createTask({ ...values, attachments: uploads });
+    } else {
+      try {
+        if (id) {
+          //Create object with only updated values
+          const updatedValues = Object.keys(values).reduce((acc, key) => {
+            if (values[key] !== initialValues[key]) {
+              acc[key] = values[key];
+            }
+            return acc;
+          }, {});
+          //Check if there are any updates
+          if (
+            Object.keys(updatedValues).length > 0 ||
+            selectedFiles.length > 0 ||
+            removed
+          ) {
+            let newarray = [...attachments];
+            if (selectedFiles.length > 0) {
+              const uploads = await upload();
+              newarray = [...uploads];
+            }
 
-        //Check if there are any updates
-        if (Object.keys(updatedValues).length > 0) {
-          const response = await client.put(`/tasks/${id}`, updatedValues, {
-            headers: { Authorization: `${token}` },
-          });
-           if (response.data === 'Task updated successfully') {
-            toast.success(response.data)
-            setTimeout(()=>{
-              navigate('/tasks')
-            }, 2000)
-           }
+            const response = await client.put(
+              `/tasks/${id}`,
+              { ...updatedValues, attachments: newarray },
+              {
+                headers: { Authorization: `${token}` },
+              }
+            );
+            if (response.data === "Task updated successfully") {
+              toast.success(response.data);
+              setTimeout(() => {
+                navigate("/tasks");
+              }, 2000);
+            }
+          } else {
+            toast.info("No changes made!");
+          }
         } else {
-          toast.info("No changes made!");
+          createTask(values);
         }
-      } else {
-        const response = await client.post("/tasks/create", values, {
-          headers: { Authorization: `${token}` },
-        });
-        if (response.data.acknowledged) {
-          toast.success("Task created!");
-          setTimeout(() => {
-            navigate("/tasks");
-          }, 2000);
-        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
     }
   };
+
+  async function upload() {
+    const formData = new FormData();
+    selectedFiles.forEach((file) => {
+      formData.append("attachments", file);
+    });
+    const res = await axios.post(
+      "http://54.221.72.137:5000/uploads/attachments",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    return res.data.attachmentUrls;
+  }
+  async function createTask(data) {
+    const response = await client.post("/tasks/create", data, {
+      headers: { Authorization: `${token}` },
+    });
+    if (response.data.acknowledged) {
+      toast.success("Task created!");
+      setTimeout(() => {
+        navigate("/tasks");
+      }, 2000);
+    }
+  }
   async function getTask() {
     const response = await client.get(`/tasks/${id}`, {
       headers: { Authorization: `${token}` },
     });
     setInitialValues(response.data);
     setValues(response.data);
+    setAttachments(response.data.attachments);
   }
   useEffect(() => {
     //if updating, use id to get the task
@@ -121,20 +188,16 @@ export default function CreateTask() {
                   choose ? "flex" : "hidden"
                 } flex-col mt-2`}
               >
-                <CheckBox
-                  label="Rebecca"
-                  name="assignee"
-                  value="Rebecca"
-                  checked={values.assignee === "Rebecca"}
-                  onChange={handleChange}
-                />
-                <CheckBox
-                  label="Ishmael"
-                  name="assignee"
-                  value="Ishmael"
-                  checked={values.assignee === "Ishmael"}
-                  onChange={handleChange}
-                />
+                {members.map((member) => (
+                  <CheckBox
+                    key={member._id}
+                    label={member.firstname}
+                    name="assignee"
+                    value={member.firstname}
+                    checked={values.assignee === member.firstname}
+                    onChange={handleChange}
+                  />
+                ))}
               </div>
             </div>
             <div>
@@ -218,6 +281,7 @@ export default function CreateTask() {
               onChange={handleChange}
               custom="w-full grey"
             >
+              <MenuItem value="Never">Never</MenuItem>
               <MenuItem value="Daily">Daily</MenuItem>
               <MenuItem value="Weekly">Weekly</MenuItem>
               <MenuItem value="Monthly">Monthly</MenuItem>
@@ -241,16 +305,71 @@ export default function CreateTask() {
           </div>
           <div>
             <BasicLabel title="Attachment" />
-            <div className="w-full h-48 flex flex-col space-y-4 cursor-pointer justify-center items-center border-dashed border-2 border-orange-700 rounded-md">
-              <i className="bi bi-file-earmark-arrow-up orange text-black rounded-full px-3 py-2 font-bold text-2xl"></i>
+            <div className="w-full h-auto py-2 flex flex-col space-y-4 cursor-pointer justify-center items-center border-dashed border-2 border-orange-700 rounded-md">
+              <div className="flex justify-start flex-wrap space-x-2 p-2">
+                {attachments &&
+                  attachments.length > 0 &&
+                  attachments.map((item, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className="relative border my-2 border-zinc-500 text-white text-sm font-semibold px-4 py-2"
+                      >
+                        <i
+                          onClick={() => {
+                            setAttachments((prev) =>
+                              prev.filter((item, i) => i !== index)
+                            );
+                            setRemoved(true);
+                          }}
+                          className="bi bi-x absolute top-0 right-0"
+                        ></i>
+                        <a
+                          href={item}
+                          target="_blank"
+                          className="underline text-orange-700 font-semibold cursor-pointer"
+                        >
+                          {item.split("/attachments/")[1]}{" "}
+                        </a>
+                      </div>
+                    );
+                  })}
+              </div>
+              <div className="flex flex-wrap space-x-2 p-2">
+                {selectedFiles.length > 0 &&
+                  selectedFiles.map((item, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className="relative border my-2 border-zinc-500 text-white text-sm font-semibold px-4 py-2"
+                      >
+                        <i
+                          onClick={() =>
+                            setSelectedFiles((prev) =>
+                              prev.filter((item, i) => i !== index)
+                            )
+                          }
+                          className="bi bi-x absolute top-0 right-0"
+                        ></i>
+                        <p>{item.name}</p>
+                      </div>
+                    );
+                  })}
+              </div>
+
               <input
+                multiple
                 type="file"
                 id="files"
-                accept=".png, .jpg, .jpeg , .pdf"
+                onChange={handleUpload}
                 className="hidden"
               />
-              <label className="text-sm text-zinc-100 mb-2" for="files">
-                Click to Upload
+              <label
+                className="flex flex-col items-center text-sm text-zinc-100 mb-2 space-y-2"
+                for="files"
+              >
+                <i className="bi bi-file-earmark-arrow-up orange text-black rounded-full px-3 py-2 font-bold text-2xl"></i>
+                <p>Click to Upload</p>
               </label>
             </div>
           </div>

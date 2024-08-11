@@ -181,7 +181,7 @@ export default function CreateTask() {
                 checked={values.assignee === a}
                 onChange={handleChange}
               />
-              }) : <p>Kindly add members to assign task...</p>}
+              }) : <p className="font-semibold text-red-500"><i className="bi bi-exclamation-triangle mr-1"></i>Kindly add members to assign task...</p>}
                 
               </div>
             </div>

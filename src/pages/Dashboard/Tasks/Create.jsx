@@ -128,6 +128,10 @@ export default function CreateTask() {
     setAttachments(response.data.attachments)
   }
   useEffect(() => {
+    //query to get the members/assignees
+    client.get('/members').then((response) => {
+      console.log(response)
+    })
     //if updating, use id to get the task
     if (id) {
       getTask();

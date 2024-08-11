@@ -22,8 +22,8 @@ export default function TaskCard(props){
         })
       }
    })
-
   }
+
     return  <div key={props.key} className="grey p-4 text-sm space-y-6 text-zinc-300 rounded-md relative">
     <div className="flex space-x-2 items-center ">
     <i className="bi bi-circle"></i>
@@ -33,7 +33,7 @@ export default function TaskCard(props){
       <li onClick={()=>navigate(`/newtask?edit=${props.id}`)}>Edit</li>
       <li>Reminder</li>
       <li onClick={()=>navigate(`/taskdetails/${props.id}`)}>View Activity</li>
-      {props.status === 'Completed' ? <li className="text-red-500" onClick={handleDelete}>Delete</li> : <li>End Task</li>}
+      {props.status === 'Completed' ? <li className="text-red-500" onClick={handleDelete}>Delete</li> : null}
     </ul>
     </div>
     <div className="flex flex-col 2xl:flex-row xl:flex-row lg:flex-row md:flex-row sm:flex-row items-center justify-between">

@@ -23,6 +23,7 @@ export default function CreateTask() {
   const owner = account.creatorname || account.company || user.email;
   const id = searchParams.get("edit");
   const token = localStorage.getItem("token");
+  const [assignee,setAssignee] = useState([])
   const navigate = useNavigate();
   const [choose, setChoose] = useState(false);
   const [initialValues, setInitialValues] = useState({
@@ -129,8 +130,10 @@ export default function CreateTask() {
   }
   useEffect(() => {
     //query to get the members/assignees
-    client.get('/members').then((response) => {
-      console.log(response)
+    client.get('/users/members', {
+      headers: { Authorization: `${token}` },
+    }).then((response) => {
+     setAssignee(response.data)
     })
     //if updating, use id to get the task
     if (id) {
@@ -169,21 +172,17 @@ export default function CreateTask() {
                 className={`bg-white p-4 text-black text-sm ${
                   choose ? "flex" : "hidden"
                 } flex-col mt-2`}
-              >
-                <CheckBox
-                  label="Rebecca"
-                  name="assignee"
-                  value="Rebecca"
-                  checked={values.assignee === "Rebecca"}
-                  onChange={handleChange}
-                />
-                <CheckBox
-                  label="Ishmael"
-                  name="assignee"
-                  value="Ishmael"
-                  checked={values.assignee === "Ishmael"}
-                  onChange={handleChange}
-                />
+              > 
+              {assignee.length > 0 ? assignee.map((a) => {
+                return <CheckBox
+                label={a}
+                name={a}
+                value={a}
+                checked={values.assignee === a}
+                onChange={handleChange}
+              />
+              }) : <p>Kindly add members to assign task...</p>}
+                
               </div>
             </div>
             <div>

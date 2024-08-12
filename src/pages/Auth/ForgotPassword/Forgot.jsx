@@ -9,7 +9,12 @@ export default function ForgotPassword(){
     const [email, setEmail] = useState('')
     const handleSubmit = (e) => {
         e.preventDefault();
-        navigate('/resetpassword')
+        client.post('/auth/forgot-password', {
+            email:email
+        }).then((response) => {
+            toast.success(response.data)
+        })
+        // navigate('/resetpassword')
     }
     return <AuthWrapper navbtn={<BasicButton custom="px-8 text-sm" title="Sign up" handleClick={() => navigate('/signup')}/>}>
     <ToastContainer theme="dark"/>

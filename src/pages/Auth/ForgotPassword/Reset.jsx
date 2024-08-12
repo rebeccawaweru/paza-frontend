@@ -22,9 +22,18 @@ export default function ResetPassword(){
         if (values.password !== values.confirmpassword){
           toast.error('Passwords do not match')
         } else {
-           client.post(`/reset-password?resetToken=${resetToken}`, values.password).then((response) => {
-            console.log(response)
-           }).catch((err) => console.log(err,resetToken))
+           client.post(`/auth/reset-password?resetToken=${resetToken}`, {
+            password:values.password
+           }).then((response) => {
+            if (response.status === 200) {
+              toast.success(response.data);
+            }
+            setTimeout(() => {
+              navigate("/");
+            }, 5000);
+           }).catch((err) => {
+            toast.error(err.response.data.message);
+          });
         }
     }
     return <AuthWrapper navbtn={<BasicButton custom="px-8 text-sm" title="Sign up" handleClick={() => navigate('/signup')}/>}>

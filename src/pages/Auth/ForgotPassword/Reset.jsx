@@ -1,10 +1,13 @@
 import { BasicButton, BasicInput } from "../../../components"
 import { AuthWrapper } from "../../../layouts";
 import { useState } from "react";
-import {useNavigate} from 'react-router-dom'
+import {useNavigate, useLocation} from 'react-router-dom'
 import client from "../../../api/client";
 import { toast, ToastContainer } from "react-toastify";
 export default function ResetPassword(){
+     const location = useLocation();
+     const queryParams = new URLSearchParams(location.search);
+     const resetToken = queryParams.get('resetToken')
     const navigate = useNavigate()
     const [visible,setVisible] = useState(false);
     const [values,setValues] = useState({
@@ -19,7 +22,9 @@ export default function ResetPassword(){
         if (values.password !== values.confirmpassword){
           toast.error('Passwords do not match')
         } else {
-          navigate('/')
+           client.post(`/reset-password?resetToken=${resetToken}`, values.password).then((response) => {
+            console.log(response)
+           }).catch((err) => console.log(err,resetToken))
         }
     }
     return <AuthWrapper navbtn={<BasicButton custom="px-8 text-sm" title="Sign up" handleClick={() => navigate('/signup')}/>}>

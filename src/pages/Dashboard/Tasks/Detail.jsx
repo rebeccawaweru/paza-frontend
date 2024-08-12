@@ -8,6 +8,7 @@ import { Todo, Milestone, GridBox, Review } from "./components";
 import { toast, ToastContainer } from "react-toastify";
 import { DashContext } from "../../../context/AuthContext";
 import axios from "axios";
+import Swal from "sweetalert2";
 export default function Detail(){
     const {account, user} = useContext(DashContext)
     const [title, setTitle] = useState('')
@@ -198,17 +199,51 @@ export default function Detail(){
                     )
                   )
                 }
-                reject={() =>
-                  setTodos((prev) =>
-                    prev.map((todo) =>
-                      ({
-                        ...todo,
-                        reviews: todo.reviews.map((t) =>
-                          t === review ? { ...t, status: 'Rejected' } : t
-                        )
+                reject={() => {
+                  Swal.fire({
+                    text:"Kindly provide reason for rejecting this review",
+                    input:"textarea",
+                    inputPlaceholder:"Type here...",
+                    showCancelButton:true,
+                    icon:"info",
+                    inputValidator:(value) => {
+                      return new Promise((resolve) => {
+                        if (!value) {
+                          resolve("Kindly fill the required field")
+                        } else {
+                          client.post('/emails/send', {
+                            to:"wawerur95@gmail.com",
+                            subject:`Attention: Your review has been rejected.`,
+                            text:value
+                          },{
+                            headers: { Authorization: `${token}` },
+                          }).then((res) => {
+                             if(res.statusText === 'OK') {
+                                resolve();
+                                toast.success('Review has been rejected.')
+                                setTodos((prev) =>
+                                  prev.map((todo) =>
+                                    ({
+                                      ...todo,
+                                      reviews: todo.reviews.map((t) =>
+                                        t === review ? { ...t, status: 'Rejected' } : t
+                                      )
+                                    })
+                                  )
+                                )
+                              } else {
+                              resolve();
+                              toast.error('An error occurred. Please try again later')
+                             }
+                          })
+                         
+                        }
                       })
-                    )
-                  )
+                    }
+                  })
+                 
+                }
+                 
                 }
                 />
          })

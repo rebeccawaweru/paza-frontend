@@ -4,7 +4,7 @@ import { Grid } from "@mui/material"
 import { useLocation } from "react-router-dom"
 export default function SideBar(){
   const location = useLocation()
-    return  <Grid item xs={2} sm={2} sx={{borderRight:"1px solid #221E1C",padding:2}}>
+    return  <Grid item xs={2} sm={2} position="relative" sx={{borderRight:"1px solid #221E1C",padding:2}}>
     <div className="space-y-4">
       <p className="text-zinc-500 text-xs font-bold">MAIN</p>
       <NavBtn icon="bi bi-grid-1x2-fill" name="overview" title="Overview" path="/overview"/>

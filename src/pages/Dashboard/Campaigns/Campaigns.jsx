@@ -1,14 +1,19 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import { SideBar } from "../../../components";
 import { Dashboard } from "../../../layouts";
 import { Grid } from "@mui/material";
-import { Content } from "./components";
+import { Content, Modal } from "./components";
 export default function Campaigns(){
+    const [open, isOpen] = useState(false)
+    const [step,setStep] = useState(1)
+    const next = () => setStep((prev) => prev + 1)
     return (
         <Dashboard sidebar={<SideBar/>}>
-          <Grid item xs={10} sm={10}>
+          <Grid item xs={10} sm={10} position="relative">
+          <Modal open={open} close={()=>isOpen(false)} step={step} next={next}/>
           <div className="w-full p-4 space-y-4">
          <h2 className="font-bold text-2xl">Campaigns</h2>
+        
          <div className="block 2xl:flex xl:flex lg:flex md:flex sm:flex w-full justify-between">
             <div className="flex space-x-4 cursor-pointer mb-4 sm:mb-0">
                 <div className="flex space-x-2 text-orange-700 font-semibold border-b border-orange-700 px-4 py-2">
@@ -20,8 +25,9 @@ export default function Campaigns(){
                 <div className="grey px-2 hidden 2xl:flex xl:flex lg:flex md:flex sm:flex items-center text-xs rounded-md text-zinc-300">5</div>
                 </div>
             </div>
-            <Link to="/newcampaign" className="grey text-sm p-2 cursor-pointer hover:bg-orange-700 hover:scale-90">+ New Campaign</Link>
+            <button onClick={()=>isOpen(true)} className="grey text-sm p-2 cursor-pointer hover:bg-orange-700 hover:scale-90">+ New Campaign</button>
          </div>
+      
          <Content/>
          <Content/>
          </div>

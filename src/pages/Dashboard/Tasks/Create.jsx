@@ -47,7 +47,6 @@ export default function CreateTask() {
   const handleUpload = async (e)=>{
      const files = e.target.files;
      setSelectedFiles((prev) => [...prev, ...Array.from(files)])
-     
   }
   const handleSubmit = async (e) => {
     e.preventDefault();

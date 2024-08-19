@@ -1,2 +1,2 @@
 export {Login, Signup, ResetPassword, ForgotPassword , AccountType, Creator, Brand, Join} from './Auth'
-export {OverView, Profile, CreateTask, Tasks, Detail, CreateCampaign, Campaigns} from './Dashboard'
+export {OverView, Profile, CreateTask, Tasks, Detail, Campaigns} from './Dashboard'

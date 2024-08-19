@@ -2,7 +2,7 @@ import { BasicButton, SideBar } from "../../../components";
 import { Dashboard } from "../../../layouts";
 import { Grid } from "@mui/material";
 import { useState, useEffect } from "react";
-import { Detail, TaskCard } from "./components";
+import { TaskCard } from "./components";
 import { useNavigate } from "react-router-dom";
 import client from "../../../api/client";
 export default function Tasks(){
@@ -20,7 +20,7 @@ export default function Tasks(){
     return <Dashboard sidebar={<SideBar/>}>
            <Grid item xs={10} sm={10}>
             <div className="w-full">
-            <Detail view={view} close={()=>setView(false)} {...item}/>
+        
             <div className="p-4 space-y-6">
             <div className="flex flex-col 2xl:flex-row xl:flex-row lg:flex-row md:flex-row sm:flex-row justify-between">
             <h2 className="font-bold text-2xl">Tasks</h2>

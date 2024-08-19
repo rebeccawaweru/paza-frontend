@@ -2,13 +2,15 @@ import Step1 from "./step1";
 import Step2 from "./step2";
 import Step3 from "./step3";
 import Step4 from "./step4";
+import client from "../../../../api/client";
 import { createContext, useState } from "react";
-export const CampaignContext = createContext()
+export const CampaignContext = createContext();
 export default function Modal (props){
+    const token = localStorage.getItem("token");
     const [step,setStep] = useState(1)
     const [values, setValues] = useState({
         title:"",
-        category:"",
+        category:"heeey",
         description:"",
         location:"",
         phone:"",
@@ -29,7 +31,11 @@ export default function Modal (props){
         setStep((prev) => prev + 1)
        } else {
           //post new campaign route
-          console.log(values)
+          client.post('/campaigns/create', {
+            headers: { Authorization: `${token}` },
+          },{...values}).then((response)=>{
+            console.log(response)
+          });
        }
   
     }

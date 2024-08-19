@@ -3,10 +3,17 @@ import { SideBar } from "../../../components";
 import { Dashboard } from "../../../layouts";
 import { Grid } from "@mui/material";
 import { Content, Modal } from "./components";
+import client from "../../../api/client";
 export default function Campaigns(){
+    const token = localStorage.getItem("token");
     const [open, isOpen] = useState(false);
     useEffect(()=>{
     //get campaigns route
+    client.get('/campaigns',{
+        headers: { Authorization: `${token}` },
+    }).then((response)=>{
+        console.log(response)
+    })
     },[])
     return (
         <Dashboard sidebar={<SideBar/>}>

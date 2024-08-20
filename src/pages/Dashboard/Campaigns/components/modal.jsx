@@ -3,6 +3,7 @@ import Step2 from "./step2";
 import Step3 from "./step3";
 import Step4 from "./step4";
 import client from "../../../../api/client";
+import { campaignsPost } from "../../../../api/client";
 import { createContext, useState } from "react";
 export const CampaignContext = createContext();
 export default function Modal(props) {
@@ -26,24 +27,14 @@ export default function Modal(props) {
   };
   const cls =
     "rounded-full px-4 py-2 border border-orange-700 flex items-center justify-center";
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (step < 4) {
       setStep((prev) => prev + 1);
     } else {
       //post new campaign route
-      client
-        .post(
-          "/campaigns/create",
-          {
-            ...values,
-          },
-          { headers: { Authorization: `${token}` } }
-        )
-        .then((response) => {
-          console.log("🚀 ~ handleSubmit ~ values:", values);
-          console.log(response);
-        });
+      const response = await campaignsPost("campaigns/create", values);
+      console.log("🚀 ~ handleSubmit ~ response:", response);
     }
   };
   return (

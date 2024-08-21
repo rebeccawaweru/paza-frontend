@@ -4,11 +4,17 @@ import Step3 from "./step3";
 import Step4 from "./step4";
 import client from "../../../../api/client";
 import { createContext, useState } from "react";
+import { useContext } from "react";
+import { DashContext } from "../../../../context/AuthContext";
+import { toast } from "react-toastify";
 export const CampaignContext = createContext();
 export default function Modal(props) {
+    const {account, user} = useContext(DashContext)
+  const owner = account.creatorname || account.company || user.email;
   const token = localStorage.getItem("token");
   const [step, setStep] = useState(1);
   const [values, setValues] = useState({
+    createdby: owner,
     title: "",
     category: "heeey",
     description: "",
@@ -41,8 +47,10 @@ export default function Modal(props) {
           { headers: { Authorization: `${token}` } }
         )
         .then((response) => {
-          console.log("🚀 ~ handleSubmit ~ values:", values);
-          console.log(response);
+        //   console.log("🚀 ~ handleSubmit ~ values:", values);
+          console.log(response.data);
+          props.close()
+          toast.success(response.data)
         });
     }
   };

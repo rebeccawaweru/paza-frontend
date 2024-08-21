@@ -4,20 +4,23 @@ import { Dashboard } from "../../../layouts";
 import { Grid } from "@mui/material";
 import { Content, Modal } from "./components";
 import client from "../../../api/client";
+import { ToastContainer } from "react-toastify";
 export default function Campaigns(){
     const token = localStorage.getItem("token");
     const [open, isOpen] = useState(false);
+    const [campaigns,setCampaigns] = useState([])
     useEffect(()=>{
     //get campaigns route
     client.get('/campaigns',{
         headers: { Authorization: `${token}` },
     }).then((response)=>{
-        console.log(response)
+       setCampaigns(response.data)
     })
     },[])
     return (
         <Dashboard sidebar={<SideBar/>}>
           <Grid item xs={10} sm={10} position="relative">
+            <ToastContainer/>
           <Modal open={open} close={()=>isOpen(false)}/>
           <div className="w-full p-4 space-y-4 ">
          <h2 className="font-bold text-2xl">Campaigns</h2>
@@ -34,8 +37,10 @@ export default function Campaigns(){
             </div>
             <button onClick={()=>isOpen(true)} className="grey text-sm p-2 cursor-pointer hover:bg-orange-700 hover:scale-90">+ New Campaign</button>
          </div>
-         <Content/>
-         <Content/>
+         {campaigns.length > 0 && campaigns.map((c) => {
+            return <Content key={c._id} {...c}/>
+         })}
+     
          </div>
          </Grid>
         </Dashboard>

@@ -12,7 +12,7 @@ export default function Campaigns() {
     //get campaigns route
     const getCampaigns = async () => {
       try {
-        const response = await campaignsGet("/campaigns");
+        const response = await campaignsGet("/");
         console.log("🚀 ~ useEffect ~ response:", response);
       } catch (error) {
         console.error("Failed to fetch campaigns:", error);

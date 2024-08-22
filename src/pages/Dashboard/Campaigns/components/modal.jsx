@@ -33,7 +33,7 @@ export default function Modal(props) {
       setStep((prev) => prev + 1);
     } else {
       //post new campaign route
-      const response = await campaignsPost("campaigns/create", values);
+      const response = await campaignsPost("/create", values);
       console.log("🚀 ~ handleSubmit ~ response:", response);
     }
   };

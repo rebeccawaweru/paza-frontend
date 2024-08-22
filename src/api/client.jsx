@@ -1,9 +1,11 @@
 import axios from "axios";
 export default axios.create({ baseURL: "http://localhost:5050" });
 
-const campaignsApi = axios.create({
-  baseURL: "http://localhost:5050",
-});
+const createApiInstance = (baseURL) => {
+  return axios.create({
+    baseURL,
+  });
+};
 
 const getHeaders = () => {
   return {
@@ -13,49 +15,58 @@ const getHeaders = () => {
   };
 };
 
-export const campaignsPost = (url, body) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const resp = await campaignsApi.post(url, body, { ...getHeaders() });
-      resolve(resp);
-    } catch (error) {
-      reject(error);
+const requestHandler = async (
+  apiInstance,
+  method,
+  url,
+  body = null,
+  params = {}
+) => {
+  try {
+    const options = {
+      ...getHeaders(),
+      params,
+    };
+
+    let resp;
+    if (method === "post" || method === "put") {
+      resp = await apiInstance[method](url, body, options);
+    } else {
+      resp = await apiInstance[method](url, options);
     }
-  });
+
+    return resp;
+  } catch (error) {
+    throw error;
+  }
 };
 
-export const campaignsGet = (url, params = {}) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const resp = await campaignsApi.get(url, { ...getHeaders(), params });
-      resolve(resp);
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
+//Create API instances
+const usersAuthApi = createApiInstance("http://localhost:5050/auth");
+const campaignsApi = createApiInstance("http://localhost:5050/campaigns");
 
-export const campaignsPut = (url, body, params = {}) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const resp = await campaignsApi.put(url, body, {
-        ...getHeaders(),
-        params,
-      });
-      resolve(resp);
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
+//Exported API methods for authentication
+export const usersSignupPost = (url, body) =>
+  requestHandler(usersAuthApi, "post", url, body);
 
-export const campaignsDelete = (url, params = {}) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const resp = await campaignsApi.delete(url, { ...getHeaders(), params });
-      resolve(resp);
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
+export const usersLoginPost = (url, body) =>
+  requestHandler(usersAuthApi, "post", url, body);
+
+export const usersForgotPasswordPost = (url, body) =>
+  requestHandler(usersAuthApi, "post", url, body);
+
+export const usersResetPasswordPost = (url, body) =>
+  requestHandler(usersAuthApi, "post", url, body);
+
+//Exported API methods for campaigns
+export const campaignsPost = (url, body) =>
+  requestHandler(campaignsApi, "post", url, body);
+
+export const campaignsGet = (url, params) =>
+  requestHandler(campaignsApi, "get", url, null, params);
+
+export const campaignsPut = (url, body, params) =>
+  requestHandler(campaignsApi, "put", url, body, params);
+
+export const campaignsDelete = (url, params) =>
+  requestHandler(campaignsApi, "delete", url, null, params);

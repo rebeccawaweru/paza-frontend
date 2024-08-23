@@ -1,6 +1,6 @@
 export default function Content(props){
     return (
-        <div key={props.key} className="grey px-4 py-6 block 2xl:flex xl:flex lg:flex md:flex items-center justify-between rounded-md cursor-pointer hover:border hover:border-zinc-500">
+        <div key={props.key} onClick={props.view} className="grey px-4 py-6 block 2xl:flex xl:flex lg:flex md:flex items-center justify-between rounded-md cursor-pointer hover:border hover:border-zinc-500">
             <div className="space-y-2">
             <p className="font-semibold text-lg">{props.title}</p>
             <div className="flex space-x-2 text-xs">

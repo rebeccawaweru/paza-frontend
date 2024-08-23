@@ -11,7 +11,6 @@ export const CampaignContext = createContext();
 export default function Modal(props) {
     const {account, user} = useContext(DashContext)
   const owner = account.creatorname || account.company || user.email;
-  const token = localStorage.getItem("token");
   const [step, setStep] = useState(1);
   const [values, setValues] = useState({
     createdby: owner,
@@ -41,6 +40,20 @@ export default function Modal(props) {
       const response = await campaignsPost("campaigns/create", values);
       console.log("🚀 ~ handleSubmit ~ response:", response);
       toast.success(response.data)
+      props.close();
+      setValues({
+        title: "",
+        category: "",
+        description: "",
+        location: "",
+        phone: "",
+        age: false,
+        docs: false,
+        cards: false,
+        email: "",
+        budget: "",
+        bank: "",
+      });
     }
   };
   return (

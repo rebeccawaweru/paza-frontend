@@ -2,85 +2,22 @@ import Step1 from "./step1";
 import Step2 from "./step2";
 import Step3 from "./step3";
 import Step4 from "./step4";
-import { campaignsPost } from "../../../../api/client";
-import { createContext, useState } from "react";
 import { useContext } from "react";
-import { DashContext } from "../../../../context/AuthContext";
-import { toast } from "react-toastify";
-export const CampaignContext = createContext();
-export default function Modal(props) {
-    const {account, user} = useContext(DashContext)
-  const owner = account.creatorname || account.company || user.email;
-  const [step, setStep] = useState(1);
-  const [values, setValues] = useState({
-    createdby: owner,
-    title: "",
-    category: "heeey",
-    description: "",
-    location: "",
-    phone: "",
-    age: false,
-    docs: false,
-    cards: false,
-    email: "",
-    budget: "",
-    bank: "",
-  });
-  const handleChange = (e) => {
-    setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+import { CampaignContext } from "../Campaigns";
+export default function Modal() {
+  const {close,open,step} = useContext(CampaignContext);
   const cls =
     "rounded-full px-4 py-2 border border-orange-700 flex items-center justify-center";
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (step < 4) {
-      setStep((prev) => prev + 1);
-    } else {
-      //post new campaign route
-      const response = await campaignsPost("campaigns/create", values);
-      console.log("🚀 ~ handleSubmit ~ response:", response);
-      toast.success(response.data)
-      props.close();
-      setValues({
-        title: "",
-        category: "",
-        description: "",
-        location: "",
-        phone: "",
-        age: false,
-        docs: false,
-        cards: false,
-        email: "",
-        budget: "",
-        bank: "",
-      });
-    }
-  };
+
   return (
-    <CampaignContext.Provider
-      value={{ handleChange, setStep, handleSubmit, values }}
-    >
       <div
         className={`${
-          props.open ? "block absolute" : "hidden"
+        open ? "block absolute" : "hidden"
         } left-1/2 top-96 mb-4 px-4 transform -translate-x-1/2 -translate-y-1/2 bg-black shadow-lg shadow-zinc-800 h-auto w-2/3 py-2 space-y-4`}
       >
         <i
           onClick={() => {
-            props.close();
-            setValues({
-              title: "",
-              category: "",
-              description: "",
-              location: "",
-              phone: "",
-              age: false,
-              docs: false,
-              cards: false,
-              email: "",
-              budget: "",
-              bank: "",
-            });
+          close();
           }}
           className="bi bi-x float-right text-lg cursor-pointer absolute right-2 top-0"
         ></i>
@@ -118,6 +55,6 @@ export default function Modal(props) {
         {step === 3 && <Step3 />}
         {step === 4 && <Step4 />}
       </div>
-    </CampaignContext.Provider>
+ 
   );
 }

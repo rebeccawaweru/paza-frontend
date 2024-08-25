@@ -1,6 +1,6 @@
 import { BasicInput, BasicSelect, BasicButton } from "../../../../components";
 import { useContext, useState } from "react";
-import { CampaignContext } from "./modal";
+import { CampaignContext } from "../Campaigns";
 export default function Step1(){
     const {handleChange,handleSubmit,values} = useContext(CampaignContext);
     const [selectedFiles, setSelectedFiles] = useState([])
@@ -22,7 +22,7 @@ export default function Step1(){
           <p className="text-zinc-500 font-bold text-xs">State your rate to do the job</p>
           </div>
           <div>
-          <BasicInput name="description" value={values.description}  onChange={handleChange} custom="w-full grey" multiline rows={4} required placeholder="Describe your campaign" phcolor="grey" phweight={200}/>
+          <BasicInput name="description" value={values.description}  onChange={handleChange} custom="w-full grey" multiline rows={8} required placeholder="Describe your campaign" phcolor="grey" phweight={200}/>
           <p className="text-zinc-500 font-bold text-xs">Write a small brief about your campaign</p>
           </div>
           <div className="w-full h-auto py-2 flex flex-col space-y-4 cursor-pointer justify-center items-center border-dashed border-2 border-orange-700 rounded-md">

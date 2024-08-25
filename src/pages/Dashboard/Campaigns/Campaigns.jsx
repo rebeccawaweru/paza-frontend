@@ -1,15 +1,85 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,createContext, useContext} from "react";
 import { SideBar } from "../../../components";
 import { Dashboard } from "../../../layouts";
 import { Grid } from "@mui/material";
 import { Content, Modal } from "./components";
-import { ToastContainer } from "react-toastify";
-import { campaignsGet } from "../../../api/client";
+import { ToastContainer, toast} from "react-toastify";
+import { campaignsGet, campaignsPost, campaignsPut } from "../../../api/client";
 import { useNavigate } from "react-router-dom";
+import { DashContext } from "../../../context/AuthContext";
+
+export const CampaignContext = createContext();
 export default function Campaigns(){
     const navigate = useNavigate()
     const [open, isOpen] = useState(false);
+    const [edit, setEdit] = useState(false);
+    const [id, setId] = useState("");
+    const [step, setStep] = useState(1);
     const [campaigns,setCampaigns] = useState([])
+    const {account, user} = useContext(DashContext)
+    const owner = account.creatorname || account.company || user.email;
+    const [goal,setGoal] = useState('');
+    const [goals, setGoals] = useState([]);
+    const [values, setValues] = useState({
+      createdby: owner,
+      title: "",
+      category: "hhh",
+      description: "",
+      location: "",
+      phone: "",
+      age: false,
+      docs: false,
+      cards: false,
+      email: "",
+      budget: "",
+      bank: "",
+      milestones:[],
+      requirements:[]
+    });
+    const close = () => {
+      isOpen(false)
+      setValues({
+        createdby: owner,
+        title: "",
+        category: "",
+        description: "",
+        location: "",
+        phone: "",
+        age: false,
+        docs: false,
+        cards: false,
+        email: "",
+        budget: "",
+        bank: "",
+        milestones:[],
+        requirements:[]
+      });
+    }
+    const handleChange = (e) => {
+      setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    };
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      if (step < 4) {
+        setStep((prev) => prev + 1);
+      } else {
+        //post new campaign route / edit campaign
+         if (edit){
+           const response = await campaignsPut(`/campaigns/${id}`,{values, goals:goals});
+          isOpen(false)
+          toast.success(response.data)
+          setStep(1)
+          console.log(values,goals)
+
+         } else {
+          const response = await campaignsPost("campaigns/create", {values, goals:goals});
+          isOpen(false)
+          toast.success(response.data)
+          setStep(1)
+         }
+   
+      }
+    };
     useEffect(()=>{
     //get campaigns route
     const getCampaigns = async () => {
@@ -25,9 +95,12 @@ export default function Campaigns(){
     },[campaigns])
     return (
         <Dashboard sidebar={<SideBar/>}>
+              <CampaignContext.Provider
+      value={{ handleChange, setStep, handleSubmit, values, open, close, step, setStep, goal, setGoal, goals, setGoals }}
+    >
           <Grid item xs={10} sm={10} position="relative">
             <ToastContainer/>
-          <Modal open={open} close={()=>isOpen(false)}/>
+          <Modal/>
           <div className="w-full p-4 space-y-4 ">
          <h2 className="font-bold text-2xl">Campaigns</h2>
          <div className="block 2xl:flex xl:flex lg:flex md:flex sm:flex w-full justify-between">
@@ -50,10 +123,17 @@ export default function Campaigns(){
          </div>
         </div>
      {campaigns.length > 0 && campaigns.map((c) => {
-            return <Content key={c._id} view={()=>navigate(`/campaign/${c._id}`)} {...c}/>
+            return <Content key={c._id} view={()=>navigate(`/campaign/${c._id}`)} edit={()=>{
+              isOpen(true);
+              setId(c._id)
+              setGoals(c.goals)
+              setValues({...c});
+              setEdit(true);
+            }} {...c} />
          })}
          </div>
          </Grid>
+         </CampaignContext.Provider>
         </Dashboard>
      
     )

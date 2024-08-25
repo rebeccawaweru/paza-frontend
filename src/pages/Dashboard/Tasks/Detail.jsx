@@ -39,7 +39,7 @@ export default function Detail(){
         title:"",
         description:"",
         objectives:objectives,
-        category:"",
+        category:"Major Milestone",
         budget:"",
         start:"",
         end:"",
@@ -427,10 +427,13 @@ export default function Detail(){
            <BasicLabel title="Budget (Ksh)"/>
            <BasicInput name="budget" value={mile.budget} onChange={handleChange2}  custom="w-full grey" type="number" />
            </div>
+           <div>
+           <BasicLabel title="Category"/> 
            <BasicSelect name="category" value={mile.category} onChange={handleChange2}  custom="w-full grey">
-            <MenuItem value="Main Objective">Main Objective</MenuItem>
-            <MenuItem value="Sub-Objective">Sub-Objective</MenuItem>
+            <MenuItem value="Major Milestone">Major Milestone</MenuItem>
+            <MenuItem value="Minor Milestone">Minor Milestone</MenuItem>
            </BasicSelect>
+           </div>
            <div className="grid grid-cols-2 gap-2">
            <div>
            <BasicLabel title="Start Date"/>
@@ -441,10 +444,13 @@ export default function Detail(){
            <BasicInput name="end" value={mile.end} onChange={handleChange2}  custom="w-full grey py-1" type="date" />
            </div>
            </div>
+           <div>
+           <BasicLabel title="Status"/> 
            <BasicSelect name="status" value={mile.status} onChange={handleChange2}  custom="w-full grey">
             <MenuItem value="In Progress">In Progress</MenuItem>
             <MenuItem value="Completed">Completed</MenuItem>
            </BasicSelect>
+           </div>
          
            <div className="flex justify-end items-center space-x-4 cursor-pointer my-2">
           <button onClick={()=>{setAddMil(false); if(!Object.values(mile).some(value => value === "")) {
@@ -455,7 +461,7 @@ export default function Detail(){
         </form> : 
         <div className="w-full grid grid-cols-1 2xl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 gap-2"><div className="space-y-4">
             {(miles && miles.length > 0) ? miles.map((item,index)=>{
-                return <Milestone key={index} status={item.status} title={item.title} description={item.description} onClick={()=>setIndx(index)}/>
+                return <Milestone key={index} status={item.status} title={item.title} category={item.category} description={item.description} onClick={()=>setIndx(index)}/>
             }) : <p className="text-zinc-400"><i className="bi bi-folder2-open mx-2"></i> No milestones</p>}
       </div>
       {miles.length > 0 && miles.map((item, index) => {

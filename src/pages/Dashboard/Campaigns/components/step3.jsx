@@ -1,6 +1,6 @@
 import { BasicButton, BasicInput, CheckBox} from "../../../../components";
 import { useContext } from "react";
-import { CampaignContext } from "./modal";
+import { CampaignContext } from "../Campaigns";
 export default function Step3(){
     const {handleChange,handleSubmit,setStep,values} = useContext(CampaignContext);
     return (

@@ -1,6 +1,6 @@
 import { BasicButton, BasicInput} from "../../../../components";
 import { useContext } from "react";
-import { CampaignContext } from "./modal";
+import { CampaignContext } from "../Campaigns";
 export default function Step4(){
     const {handleChange,handleSubmit,setStep,values} = useContext(CampaignContext);
     return (
@@ -23,7 +23,7 @@ export default function Step4(){
             <BasicInput name="bank" type="number" onChange={handleChange} value={values.bank} custom="w-full grey" placeholder="Bank Account"  phcolor="grey" phweight={200} start="bi bi-bank text-white" required/>
             </div>
         <div>
-        <BasicInput custom="w-full grey"  phcolor="grey" phweight={200} start="bi bi-camera text-white" required/>
+        <BasicInput custom="w-full grey"  phcolor="grey" phweight={200} start="bi bi-camera text-white"/>
         <p className="text-zinc-500 text-xs">Please take a clear photo of your ID. Both sides are required.</p>
         </div>
         </div>

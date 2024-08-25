@@ -13,7 +13,7 @@ export default function Modal() {
       <div
         className={`${
         open ? "block absolute" : "hidden"
-        } left-1/2 top-96 mb-4 px-4 transform -translate-x-1/2 -translate-y-1/2 bg-black shadow-lg shadow-zinc-800 h-auto w-2/3 py-2 space-y-4`}
+        } left-1/2 top-96 mb-4 px-4 transform -translate-x-1/2 -translate-y-1/2 bg-black shadow-lg shadow-zinc-800 h-auto w-2/3 py-2 space-y-2`}
       >
         <i
           onClick={() => {
@@ -21,7 +21,7 @@ export default function Modal() {
           }}
           className="bi bi-x float-right text-lg cursor-pointer absolute right-2 top-0"
         ></i>
-        <div className="flex items-center justify-between py-4">
+        <div className="flex items-center justify-between py-2 ">
           <div className="flex w-full items-center">
             <div className={`${step === 1 ? "bg-orange-700" : null} ${cls}`}>
               1

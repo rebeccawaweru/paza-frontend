@@ -22,6 +22,7 @@ export default function CreateTask() {
   const {account, user} = useContext(DashContext)
   const owner = account.creatorname || account.company || user.email;
   const id = searchParams.get("edit");
+  const campaignId = searchParams.get("campaign");
   const token = localStorage.getItem("token");
   const [assignee,setAssignee] = useState([])
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ export default function CreateTask() {
   const [initialValues, setInitialValues] = useState({
     createdby: owner,
     task: "",
-    assignee: "",
+    assignee: "Becca",
     priority: "",
     budget: "",
     status: "",
@@ -38,7 +39,8 @@ export default function CreateTask() {
     repeat: "",
     description: "",
     todos:[],
-    milestones:[]
+    milestones:[],
+    campaignId:campaignId || ""
   });
   const [values, setValues] = useState(initialValues);
   const handleChange = (e) => {

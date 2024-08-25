@@ -1,22 +1,26 @@
 import {useState, useEffect, useContext} from 'react';
 import { campaignsGet } from '../../../api/client';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Grid, MenuItem,LinearProgress } from '@mui/material';
 import { Dashboard } from '../../../layouts';
-import { SideBar, BasicInput, BasicSelect, BasicLabel } from '../../../components';
+import { SideBar, BasicInput, BasicSelect, BasicLabel, BasicButton } from '../../../components';
 import { ToastContainer,toast } from 'react-toastify';
 import bg from '../../../assets/images/profile.jpg'
 import { Milestone } from '../Tasks/components';
 import { DashContext } from '../../../context/AuthContext';
 import { campaignsPut } from '../../../api/client';
-
+import client from "../../../api/client";
+import {TaskContent} from '../Tasks/components';
 export default function CampaignDetail(){
+    const token = localStorage.getItem('token')
+    const navigate = useNavigate()
     const {account, user} = useContext(DashContext)
     const {id} = useParams()
     const [addMil, setAddMil] = useState(false);
     const [campaign,setCampaign] = useState({})
     const permission = campaign.createdby === (account.creatorname || account.company || user.email);
     const [objectives, setObjectives] = useState([])
+    const [data, setData] = useState([])
     const [tab,setTab] = useState('Description')
     const [tab2,setTab2] = useState('Milestones')
     const [mile, setMile] = useState({
@@ -63,23 +67,32 @@ export default function CampaignDetail(){
         }
       };
       getCampaign();
-    },[])
+    },[id]);
+
+    useEffect(()=>{
+      client.get('/tasks', { headers: { Authorization: `${token}` } }).then((response)=>{
+        setData(response.data.filter((item)=> item.campaignId === id))
+      })
+    },[data])
     return (
         <Dashboard sidebar={<SideBar/>}>
         <Grid item xs={10} sm={10} position="relative">
           <ToastContainer/>
-         <img src={bg} alt="background" className="w-full h-1/6 object-cover relative"/>
-         <div className='grid grid-cols-2 gap-4'>
-
-        <div className="p-4 space-y-4 grey">
+    
+         <div className='h-52 w-full rounded-md'>
+         <img src={bg} alt="background" className="w-full h-full object-cover"/>
+         </div>
+         
+         <div className='grid grid-cols-3 gap-2 -mt-8 mx-2'>
+        <div className="col-span-2 p-2 space-y-4 grey">
          <h2 className="font-bold text-2xl">{campaign.title}</h2>
          <div className="flex space-x-2 text-xs">
             <p className="bg-green-800 rounded-lg px-4">Open</p>
             <p className="text-zinc-500">posted a month ago</p>
             </div>
         <div className="flex space-x-8 text-sm text-zinc-300 font-bold">
-            <p className={`${tab === 'Description' && 'text-orange-700'} cursor-pointer`}>Description</p>
-            <p className={`${tab === 'Tasks' && 'text-orange-700'} cursor-pointer`}>Tasks</p>
+            <p onClick={()=>setTab('Description')} className={`${tab === 'Description' && 'text-orange-700'} cursor-pointer`}>Description</p>
+            <p onClick={()=>setTab('Tasks')} className={`${tab === 'Tasks' && 'text-orange-700'} cursor-pointer`}>Tasks</p>
             <p className={`${tab === 'Schedule' && 'text-orange-700'} cursor-pointer'}`}>Schedule</p>
         </div>
         {tab === 'Description' && <div>
@@ -90,15 +103,22 @@ export default function CampaignDetail(){
                     return <p className='text-white font-semibold'>{index+1} . {item}</p>
                 })}
             </div>
+        
+        </div>}
+        {tab === 'Tasks' && <div className='bg-black p-4'>
+            <div className='flex items-center justify-between text-sm'>
+           <p className="font-bold text-lg">Campaign Tasks</p>
+           <BasicButton title="+ New" handleClick={()=>navigate(`/newtask?campaign=${id}`)}/>
+           </div>
+           {data.length === 0 ? <p className="text-zinc-400 text-sm my-4"><i className="bi bi-folder2-open mx-2"></i> No tasks</p>:
+           <TaskContent data={data} display="hidden"/>}
         </div>}
         </div>
-        <div className='space-y-8 text-sm text-zinc-300 px-4 mt-4'>
-        <div className="flex space-x-8 font-semibold text-white space-x-2 items-center">
+        <div className='col-span-1 space-y-8 text-sm text-zinc-300 px-2 pt-12'>
+        <div className="flex space-x-1 font-semibold text-white items-center">
         <p>Completion:</p>
         <LinearProgress sx={{height:5, width:"50%", borderRadius:10}} color="success" variant="determinate" value= {percentage}/> 
         <p className="text-white font-bold">{Math.round(percentage)} %</p>
-
-  
         </div>
         <p>Deadline: 23/08/2024</p>
         <div className="flex justify-between font-bold cursor-pointer leading-loose">
@@ -167,14 +187,8 @@ export default function CampaignDetail(){
             }) : <p className="text-zinc-400"><i className="bi bi-folder2-open mx-2"></i> No milestones</p>}
            </div>}
         </div>}
-
-
         </div>
-      
-  
-
         </div>
-     
        </Grid>
       </Dashboard>
     )

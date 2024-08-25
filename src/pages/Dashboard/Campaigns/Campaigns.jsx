@@ -16,6 +16,7 @@ export default function Campaigns(){
     const [id, setId] = useState("");
     const [step, setStep] = useState(1);
     const [campaigns,setCampaigns] = useState([])
+    const [topics, setTopics] = useState([])
     const {account, user} = useContext(DashContext)
     const owner = account.creatorname || account.company || user.email;
     const [goal,setGoal] = useState('');
@@ -23,7 +24,7 @@ export default function Campaigns(){
     const [values, setValues] = useState({
       createdby: owner,
       title: "",
-      category: "hhh",
+      category:'Campaign',
       description: "",
       location: "",
       phone: "",
@@ -34,14 +35,14 @@ export default function Campaigns(){
       budget: "",
       bank: "",
       milestones:[],
-      requirements:[]
+      topics:[]
     });
     const close = () => {
       isOpen(false)
       setValues({
         createdby: owner,
         title: "",
-        category: "",
+        category:"Campaign",
         description: "",
         location: "",
         phone: "",
@@ -52,7 +53,7 @@ export default function Campaigns(){
         budget: "",
         bank: "",
         milestones:[],
-        requirements:[]
+        topics:[]
       });
     }
     const handleChange = (e) => {
@@ -65,14 +66,14 @@ export default function Campaigns(){
       } else {
         //post new campaign route / edit campaign
          if (edit){
-           const response = await campaignsPut(`/campaigns/${id}`,{values, goals:goals});
+           const response = await campaignsPut(`/campaigns/${id}`,{values, goals:goals, topics:topics});
           isOpen(false)
           toast.success(response.data)
           setStep(1)
           console.log(values,goals)
 
          } else {
-          const response = await campaignsPost("campaigns/create", {values, goals:goals});
+          const response = await campaignsPost("campaigns/create", {...values, goals:goals, topics:topics});
           isOpen(false)
           toast.success(response.data)
           setStep(1)
@@ -96,7 +97,7 @@ export default function Campaigns(){
     return (
         <Dashboard sidebar={<SideBar/>}>
               <CampaignContext.Provider
-      value={{ handleChange, setStep, handleSubmit, values, open, close, step, setStep, goal, setGoal, goals, setGoals }}
+      value={{ handleChange, setStep, handleSubmit, values, open, close, step, setStep, goal, setGoal, goals, setGoals, topics, setTopics }}
     >
           <Grid item xs={10} sm={10} position="relative">
             <ToastContainer/>
@@ -109,7 +110,7 @@ export default function Campaigns(){
               <div className="flex space-x-2 text-orange-700 font-semibold border-b border-orange-700 px-4 py-2">
                 <p className={``}>All Campaigns </p>
                 <div className="grey px-2 hidden 2xl:flex xl:flex lg:flex md:flex sm:flex items-center text-xs rounded-md text-zinc-300">
-                  4
+                  {campaigns && campaigns.length}
                 </div>
               </div>
               <div className="flex space-x-2 font-semibold px-4 py-2">
@@ -127,6 +128,7 @@ export default function Campaigns(){
               isOpen(true);
               setId(c._id)
               setGoals(c.goals)
+              setTopics(c.topics)
               setValues({...c});
               setEdit(true);
             }} {...c} />

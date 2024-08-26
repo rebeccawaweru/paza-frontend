@@ -2,8 +2,10 @@ import Swal from "sweetalert2";
 import { useContext, useState, useEffect } from "react";
 import { DashContext } from "../../../../context/AuthContext";
 import { campaignsDelete } from "../../../../api/client";
+import { CampaignContext } from "../Campaigns";
 export default function Content(props) {
   const { account, user } = useContext(DashContext);
+  const { setRefresh } = useContext(CampaignContext);
   const permission =
     props.createdby === (account.creatorname || account.company || user.email);
 
@@ -20,6 +22,7 @@ export default function Content(props) {
         try {
           const response = await campaignsDelete("/campaigns/" + props._id);
           Swal.fire("Success", response.data, "success");
+          setRefresh((prev) => !prev); //Trigger refresh after deletion
         } catch (error) {
           Swal.fire("Error", error.response?.data?.message);
         }

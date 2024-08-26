@@ -120,6 +120,8 @@ export default function Campaigns() {
           setGoals,
           topics,
           setTopics,
+          refresh,
+          setRefresh,
         }}
       >
         <Grid item xs={10} sm={10} position="relative">

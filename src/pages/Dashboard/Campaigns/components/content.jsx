@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 import { useContext, useState, useEffect } from "react";
 import { DashContext } from "../../../../context/AuthContext";
-import { campaignsDelete, campaignsGet } from "../../../../api/client";
+import { campaignsDelete } from "../../../../api/client";
 export default function Content(props) {
   const { account, user } = useContext(DashContext);
   const permission =

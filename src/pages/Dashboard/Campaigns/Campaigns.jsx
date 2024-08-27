@@ -21,7 +21,7 @@ export default function Campaigns() {
   const owner = account.creatorname || account.company || user.email;
   const [goal, setGoal] = useState("");
   const [goals, setGoals] = useState([]);
-  const [values, setValues] = useState({
+  const [initialValues, setInitialValues] = useState({
     createdby: owner,
     title: "",
     category: "Campaign",
@@ -37,25 +37,14 @@ export default function Campaigns() {
     milestones: [],
     topics: [],
   });
+  const [values, setValues] = useState(initialValues);
   const [refresh, setRefresh] = useState(false);
   const close = () => {
     isOpen(false);
-    setValues({
-      createdby: owner,
-      title: "",
-      category: "Campaign",
-      description: "",
-      location: "",
-      phone: "",
-      age: false,
-      docs: false,
-      cards: false,
-      email: "",
-      budget: "",
-      bank: "",
-      milestones: [],
-      topics: [],
-    });
+    setValues(initialValues);
+    setGoals([]);
+    setTopics([]);
+    setStep(1); // reset form step
   };
   const handleChange = (e) => {
     setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -66,15 +55,24 @@ export default function Campaigns() {
       setStep((prev) => prev + 1);
     } else {
       //post new campaign route / edit campaign
-      if (edit) {
+
+      const updatedValues = Object.keys(values).reduce((acc, key) => {
+        if (values[key] !== initialValues[key]) {
+          acc[key] = values[key];
+        }
+        return acc;
+      }, {}); //Create object with only updated values
+
+      console.log("🚀 ~ updatedValues ~ updatedValues:", updatedValues);
+      if (edit && Object.keys(updatedValues).length > 0) {
         const response = await campaignsPut(`/campaigns/${id}`, {
-          values,
-          goals: goals,
-          topics: topics,
+          ...updatedValues,
         });
+
         isOpen(false);
         toast.success(response.data);
         setStep(1);
+        setRefresh((prev) => !prev);
         console.log(values, goals);
       } else {
         const response = await campaignsPost("campaigns/create", {
@@ -85,10 +83,20 @@ export default function Campaigns() {
         isOpen(false);
         toast.success(response.data);
         setStep(1);
-        setRefresh((prev) => !prev);
+        setRefresh((prev) => !prev); // Trigger refresh to fetch new campaign
       }
     }
   };
+  async function getCampaign() {
+    const response = await campaignsGet(`/campaigns/${id}`);
+    setInitialValues(response.data);
+    setValues(response.data);
+  }
+  useEffect(() => {
+    if (id) {
+      getCampaign();
+    }
+  }, [id]);
   useEffect(() => {
     //get campaigns route
     const getCampaigns = async () => {

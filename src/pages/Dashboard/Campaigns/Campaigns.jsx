@@ -21,7 +21,8 @@ export default function Campaigns() {
   const owner = account.creatorname || account.company || user.email;
   const [goal, setGoal] = useState("");
   const [goals, setGoals] = useState([]);
-  const [initialValues, setInitialValues] = useState({
+
+  const defaultInitialValues = {
     createdby: owner,
     title: "",
     category: "Campaign",
@@ -36,15 +37,24 @@ export default function Campaigns() {
     bank: "",
     milestones: [],
     topics: [],
-  });
-  const [values, setValues] = useState(initialValues);
+  };
+  const [initialValues, setInitialValues] = useState(defaultInitialValues);
+  const [values, setValues] = useState(defaultInitialValues);
   const [refresh, setRefresh] = useState(false);
+
+  //Reset form values and step
+  const resetForm = () => {
+    setInitialValues(defaultInitialValues);
+    setValues(defaultInitialValues);
+    setGoals([]);
+    setTopics([]);
+    setStep(1);
+  };
   const close = () => {
     isOpen(false);
     setValues(initialValues);
-    setGoals([]);
-    setTopics([]);
-    setStep(1); // reset form step
+    resetForm(); // reset form to clear values
+    setEdit(false);
   };
   const handleChange = (e) => {
     setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -56,24 +66,32 @@ export default function Campaigns() {
     } else {
       //post new campaign route / edit campaign
 
-      const updatedValues = Object.keys(values).reduce((acc, key) => {
-        if (values[key] !== initialValues[key]) {
-          acc[key] = values[key];
+      if (edit) {
+        const updatedValues = Object.keys(values).reduce((acc, key) => {
+          if (values[key] !== initialValues[key]) {
+            acc[key] = values[key];
+          }
+          return acc;
+        }, {}); //Create object with only updated values
+
+        if (Object.keys(updatedValues).length > 0) {
+          try {
+            const response = await campaignsPut(`/campaigns/${id}`, {
+              ...updatedValues,
+            });
+
+            isOpen(false);
+            toast.success(response.data);
+            resetForm(); //Reset form after successful update
+            setRefresh((prev) => !prev);
+          } catch (error) {
+            toast.error("Failed to update campaign");
+            console.error("Failed to update campaign:", error);
+          }
+        } else {
+          toast.info("No changes made.Please update at least one field!");
+          setStep(1);
         }
-        return acc;
-      }, {}); //Create object with only updated values
-
-      console.log("🚀 ~ updatedValues ~ updatedValues:", updatedValues);
-      if (edit && Object.keys(updatedValues).length > 0) {
-        const response = await campaignsPut(`/campaigns/${id}`, {
-          ...updatedValues,
-        });
-
-        isOpen(false);
-        toast.success(response.data);
-        setStep(1);
-        setRefresh((prev) => !prev);
-        console.log(values, goals);
       } else {
         const response = await campaignsPost("campaigns/create", {
           ...values,
@@ -82,7 +100,7 @@ export default function Campaigns() {
         });
         isOpen(false);
         toast.success(response.data);
-        setStep(1);
+        resetForm(); //Reset form after created campaign
         setRefresh((prev) => !prev); // Trigger refresh to fetch new campaign
       }
     }
@@ -103,7 +121,6 @@ export default function Campaigns() {
       try {
         const response = await campaignsGet("/campaigns");
         setCampaigns(response.data);
-        console.log("🚀 ~ useEffect ~ response:", response);
       } catch (error) {
         console.error("Failed to fetch campaigns:", error);
       }
@@ -154,7 +171,10 @@ export default function Campaigns() {
                   </div>
                 </div>
                 <button
-                  onClick={() => isOpen(true)}
+                  onClick={() => {
+                    isOpen(true);
+                    setEdit(false); // Reset edit ensuring new campaign creation
+                  }}
                   className="grey text-sm p-2 cursor-pointer hover:bg-orange-700 hover:scale-90"
                 >
                   + New Campaign

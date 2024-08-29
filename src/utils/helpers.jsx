@@ -186,3 +186,18 @@ export const handleDownload = (url) => {
       console.error("Error fetching the file:", error);
     });
 };
+
+export const labelArray = [
+  { label: 'Pricing', icon: "" },
+  { label: 'Pricing', icon: "" },
+  { label: 'Pricing', icon: "" },
+  { label: 'Budget', icon: "" },
+  { label: 'Experience', icon: "" },
+  { label: 'Timeline', icon: "" },
+  { label: 'Location', icon: "" },
+  { label: 'Gender', icon: "" },
+  { label: 'Job Category', icon: "" },
+  { label: 'Job Type', icon: "" },
+  { label: 'Availability', icon: "" },
+  { label: 'Start Date', icon: "" }
+];

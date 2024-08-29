@@ -8,7 +8,7 @@ export default function NavBar(){
    const {account, user} = useContext(DashContext)
     const menu = [
         {id:4, title:"Dashboard", path:"/overview"},
-        {id:2, title:"Job Board"},
+        {id:2, title:"Job Board", path:"/jobs"},
         {id:3, title:"Showcase"},
         {id:1, title:"Profile", path:`${account.type === 'Creator' ? '/profile?type=Creator' : account.type === 'Brand'? '/profile?type=Brand' : '/accountype'}`},
     ]

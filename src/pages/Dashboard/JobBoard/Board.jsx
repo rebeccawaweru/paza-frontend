@@ -2,12 +2,36 @@ import { Avatar, Grid } from "@mui/material";
 import { BasicButton, SideBar } from "../../../components";
 import { Dashboard } from "../../../layouts";
 import { labelArray } from "../../../utils/helpers";
+import { createContext, useState } from "react";
+import { Modal } from "./components";
+export const JobContext = createContext()
 export default function JobBoard(){
+    const [job, setJob] = useState({
+        title:"",
+        description:"",
+        skills:[]
+    })
+    const [open,setOpen] = useState(false);
+    const [step,setStep] = useState(3);
+    const close = () => setOpen(false);
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setStep((prev) => prev + 1)
+    }
+    const handlePrev = () => {
+        setStep((prev) => prev - 1)
+    }
     return (
         <Dashboard sidebar={<SideBar/>}>
-          <Grid item xs={10} sm={10}>
+            <JobContext.Provider value={{job, setJob, open, setOpen, step, setStep, close, handleSubmit, handlePrev}}>
+          <Grid item xs={10} sm={10} position="relative">
+        
             <div className="p-4 space-y-6 tracking-wide leading-loose text-sm relative">
-            <p>Job Details</p>
+              <Modal/>
+             <div className="flex justify-between">
+             <p>Job Details</p>
+             <button onClick={()=>setOpen(true)} className="grey text-sm p-2 cursor-pointer hover:bg-orange-700 hover:scale-90">+ Create Job</button>
+             </div>
             <div className="grid grid-cols-3">
             <div className="col-span-2">
                 <p className="font-bold text-lg">Job Title</p>
@@ -63,6 +87,7 @@ export default function JobBoard(){
             </div>
        
             </Grid>
+            </JobContext.Provider>
         </Dashboard>
     )
 }

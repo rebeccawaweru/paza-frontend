@@ -8,7 +8,7 @@ export default function SideBar(){
     <div className="space-y-4">
       <p className="text-zinc-500 text-xs font-bold">MAIN</p>
       <NavBtn icon="bi bi-grid-1x2-fill" name="overview" title="Overview" path="/overview"/>
-      <NavBtn icon="bi bi-inbox-fill" title="Inbox"/>
+      <NavBtn icon="bi bi-inbox-fill" name="inbox" title="Inbox" path="/inbox"/>
       <NavBtn icon="bi bi-briefcase-fill" name="task" title="Tasks" path="/tasks"/>
       <NavBtn icon="bi bi-megaphone-fill" title="Campaigns" name="campaign" path="/campaigns"/>
       <NavBtn icon="bi bi-credit-card" title="Payments"/>

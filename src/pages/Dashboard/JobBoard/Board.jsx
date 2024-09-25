@@ -13,7 +13,7 @@ export default function JobBoard(){
     })
     const [open,setOpen] = useState(false);
     const [step,setStep] = useState(1);
-    const close = () => setOpen(false);
+ 
  
     const handlePrev = () => {
         setStep((prev) => prev - 1)
@@ -35,6 +35,27 @@ export default function JobBoard(){
     const [skills, setSkills] = useState([])
     const [contents, setContent] = useState([])
     const [platforms, setPlatforms] = useState([])
+    const close = () => {
+        setStep(1)
+        setOpen(false)
+        setSkills([])
+        setContent([])
+        setPlatforms([])
+        setValues({
+          title:"",
+          description:"",
+          further:"",
+          gender:"",
+          availability:"",
+          location:"",
+          experience:"",
+          priority:"",
+          visibility:"",
+          payment:"",
+          paymentdesc:"",
+          link:"" 
+        })
+    };
     const handleChange = (e) => {
         setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     }

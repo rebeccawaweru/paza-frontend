@@ -41,7 +41,6 @@ export default function AuthWrapper({ children, navbtn, initialValues }) {
           },
         }
       );
-      console.log(res);
       const avatarUrl = res.data.avatarUrl;
       dispatch({ type: "UPLOAD_SUCCESS", payload: { value: avatarUrl } });
     } catch (error) {

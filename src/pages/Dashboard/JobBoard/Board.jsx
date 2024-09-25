@@ -12,18 +12,45 @@ export default function JobBoard(){
         skills:[]
     })
     const [open,setOpen] = useState(false);
-    const [step,setStep] = useState(3);
+    const [step,setStep] = useState(1);
     const close = () => setOpen(false);
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setStep((prev) => prev + 1)
-    }
+ 
     const handlePrev = () => {
         setStep((prev) => prev - 1)
     }
+    const [values, setValues] = useState({
+          title:"",
+          description:"",
+          further:"",
+          gender:"",
+          availability:"",
+          location:"",
+          experience:"",
+          priority:"",
+          visibility:"",
+          payment:"",
+          paymentdesc:"",
+          link:""
+    });
+    const [skills, setSkills] = useState([])
+    const [contents, setContent] = useState([])
+    const [platforms, setPlatforms] = useState([])
+    const handleChange = (e) => {
+        setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (step < 7) {
+            setStep((prev) => prev + 1)
+        } else {
+            console.log(values, skills, contents, platforms)
+            //insert backend logic
+        }
+      
+    }
     return (
         <Dashboard sidebar={<SideBar/>}>
-            <JobContext.Provider value={{job, setJob, open, setOpen, step, setStep, close, handleSubmit, handlePrev}}>
+            <JobContext.Provider value={{platforms, setPlatforms, skills, setSkills, contents, setContent, job, setJob, open, setOpen, step, setStep, close, values, handleChange, handleSubmit, handlePrev}}>
           <Grid item xs={10} sm={10} position="relative">
         
             <div className="p-4 space-y-6 tracking-wide leading-loose text-sm relative">

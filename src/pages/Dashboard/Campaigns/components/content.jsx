@@ -20,7 +20,7 @@ export default function Content(props) {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const response = await campaignsDelete("/campaigns/" + props._id);
+          const response = await campaignsDelete("/" + props._id);
           Swal.fire("Success", response.data, "success");
           setRefresh((prev) => !prev); //Trigger refresh after deletion
         } catch (error) {

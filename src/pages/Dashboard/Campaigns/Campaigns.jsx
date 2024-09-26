@@ -76,7 +76,7 @@ export default function Campaigns() {
 
         if (Object.keys(updatedValues).length > 0) {
           try {
-            const response = await campaignsPut(`/campaigns/${id}`, {
+            const response = await campaignsPut(`/${id}`, {
               ...updatedValues,
             });
 
@@ -93,7 +93,7 @@ export default function Campaigns() {
           setStep(1);
         }
       } else {
-        const response = await campaignsPost("campaigns/create", {
+        const response = await campaignsPost("/create", {
           ...values,
           goals: goals,
           topics: topics,
@@ -106,7 +106,7 @@ export default function Campaigns() {
     }
   };
   async function getCampaign() {
-    const response = await campaignsGet(`/campaigns/${id}`);
+    const response = await campaignsGet(`/${id}`);
     setInitialValues(response.data);
     setValues(response.data);
   }
@@ -119,7 +119,7 @@ export default function Campaigns() {
     //get campaigns route
     const getCampaigns = async () => {
       try {
-        const response = await campaignsGet("/campaigns");
+        const response = await campaignsGet("/");
         setCampaigns(response.data);
       } catch (error) {
         console.error("Failed to fetch campaigns:", error);

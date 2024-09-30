@@ -47,6 +47,7 @@ const requestHandler = async (
 const usersAuthApi = createApiInstance("http://localhost:5050/auth");
 const campaignsApi = createApiInstance("http://localhost:5050/campaigns");
 const uploadsApi = createApiInstance("http://54.163.27.140:5000/uploads");
+const jobsApi = createApiInstance("http://localhost:5050/jobs");
 
 //Exported API methods for authentication
 export const usersSignupPost = (url, body) =>
@@ -93,3 +94,7 @@ export const avatarPost = (url, formData) =>
     {},
     { "Content-Type": "multipart/form-data" }
   );
+
+//Exported API methods for jobs
+export const jobsPost = (url, body) =>
+  requestHandler(jobsApi, "post", url, body);

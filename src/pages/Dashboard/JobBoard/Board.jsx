@@ -4,7 +4,7 @@ import { Dashboard } from "../../../layouts";
 import { labelArray } from "../../../utils/helpers";
 import { createContext, useState } from "react";
 import { Modal } from "./components";
-import axios from "axios";
+import { jobsPost } from "../../../api/client";
 export const JobContext = createContext();
 export default function JobBoard() {
   const [job, setJob] = useState({
@@ -76,7 +76,7 @@ export default function JobBoard() {
       );
       //insert backend logic
       try {
-        const response = await axios.post("http://localhost:5050/jobs/create", {
+        const response = await jobsPost("/create", {
           values,
           skills,
           contents,

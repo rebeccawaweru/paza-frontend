@@ -98,3 +98,12 @@ export const avatarPost = (url, formData) =>
 //Exported API methods for jobs
 export const jobsPost = (url, body) =>
   requestHandler(jobsApi, "post", url, body);
+
+export const jobsGet = (url, params) =>
+  requestHandler(jobsApi, "get", url, null, params);
+
+export const jobsPut = (url, body, params) =>
+  requestHandler(jobsApi, "put", url, body, params);
+
+export const jobsDelete = (url, params) =>
+  requestHandler(jobsApi, "delete", url, null, params);

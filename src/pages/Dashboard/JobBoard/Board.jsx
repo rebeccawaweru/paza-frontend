@@ -2,9 +2,9 @@ import { Avatar, Grid } from "@mui/material";
 import { BasicButton, SideBar } from "../../../components";
 import { Dashboard } from "../../../layouts";
 import { labelArray } from "../../../utils/helpers";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { Modal } from "./components";
-import { jobsPost } from "../../../api/client";
+import { jobsPost, jobsGet } from "../../../api/client";
 export const JobContext = createContext();
 export default function JobBoard() {
   const [job, setJob] = useState({
@@ -88,6 +88,18 @@ export default function JobBoard() {
       }
     }
   };
+  // Test fetch jobs
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const response = await jobsGet("/");
+        console.log("Jobs fetched successfully", response.data);
+      } catch (error) {
+        console.error("Error fetching jobs", error);
+      }
+    };
+    fetchJobs();
+  });
   return (
     <Dashboard sidebar={<SideBar />}>
       <JobContext.Provider

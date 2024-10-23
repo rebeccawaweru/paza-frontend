@@ -46,7 +46,7 @@ const requestHandler = async (
 //Create API instances
 const usersAuthApi = createApiInstance("http://localhost:5050/auth");
 const campaignsApi = createApiInstance("http://localhost:5050/campaigns");
-const uploadsApi = createApiInstance("http://54.163.27.140:5000/uploads");
+const uploadsApi = createApiInstance("http://localhost:5000/uploads");
 const jobsApi = createApiInstance("http://localhost:5050/jobs");
 
 //Exported API methods for authentication
